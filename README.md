@@ -85,3 +85,19 @@ git stash pop \\Permet de reprendre ton livre de cuisine pour revenir à où tu 
 
 
 
+
+
+
+
+
+
+
+
+
+Par rapport à notre façon de fonctionner : Ce que je te propose c'est que tu travailles sur la branche MARINA TOUT LE TEMPS. Moi je travail sur la branche KILUSHA TOUT LE TEMPS. Et lorsqu'on a besoin de réunir nos codes alors je te montrerai la procédure une fois et ensuite tu sauras la faire dès que nous aurons besoin de fusionner nos codes. La branche main restera intacte et nous la changerons dès qu'il faudra à savoir, quand on aura solutionner de gros problèmes. A chaque grosse étapes en quelques sortes, on fera une copie du code sur la branche main. Comme ça elle correspond à une copie propre à laquelle on peut revenir à tout moment en cas de problème.
+La branche PROF ne sert qu'à poser les documents du prof et le prog qu'il nous file de base sur Moodle comme ça si tu as besoin tu as un accès rapide à celui ci.
+Le gros avantage de tout ça c'est que toi tu pourras récupérer mes modifications de code sans que ça intervienne avec les tiennes. Dès que tu feras un git pull ou un git fetch selon la situation (je te le dirai), tu récupèreras mon code sans que ça ne change quoique ce soit au tien.
+1. L'idée principale et l'esprit qu'il faut avoir c'est le suivant : A chauqe fois qu'on travaillera cette matière (chez nous ou en cours peu importe), la TOUTE PREMIERE CHOSE A FAIRE sera d'exécute un git pull. Comme ça tu récupère tout et tu es à jour avec le dépôt distant avant de commencer quoique ce soit. 
+2. Ensuite tu verifies que tu es bien sur ta branche nommée MARINA. Pour ce faire tu exécutes la commande git status. Si tu n'ets pas sur la branche Marina, alors il faudra que tu changes avec la commande git checkout MARINA.
+3. Et là tu travailles ce que tu veux comme tu veux librement sans risquer le moindre problème. Et une fois que tu as terminé ce que tu voulais faire (pense à découper le plus possible ton travail ce sera le plus simple), alors tu devvras faire un commit en tapant la commande git add . , puis git commit -m "TAPE TON MESSAGE", et enfin git push.
+4. C'est tout ! Concernant tout le reste, si tu as besoin de plus d'informations ou autre surtout n'hésite jmmais à me demander ce sera toujours la meilleure chose que tu puisses faire car si tu tentes un truc sans être sûr de toi vu que je t'ai mis admin, tu as le droit de tout faire y compris de tout supprimer par inadvertance haha. Donc n'hésite jamais voili voilou j'espère que ça t'aura aidé cette petite aide.
