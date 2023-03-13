@@ -101,3 +101,7 @@ Le gros avantage de tout ça c'est que toi tu pourras récupérer mes modificati
 2. Ensuite tu verifies que tu es bien sur ta branche nommée MARINA. Pour ce faire tu exécutes la commande git status. Si tu n'ets pas sur la branche Marina, alors il faudra que tu changes avec la commande git checkout MARINA.
 3. Et là tu travailles ce que tu veux comme tu veux librement sans risquer le moindre problème. Et une fois que tu as terminé ce que tu voulais faire (pense à découper le plus possible ton travail ce sera le plus simple), alors tu devvras faire un commit en tapant la commande git add . , puis git commit -m "TAPE TON MESSAGE", et enfin git push.
 4. C'est tout ! Concernant tout le reste, si tu as besoin de plus d'informations ou autre surtout n'hésite jmmais à me demander ce sera toujours la meilleure chose que tu puisses faire car si tu tentes un truc sans être sûr de toi vu que je t'ai mis admin, tu as le droit de tout faire y compris de tout supprimer par inadvertance haha. Donc n'hésite jamais voili voilou j'espère que ça t'aura aidé cette petite aide.
+
+
+
+OK j ai lu
