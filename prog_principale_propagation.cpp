@@ -202,6 +202,10 @@ int main() {
               J)); // Calcul et stockage dans le tableau des angles alpha de la
                    // valeur de l'angle alpha à l'instant t + dt pour le 1 er
                    // domino indice 0, à l'aide de l'équation du pdf n°1.
+    if (alpha[t+1][0] >
+         alphaChoc){ // verifie que l'angle est inférieur à l'angle de choc pour éviter la singularité.
+          alpha[t+1][0] = alphaChoc; // si c'est le cas, l'angle calculée précédement prend la valeur de alpha choc.
+         } 
     t++; // Inrémentation du temps pour changer de ligne dans notre tableau et
          // pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
   }
