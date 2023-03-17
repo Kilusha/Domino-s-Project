@@ -133,9 +133,9 @@ int main() {
                  // dominos)
   int Tmax = 10; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
                  // temps maximal)
-  double l0 = 2;      // Longueur du ressort au repos en cm
-  double delta = 2.5; // Correspond à la distance entre 2 dominos successifs
-  double h = 3.0;     // Correspond à la taille en hauteur des dominos
+  double l0 = 2e-2;      // Longueur du ressort au repos en cm
+  double delta = 2.5e-2; // Correspond à la distance entre 2 dominos successifs
+  double h = 3.0e-2;     // Correspond à la taille en hauteur des dominos
   double alphaChoc = trouve_Alpha(
       delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
                      // alphaChoc en la déterminant par dichotomie à l'aide des
@@ -170,11 +170,7 @@ int main() {
       0.); // Créé le tableau l qui gardera en mémoire la valeur des longueurs
            // des ressorts de tous les dominos à chaque instant de l'expérience
 
-  /*HELP JSP POURQUOI ON A MIS ÇA !
 
-  for (int i = 0; i < Tmax; i++) Tmax = Tmax + 1;
-
-  */
 
   cout << endl
        << "L'angle de choc est : " << alphaChoc << " rad"
@@ -188,6 +184,7 @@ int main() {
       w0 *
       dt; // Stockage de la valeur de l'angle alpha du 1er domino à l'instant
           // t+dt qui correspond à t = 1. (Vitesse de chute * temps = angle)
+
 
   // Pas sûr de l'utilité de la ligne suivante
   int t = 1; // Initialisation du temps t pour la suite du prog
