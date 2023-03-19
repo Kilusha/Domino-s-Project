@@ -140,7 +140,7 @@ int main() {
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
   double w0 = 0.2;        // Vitesse de chute du domino en rad.s^(-1)
-  double dt = 0.05;        // intervalle de temps en s
+  double dt = 0.5;        // intervalle de temps en s
   double gamma = 15.8e-6; // Définition de la viscosité du milieu de propagation
                           // (ici l'air)
   double m = 8e-3;          // Définition de la masse de l'objet en kg
@@ -246,24 +246,14 @@ int main() {
   {
     /* mouvement du 1er domino n°0 après choc avec le 2ème domino n°1 */
 
-    /* CA RESSEMBLE PAS A LA FORMULE DU PDF JCAPTE PAS */
-    // l[t][0] = (delta + h*cos(alpha[t][0])*(tan(alpha[t][1]) -
-    // tan(alpha[t][0])))/((1. +
-    // tan(alpha[t][0])*tan(alpha[t][1]))*cos(alpha[t][0])); //Calcul et
-    // stockage dans le tableau des longueurs des ressorts l de la valeur de la
-    // longueur l à l'instant t du ressort du domino n°0, à l'aide de l'équation
-    // du pdf tout en bas.
 
-    /* DU COUP JE L AI REECRITE */
+    l[t][0] = (delta + h*cos(alpha[t][0])*(tan(alpha[t][1]) -
+    tan(alpha[t][0])))/((1. +
+    tan(alpha[t][0])*tan(alpha[t][1]))*cos(alpha[t][0])); /* Calcul et
+    stockage dans le tableau des longueurs des ressorts l de la valeur de la
+    longueur l à l'instant t du ressort du domino n°0, à l'aide de l'équation
+    du pdf tout en bas. */
 
-    l[t][0] =
-        h * (tan(alpha[t][1]) - (alpha[t][0])) +
-        delta / ((1 + tan(alpha[t][0]) * tan(alpha[t][1])) *
-                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
-                                    // longueurs des ressorts l de la valeur de
-                                    // la longueur l à l'instant t du ressort du
-                                    // domino n°0, à l'aide de l'équation du pdf
-                                    // tout en bas.
 
     /*       Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse
           if(l[t][0]>l0)
@@ -334,29 +324,12 @@ cout << alpha[t][n] << endl;
        if(l[t][n]>l0)
                l[t][n]=l0; */
 
-      /* Selon moi il y a une erreur dans l'écriture de cette formule... Je
-      pense qu'il manque un 2 au dénominateur avec le J vers la fin de
-      l'expression.
+
       alpha[t+1][n]=(2*alpha[t][n]-(1-gamma*dt/(2*J))*alpha[t-1][n]+3*g*dt*dt/(2*h)*sin(alpha[t][n])+dt*dt*(1./J)*k*(l0-l[t][n-1])*(h-delta*sin(alpha[t][n-1]))-dt*dt*k*h*(1/(2*J))*(l0-l[t][n]))/(1+gamma*dt/(2*J));
-      //Calcul et stockage dans le tableau des angles alpha de la valeur de
+      /* Calcul et stockage dans le tableau des angles alpha de la valeur de
       l'angle alpha à l'instant t + dt pour le domino d'indice n à l'aide de
-      l'équation du pdf n°3.
-*/
+      l'équation du pdf n°3. */
 
-      // Je l'ai donc réécrite ci-dessous
-
-      alpha[t + 1][n] =
-          (2 * alpha[t][n] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][n] +
-           3 * g * dt * dt / (2 * h) * sin(alpha[t][n]) +
-           dt * dt * (1. / 2 * J) * k * (l0 - l[t][n - 1]) *
-               (h - delta * sin(alpha[t][n - 1])) -
-           dt * dt * k * h * (1 / (2 * J)) * (l0 - l[t][n])) /
-          (1 +
-           gamma * dt /
-               (2 *
-                J)); // Calcul et stockage dans le tableau des angles alpha de
-                     // la valeur de l'angle alpha à l'instant t + dt pour le
-                     // domino d'indice n en contact avec ses 2 voisins à l'aide de l'équation du pdf n°4.
 
       n++; // Permet de passer au domino suivant
     }
