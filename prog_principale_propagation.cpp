@@ -129,9 +129,7 @@ des longueurs de 0 cm (valeur spéciale prise en argument dans la fonction).*/
 void save_Data(double **matrice, int Tmax, int Nmax,
                const string &nomfichier) { // Création d'une fonction permettant
                                            // de sauvegarder
-  // les valeurs de nos tableau alpha et l (le tableau alpha ayant pour indiMat
-  // 1 et le tableau l indiMat 2) car autrement une fois le prog compilé, il n'y
-  // a pas moyen de récupérer le nom de variable donné au pointeur.
+  // les valeurs de nos tableau alpha et l en imposant le nom du fichier à chaque fois.
 
   ofstream fichier(
       nomfichier); // Création du fichier de sortie qui va permettre la
@@ -209,7 +207,7 @@ int main() {
                  // angles de tous les dominos à chaque instant de l'expérience
   creation_Matrice(
       l, Tmax, Nmax, l0,
-      0.); // Créé le tableau l qui gardera en mémoire la valeur des longueurs
+      lmin); // Créé le tableau l qui gardera en mémoire la valeur des longueurs
            // des ressorts de tous les dominos à chaque instant de l'expérience
 
   cout << endl
@@ -424,10 +422,10 @@ int main() {
     }
   }
 
-  save_Data(alpha, Tmax, Nmax, "alpha.txt");
-  save_Data(l, Tmax, Nmax, "longueur.txt");
+  save_Data(alpha, Tmax, Nmax, "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
+  save_Data(l, Tmax, Nmax, "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
   // PROBLÈME : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS : RAISON
   // --> CAR LE DOMINO NE TOMBE PAS !!!! REMÉDIER À ÇA PEUT-ÊTRE AVEC UN
-  // PROIBLÈME D'INDICE QUI NE VA PAS ASSEZ LOIN ! À VOIR !
+  // PROIBLÈME D'INDICE QUI NE VA PAS ASSEZ LOIN ! À VOIR ! Les valeurs des angles finaux lorsque tous les dominos sont tombés est étrange ! Mais pas pour les ressorts.
 }
