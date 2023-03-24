@@ -58,7 +58,7 @@
   },
   "[cpp]": {
     "editor.formatOnSave": false,
-    "editor.defaultFormatter": "ms-vscode.cpptools"
+    "editor.defaultFormatter": "xaver.clang-format"
   },
   "C_Cpp.codeAnalysis.clangTidy.enabled": false,
   "C_Cpp.configurationWarnings": "disabled",

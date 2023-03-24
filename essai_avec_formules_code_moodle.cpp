@@ -132,7 +132,7 @@ int main() {
                  // dominos)
   int Tmax = 10; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
                  // temps maximal)
-  double l0 = 2e-2;      // Longueur du ressort au repos en cm
+  double l0 = 3e-3;      // Longueur du ressort au repos en cm
   double delta = 2.5e-2; // Correspond à la distance entre 2 dominos successifs
   double h = 3.0e-2;     // Correspond à la taille en hauteur des dominos
   double alphaChoc = trouve_Alpha(
@@ -140,7 +140,7 @@ int main() {
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
   double w0 = 0.2;        // Vitesse de chute du domino en rad.s^(-1)
-  double dt = 0.5;        // intervalle de temps en s
+  double dt = 0.001;        // intervalle de temps en s
   double gamma = 15.8e-6; // Définition de la viscosité du milieu de propagation
                           // (ici l'air)
   double m = 8e-3;          // Définition de la masse de l'objet en kg
@@ -255,9 +255,9 @@ int main() {
     du pdf tout en bas. */
 
 
-    /*       Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse
+    //       Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse
           if(l[t][0]>l0)
-                   l[t][0]=l0; */
+                   l[t][0]=l0;
 
     alpha[t + 1][0] =
         (2 * alpha[t][0] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][0] +
