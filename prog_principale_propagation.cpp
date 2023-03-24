@@ -126,26 +126,33 @@ des longueurs de 0 cm (valeur spéciale prise en argument dans la fonction).*/
   }
 }
 
-void save_Data(double **matrice, int Tmax, int Nmax) {
+void save_Data(double **matrice, int Tmax, int Nmax,
+               const string &nomfichier) { // Création d'une fonction permettant
+                                           // de sauvegarder
+  // les valeurs de nos tableau alpha et l (le tableau alpha ayant pour indiMat
+  // 1 et le tableau l indiMat 2) car autrement une fois le prog compilé, il n'y
+  // a pas moyen de récupérer le nom de variable donné au pointeur.
+
   ofstream fichier(
-      "alpha.txt"); // Création du fichier de sortie qui va permettre la
-                    // sauvegarde des valeurs des angles alpha (enregistre le
-                    // tableau alpha dans un fichier).
+      nomfichier); // Création du fichier de sortie qui va permettre la
+                   // sauvegarde des valeurs de la matrice en question
+                   // (enregistre le tableau dans un fichier).
+
   if (fichier.is_open()) {           // Commande qui permet d'ouvrir le fichier.
     for (int t = 0; t < Tmax; t++) { // Parcout les lignes du tableau.
       for (int n = 0; n < Nmax; n++) { // Parcourt les colonnes du tableau.
         fichier << matrice[t][n]
-                << " "; // Enregistre la valeur de l'angle alpha du domino n à
-                        // l'instant t dans le fichier.
+                << " "; // Enregistre la valeur du tableau en question
+                        // concernant le domino n à l'instant t dans le fichier.
       }
       fichier << endl; // Retour à la ligne pour changer de temporalité et
                        // revenir au domino 0.
     }
     fichier.close(); // Ferme le fichier.
-    cout << "Les valeurs ont été sauvegardées dans le fichier alpha.txt."
+    cout << "Les valeurs ont été sauvegardées dans le fichier " << nomfichier
          << endl; // Permet d'informer que les valeurs ont bien été stocké et
-                  // que la sauvegarde du tableau alpha dans le fichier texte
-                  // s'est déroulé avec succès.
+                  // que la sauvegarde du tableau en question dans le fichier
+                  // texte s'est déroulé avec succès.
   } else { // Si impossible d'ouvrir le fichier ou que la sauvegarde n'a pas pu
            // être éffectuée.
     cerr << "Erreur : impossible d'ouvrir le fichier alpha.txt."
@@ -153,35 +160,13 @@ void save_Data(double **matrice, int Tmax, int Nmax) {
                   // pas pu être ouvert.
   }
 }
-/*
-  ofstream fichier2("longueur.txt"); // Création du fichier de sortie qui va
-  permettre la sauvegarde des valeurs des angles alpha (enregistre le tableau
-  alpha dans un fichier). if (fichier2.is_open()) { // Commande qui permet
-  d'ouvrir le fichier. for (int t = 0; t < Tmax; t++) { // Parcout les lignes du
-  tableau. for (int n = 0; n < Nmax; n++) { // Parcourt les colonnes du tableau.
-        fichier2 << l[t][n] << " "; // Enregistre la valeur de l'angle alpha du
-  domino n à l'instant t dans le fichier.
-      }
-      fichier2 << endl; // Retour à la ligne pour changer de temporalité et
-  revenir au domino 0.
-    }
-    fichier2.close(); // Ferme le fichier.
-    cout << "Les valeurs ont été sauvegardées dans le fichier longueur.txt."
-         << endl; // Permet d'informer que les valeurs ont bien été stocké et
-  que la sauvegarde du tableau alpha dans le fichier texte s'est déroulé avec
-  succès. } else { // Si impossible d'ouvrir le fichier ou que la sauvegarde n'a
-  pas pu être éffectuée. cerr << "Erreur : impossible d'ouvrir le fichier
-  longueur.txt." << endl; // Affiche un code d'erreur en précisant que le
-  fichier n'a pas pu être ouvert.
-  }
-  } */
 
 int main() {
 
   /* Déclaration de toutes les variables utiles pour le programme */
   int Nmax = 10; // Nombre de colonne de nos 2 tableau (équivalent au nombre de
                  // dominos)
-  int Tmax = 2000; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
+  int Tmax = 1000; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
                    // temps maximal)
   double l0 = 3e-3;    // Longueur du ressort au repos en cm
   double delta = 1e-2; // Correspond à la distance entre 2 dominos successifs
@@ -439,8 +424,8 @@ int main() {
     }
   }
 
-  save_Data(alpha, Tmax, Nmax);
-  save_Data(l, Tmax, Nmax);
+  save_Data(alpha, Tmax, Nmax, "alpha.txt");
+  save_Data(l, Tmax, Nmax, "longueur.txt");
 
   // PROBLÈME : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS : RAISON
   // --> CAR LE DOMINO NE TOMBE PAS !!!! REMÉDIER À ÇA PEUT-ÊTRE AVEC UN
