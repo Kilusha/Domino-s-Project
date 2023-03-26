@@ -129,7 +129,8 @@ des longueurs de 0 cm (valeur spéciale prise en argument dans la fonction).*/
 void save_Data(double **matrice, int Tmax, int Nmax,
                const string &nomfichier) { // Création d'une fonction permettant
                                            // de sauvegarder
-  // les valeurs de nos tableau alpha et l en imposant le nom du fichier à chaque fois.
+  // les valeurs de nos tableau alpha et l en imposant le nom du fichier à
+  // chaque fois.
 
   ofstream fichier(
       nomfichier); // Création du fichier de sortie qui va permettre la
@@ -205,10 +206,10 @@ int main() {
       alpha, Tmax, Nmax, 0.,
       M_PI / 2); // Créé le tableau alpha qui gardera en mémoire la valeur des
                  // angles de tous les dominos à chaque instant de l'expérience
-  creation_Matrice(
-      l, Tmax, Nmax, l0,
-      lmin); // Créé le tableau l qui gardera en mémoire la valeur des longueurs
-           // des ressorts de tous les dominos à chaque instant de l'expérience
+  creation_Matrice(l, Tmax, Nmax, l0,
+                   lmin); // Créé le tableau l qui gardera en mémoire la valeur
+                          // des longueurs des ressorts de tous les dominos à
+                          // chaque instant de l'expérience
 
   cout << endl
        << "L'angle de choc est : " << alphaChoc << " rad"
@@ -386,10 +387,11 @@ int main() {
       n++; // Permet de passer au domino suivant
     }
 
-    if (n <
-        Nmax - 1) // Verification si il nous reste des sominos. Cette prochaine
+    if (n < Nmax) // Verification si il nous reste des dominos. Cette prochaine
                   // ligne est dédié au mouvement du domino n en contact avec
-                  // domino n-1 (mais n'a pas encore touche domino n+1)
+                  // domino n-1 (mais n'a pas encore touche domino n+1). Ainsi
+                  // contrairemet à ce qui était codé au départ, le condition
+                  // doit aller jusqu'au domino Nmax et pas Nmax - 1.
     {
       alpha[t + 1][n] =
           (2 * alpha[t][n] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][n] +
@@ -408,7 +410,7 @@ int main() {
       }
     }
 
-    n = Nmax - 1;  // Nous nous plaçons au tout dernier domino indice Nmax-1
+    n = Nmax - 2;  // Nous nous plaçons à l'avant dernier domino indice Nmax-2
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
                    // en place d'une sécurité : évite que le domino n traverse
                    // le domino n+1 (ça peut ariver lors de la simulation ...)
@@ -422,10 +424,12 @@ int main() {
     }
   }
 
-  save_Data(alpha, Tmax, Nmax, "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
-  save_Data(l, Tmax, Nmax, "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
+  save_Data(alpha, Tmax, Nmax,
+            "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
+  save_Data(l, Tmax, Nmax,
+            "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
-  // PROBLÈME : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS : RAISON
-  // --> CAR LE DOMINO NE TOMBE PAS !!!! REMÉDIER À ÇA PEUT-ÊTRE AVEC UN
-  // PROIBLÈME D'INDICE QUI NE VA PAS ASSEZ LOIN ! À VOIR ! Les valeurs des angles finaux lorsque tous les dominos sont tombés est étrange ! Mais pas pour les ressorts.
+  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS : Y A
+  // T-IL UNE RAISON ? Les valeurs des angles finaux lorsque tous les dominos
+  // sont tombés est étrange ! Mais pas pour les ressorts.
 }
