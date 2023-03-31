@@ -319,10 +319,17 @@ int main() {
                        // domino indice 1, à l'aide de l'équation du pdf n°2.
 
     if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
-      alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);// Nous considérons ici l'angle formé par le premier domino
-      // avec la verticale. Nous prenons en compte que l'angle maximal avec la verticale est donnée par cette condition.
-      // En effet, l'angle min est atteint lorsque tous les dominos sont couchés et donc que leur ressorts ont tous une longueur
-      // de lmin. Nous avons dans ce cas fait l'approximation aux petits angles en considerant que arctan((Nmax) * (lmin / h)) =
+      alpha[t + 1][0] =
+          M_PI / 2 -
+          (Nmax) *
+              (lmin /
+               h); // Nous considérons ici l'angle formé par le premier domino
+      // avec la verticale. Nous prenons en compte que l'angle maximal avec la
+      // verticale est donnée par cette condition. En effet, l'angle min est
+      // atteint lorsque tous les dominos sont couchés et donc que leur ressorts
+      // ont tous une longueur de lmin. Nous avons dans ce cas fait
+      // l'approximation aux petits angles en considerant que arctan((Nmax) *
+      // (lmin / h)) =
       //(Nmax) * (lmin / h)
     }
 
@@ -428,32 +435,31 @@ int main() {
       n = n - 1;
     }
 
-// On se place dans le cas du dernier domino (son ressort ne touche pas d'autre domino mais le sol)
-    n = Nmax-1;
-      if (alpha[t][n] < M_PI / 2 - atan(l0/h)) {
-    l[t][n] = l0; // Nous avons cette condition pour un angle du dernier domino
-    // allant jusqu'a l'angle formée au moment ou le ressort touche le sol ainsi
-    // sa longueur de ressort correspond à la longueur du ressort à vide l0
+    n = Nmax - 1; // On se place dans le cas du dernier domino (son ressort ne
+                  // touche pas d'autre domino mais le sol)
+    if (alpha[t][n] <=
+        M_PI / 2 -
+            atan(l0 /
+                 h)) { // Si l'angle alpha du domino n est plus petit qu'une
+                       // certaine valeur qui correspond à la valeur ou le
+                       // ressort du domino entre en contact avec le sol
+      l[t][n] = l0; // La longueur de son ressort correspond à la longueur du
+                    // ressort à vide l0
+    } else {        // Sinon, après contact du ressort avec le sol, alors :
+      l[t][n] = l[t][n] =
+          h * tan(M_PI / 2 - alpha[t][n]) +
+          delta / ((1. + tan(alpha[t][n]) * tan(M_PI / 2)) *
+                   cos(alpha[t][n])); // Calcul de la valeur de la longueur du
+                                      // ressort l en fonction du temps. La
+                                      // formule reste la même que celle donnée
+                                      // dans le pdf avec juste un ajustement :
+                                      // celui qu'il n existe pas de domino
+                                      // après le dernier de la chaîne. Alors on
+                                      // remplace alpha[t][n + 1] par la valeur
+                                      // pi/2 soit 90 degrés car il s'agit de
+                                      // l'angle entre la normal et le sol.
     }
-      else if (alpha[t][n] > M_PI / 2) {// cela correspond à la limite, en effet
-                                      //l'angle alpha ne peut pas dépasser pi/ 2
-    l[t][n] = lmin; // ainsi nous remettons la longueur du ressort égale à son minimum
-    // Donc à sa longueur la plus compressée qui correspond à lmin
-    }
-      else {
-    l[t][n] = (delta + h * cos(alpha[t][n]) * (tan(M_PI/2) - tan(alpha[t][n]))) /
-        ((1. + tan(alpha[t][n]) * tan(M_PI/2)) *
-         cos(alpha[t][n])); // au debut du pgm nous avions pris comme valeur de l[t][n] avec n = 0 qui correspondait au
-         // 1er domino : (delta + h * cos(alpha[t][0]) * (tan(alpha[t][1]) - tan(alpha[t][0]))) /
-        //((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
-         //cos(alpha[t][0])), dans notre cas il suffisait de reprendre la meme formule en supposant que l'angle du domino
-         //suivant donc alpha[t][1] était un domino avec un angle de pi/2 ce qui correspond au sol.
-
-}
-
   }
-
-
 
   save_Data(alpha, Tmax, Nmax,
             "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
