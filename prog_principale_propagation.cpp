@@ -884,4 +884,6 @@ int main() {
   // négatifs et longueur infinies. Commenter le tracé des courbes. Optimiser le
   // code.
   // Faire des bibliothèques peut-être ?
+  // Vitesse limite pprofil
+  // Pourquoi les ressorts se rallongent après se comprimer ?
 }
