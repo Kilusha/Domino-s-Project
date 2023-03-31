@@ -1,8 +1,8 @@
 #include <cmath>
+#include <fstream>
 #include <iostream>
 
 using namespace std;
-
 // Trame pour projet domino a inserer dans votre programme
 // J=m*h*h/3 est le moment d'inertie.
 // alpha[t][n] est l'angle alpha du domino n a l'instant t.
@@ -32,8 +32,8 @@ double trouve_Alpha(double delta, double l0, double h) {
   double alphaMin =
       0.0; // Définition de la borne inférieure de notre intervalle
   double alphaMax =
-      M_PI / 2;       // Définition de la borne supérieure de notre intervalle
-  double epsi = 1e-1; // définition de la tolérance
+      M_PI / 2; // Définition de la borne supérieure de notre intervalle
+  const double epsi = 1e-1; // définition de la tolérance
   double alphaChoc = (alphaMin + alphaMax) /
                      2.0; // Définition de la valeur initiale de l'angle choc
   while (fabs(calcul_Membre_Gauche(alphaChoc, delta, l0, h)) >
@@ -126,28 +126,70 @@ des longueurs de 0 cm (valeur spéciale prise en argument dans la fonction).*/
   }
 }
 
+void save_Data(double **matrice, int Tmax, int Nmax,
+               const string &nomfichier) { // Création d'une fonction permettant
+                                           // de sauvegarder
+  // les valeurs de nos tableau alpha et l en imposant le nom du fichier à
+  // chaque fois.
+
+  ofstream fichier(
+      nomfichier); // Création du fichier de sortie qui va permettre la
+                   // sauvegarde des valeurs de la matrice en question
+                   // (enregistre le tableau dans un fichier).
+
+  if (fichier.is_open()) {           // Commande qui permet d'ouvrir le fichier.
+    for (int t = 0; t < Tmax; t++) { // Parcout les lignes du tableau.
+      for (int n = 0; n < Nmax; n++) { // Parcourt les colonnes du tableau.
+        fichier << matrice[t][n]
+                << " "; // Enregistre la valeur du tableau en question
+                        // concernant le domino n à l'instant t dans le fichier.
+      }
+      fichier << endl; // Retour à la ligne pour changer de temporalité et
+                       // revenir au domino 0.
+    }
+    fichier.close(); // Ferme le fichier.
+    cout << "Les valeurs ont été sauvegardées dans le fichier " << nomfichier
+         << endl; // Permet d'informer que les valeurs ont bien été stocké et
+                  // que la sauvegarde du tableau en question dans le fichier
+                  // texte s'est déroulé avec succès.
+  } else { // Si impossible d'ouvrir le fichier ou que la sauvegarde n'a pas pu
+           // être éffectuée.
+    cerr << "Erreur : impossible d'ouvrir le fichier alpha.txt."
+         << endl; // Affiche un code d'erreur en précisant que le fichier n'a
+                  // pas pu être ouvert.
+  }
+}
+
 int main() {
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  int Nmax = 10; // Nombre de colonne de nos 2 tableau (équivalent au nombre de
-                 // dominos)
-  int Tmax = 10; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
-                 // temps maximal)
-  double l0 = 2e-2;      // Longueur du ressort au repos en cm
-  double delta = 2.5e-2; // Correspond à la distance entre 2 dominos successifs
-  double h = 3.0e-2;     // Correspond à la taille en hauteur des dominos
-  double alphaChoc = trouve_Alpha(
+  const int Nmax = 10;    // Nombre de colonne de nos 2 tableau (équivalent au
+                          // nombre de dominos)
+  const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
+                          // (équivalent au temps maximal)
+  const double l0 = 3e-3; // Longueur du ressort au repos en cm
+  const double delta =
+      1e-2; // Correspond à la distance entre 2 dominos successifs
+  const double h = 3.0e-2; // Correspond à la taille en hauteur des dominos
+  const double alphaChoc = trouve_Alpha(
       delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
-  double w0 = 0.2;        // Vitesse de chute du domino en rad.s^(-1)
-  double dt = 0.5;        // intervalle de temps en s
-  double gamma = 15.8e-6; // Définition de la viscosité du milieu de propagation
-                          // (ici l'air)
-  double m = 8e-3;          // Définition de la masse de l'objet en kg
-  double J = m * h * h / 3; // Définition du moment d'inertie
-  double g = 9.8;           // Définition de la pesanteur
-  double k = 20.0;          // Définition de la constante du raideur du ressort
+  const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
+  const double dt = 0.001;    // intervalle de temps en s
+  /* double gamma = 15.8e-6; // Définition de la viscosité du milieu de
+     propagation
+                          // (ici l'air) */
+  const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
+                                      // propagation (ici l'air)
+  const double m = 10e-3; // Définition de la masse de l'objet en kg
+  /*   double J = m * h * h / 3; // Définition du moment d'inertie */
+  const double J = 7.5 / 10000000; // Définition du moment d'inertie
+  const double g = 9.8;            // Définition de la pesanteur
+  const double k = 1.0; // Définition de la constante du raideur du ressort
+  const double lmin = 0.0001; // Longueur minimale du ressort proche de 0 mais
+                              // différet de 0 pour ne pas créer de problèmes
+                              // dans les formules lors des calculs
 
   double **alpha =
       new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers la
@@ -165,12 +207,10 @@ int main() {
       alpha, Tmax, Nmax, 0.,
       M_PI / 2); // Créé le tableau alpha qui gardera en mémoire la valeur des
                  // angles de tous les dominos à chaque instant de l'expérience
-  creation_Matrice(
-      l, Tmax, Nmax, l0,
-      0.); // Créé le tableau l qui gardera en mémoire la valeur des longueurs
-           // des ressorts de tous les dominos à chaque instant de l'expérience
-
-
+  creation_Matrice(l, Tmax, Nmax, l0,
+                   lmin); // Créé le tableau l qui gardera en mémoire la valeur
+                          // des longueurs des ressorts de tous les dominos à
+                          // chaque instant de l'expérience
 
   cout << endl
        << "L'angle de choc est : " << alphaChoc << " rad"
@@ -184,7 +224,6 @@ int main() {
       w0 *
       dt; // Stockage de la valeur de l'angle alpha du 1er domino à l'instant
           // t+dt qui correspond à t = 1. (Vitesse de chute * temps = angle)
-
 
   // Pas sûr de l'utilité de la ligne suivante
   int t = 1; // Initialisation du temps t pour la suite du prog
@@ -202,10 +241,12 @@ int main() {
               J)); // Calcul et stockage dans le tableau des angles alpha de la
                    // valeur de l'angle alpha à l'instant t + dt pour le 1 er
                    // domino indice 0, à l'aide de l'équation du pdf n°1.
-    if (alpha[t+1][0] >
-         alphaChoc){ // verifie que l'angle est inférieur à l'angle de choc pour éviter la singularité.
-          alpha[t+1][0] = alphaChoc; // si c'est le cas, l'angle calculée précédement prend la valeur de alpha choc.
-         } 
+    /* if(alpha[t+1][0] >
+         alphaChoc) { //Vérifie que l'angle est inférieur à l'angle choc pour
+       éviter la singularité. alpha[t+1][0] = alphaChoc; //Si c'est le cas,
+       l'angle calculé précédemment prend la valeur d'alphaChoc.
+         } */
+
     t++; // Inrémentation du temps pour changer de ligne dans notre tableau et
          // pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
   }
@@ -230,16 +271,19 @@ int main() {
   {
     /* mouvement du 1er domino n°0 après choc avec le 2ème domino n°1 */
 
-    /* CA RESSEMBLE PAS A LA FORMULE DU PDF JCAPTE PAS */
-    // l[t][0] = (delta + h*cos(alpha[t][0])*(tan(alpha[t][1]) -
-    // tan(alpha[t][0])))/((1. +
-    // tan(alpha[t][0])*tan(alpha[t][1]))*cos(alpha[t][0])); //Calcul et
+    /* CA RESSEMBLE PAS A LA FORMULE DU PDF JCAPTE PAS MAIS C'EST CELLE LÀ QUI
+     * FAUT PRENDRE */
+    l[t][0] =
+        (delta + h * cos(alpha[t][0]) * (tan(alpha[t][1]) - tan(alpha[t][0]))) /
+        ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
+         cos(alpha[t][0])); // Calcul et
     // stockage dans le tableau des longueurs des ressorts l de la valeur de la
-    // longueur l à l'instant t du ressort du domino n°0, à l'aide de l'équation
-    // du pdf tout en bas.
+    //  longueur l à l'instant t du ressort du domino n°0, à l'aide de
+    //  l'équation du pdf tout en bas.
 
     /* DU COUP JE L AI REECRITE */
 
+    /* FORMULE DU MOODLE INCORRECTE OU DU MOINS PAS UTILISÉ ICI
     l[t][0] =
         h * (tan(alpha[t][1]) - (alpha[t][0])) +
         delta / ((1 + tan(alpha[t][0]) * tan(alpha[t][1])) *
@@ -247,11 +291,21 @@ int main() {
                                     // longueurs des ressorts l de la valeur de
                                     // la longueur l à l'instant t du ressort du
                                     // domino n°0, à l'aide de l'équation du pdf
-                                    // tout en bas.
+                                    // tout en bas. */
 
-    /*       Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse
-          if(l[t][0]>l0)
-                   l[t][0]=l0; */
+    /* Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse mais
+     * formule fausse pour petits angles */
+
+    if (l[t][0] >
+        l0) // Vérifie si le calcul de la longueur du ressort du domino 0 est
+            // plus grande que sa longueur à vide car pour des petites valeurs
+            // d'angles, la formule peut donner des valeurs supérieures.
+      l[t][0] = l0; // Dans ce cas nous la remettons égale à la longueur à vide.
+    if (l[t][0] < lmin) // A l'inverse, cette commande permet de vérifier que le
+                        // ressort du domino 0 ne soit pas surcompréssé avec une
+                        // longueur plus petite que la longueur minimale.
+      l[t][0] =
+          lmin; // Dans ce cas nous la remettons égale à la valeur minimale.
 
     alpha[t + 1][0] =
         (2 * alpha[t][0] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][0] +
@@ -264,9 +318,14 @@ int main() {
                        // 1 er domino indice 0 après le choc avec son voisin le
                        // domino indice 1, à l'aide de l'équation du pdf n°2.
 
+    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
+      alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);
+    }
+
     /* mouvement domino n>=1 */
     int n = 1; // Initialisation du numéro du domino
                // domino n en contact avec domino n-1 et avec domino n+1
+
     while (
         alpha[t][n] > alphaChoc &&
         (n <
@@ -285,13 +344,23 @@ int main() {
                                       // ressort du domino indice n, à l'aide de
                                       // l'équation du pdf tout en bas.
 
-      /* Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse
-       if(l[t][n]>l0)
-               l[t][n]=l0; */
+      /* Sécurité mais pas utile selon moi EXCEPTE si la formule est fausse */
+      if (l[t][n] >
+          l0) // Vérifie si le calcul de la longueur du ressort du domino n est
+              // plus grande que sa longueur à vide car pour des petites valeurs
+              // d'angles, la formule peut donner des valeurs supérieures.
+        l[t][n] =
+            l0; // Dans ce cas nous la remettons égale à la longueur à vide.
+      if (l[t][n] <
+          lmin) // A l'inverse, cette commande permet de vérifier que le ressort
+                // du domino 0 ne soit pas surcompréssé avec une longueur plus
+                // petite que la longueur minimale.
+        l[t][n] =
+            lmin; // Dans ce cas nous la remettons égale à la valeur minimale.
 
       /* Selon moi il y a une erreur dans l'écriture de cette formule... Je
       pense qu'il manque un 2 au dénominateur avec le J vers la fin de
-      l'expression.
+      l'expression. SERT A RIEN
       alpha[t+1][n]=(2*alpha[t][n]-(1-gamma*dt/(2*J))*alpha[t-1][n]+3*g*dt*dt/(2*h)*sin(alpha[t][n])+dt*dt*(1./J)*k*(l0-l[t][n-1])*(h-delta*sin(alpha[t][n-1]))-dt*dt*k*h*(1/(2*J))*(l0-l[t][n]))/(1+gamma*dt/(2*J));
       //Calcul et stockage dans le tableau des angles alpha de la valeur de
       l'angle alpha à l'instant t + dt pour le domino d'indice n à l'aide de
@@ -306,20 +375,24 @@ int main() {
            dt * dt * (1. / 2 * J) * k * (l0 - l[t][n - 1]) *
                (h - delta * sin(alpha[t][n - 1])) -
            dt * dt * k * h * (1 / (2 * J)) * (l0 - l[t][n])) /
-          (1 +
-           gamma * dt /
-               (2 *
-                J)); // Calcul et stockage dans le tableau des angles alpha de
-                     // la valeur de l'angle alpha à l'instant t + dt pour le
-                     // domino d'indice n à l'aide de l'équation du pdf n°4.
+          (1 + gamma * dt /
+                   (2 * J)); // Calcul et stockage dans le tableau des angles
+                             // alpha de la valeur de l'angle alpha à l'instant
+                             // t + dt pour le domino d'indice n en contact avec
+                             // ses 2 voisins à l'aide de l'équation du pdf n°4.
+
+      if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * (lmin / h))) {
+        alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * (lmin / h);
+      }
 
       n++; // Permet de passer au domino suivant
     }
 
-    if (n <
-        Nmax - 1) // Verification si il nous reste des sominos. Cette prochaine
+    if (n < Nmax) // Verification si il nous reste des dominos. Cette prochaine
                   // ligne est dédié au mouvement du domino n en contact avec
-                  // domino n-1 (mais n'a pas encore touche domino n+1)
+                  // domino n-1 (mais n'a pas encore touche domino n+1). Ainsi
+                  // contrairemet à ce qui était codé au départ, le condition
+                  // doit aller jusqu'au domino Nmax et pas Nmax - 1.
     {
       alpha[t + 1][n] =
           (2 * alpha[t][n] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][n] +
@@ -332,9 +405,13 @@ int main() {
                 J)); // Calcul et stockage dans le tableau des angles alpha de
                      // la valeur de l'angle alpha à l'instant t + dt pour le
                      // domino d'indice n à l'aide de l'équation du pdf n°3.
+
+      if (alpha[t + 1][n] >= (M_PI / 2 - (lmin / h))) {
+        alpha[t + 1][n] = M_PI / 2 - (lmin / h);
+      }
     }
 
-    n = Nmax - 1;  // Nous nous plaçons au tout dernier domino indice Nmax-1
+    n = Nmax - 2;  // Nous nous plaçons à l'avant dernier domino indice Nmax-2
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
                    // en place d'une sécurité : évite que le domino n traverse
                    // le domino n+1 (ça peut ariver lors de la simulation ...)
@@ -346,23 +423,467 @@ int main() {
       }
       n = n - 1;
     }
+
   }
 
-  // Affichage de la matrice alpha
-  cout << "Matrice alpha : " << endl;
-  for (int i = 0; i < Tmax; i++) {
-    for (int j = 0; j < Nmax; j++) {
-      cout << alpha[i][j] << " ";
-    }
-    cout << endl;
-  }
 
-  // Affichage de la matrice l
-  cout << "Matrice l : " << endl;
-  for (int i = 0; i < Tmax; i++) {
-    for (int j = 0; j < Nmax; j++) {
-      cout << l[i][j] << " ";
-    }
-    cout << endl;
+
+  save_Data(alpha, Tmax, Nmax,
+            "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
+  save_Data(l, Tmax, Nmax,
+            "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
+
+  // Trace les courbes moyenne et écart type pour la méthode rand() à l'aide de
+  // Gnuplot
+  FILE *gnuplot = popen("gnuplot -persist",
+                        "w"); // Ouvrir une connexion entre le programme C++ et
+                              // l'application de traçage de courbes gnuplot.
+  fprintf(
+      gnuplot,
+      "set title 'Évolution des angles en fonction du temps'\n"); // Précise le
+                                                                  // titre du
+                                                                  // graphique.
+  fprintf(gnuplot,
+          "set xlabel 'Temps'\n"); // Plus précisément, cette commande
+                                   // Gnuplot set xlabel est utilisée
+                                   // pour définir l'étiquette de l'axe
+                                   // des abscisses (x) sur le graphique
+                                   // tracé. Ici, la commande 'set ylabel
+                                   // 'x'' indique que l'étiquette de
+                                   // l'axe des ordonnées doit être 'N'
+  fprintf(gnuplot,
+          "set ylabel 'Angles'\n"); // Plus précisément, cette
+                                    // commande Gnuplot set ylabel
+                                    // est utilisée pour définir
+                                    // l'étiquette de l'axe des
+                                    // ordonnées (y) sur le
+                                    // graphique tracé. Ici, la
+                                    // commande 'set ylabel 'y''
+                                    // indique que l'étiquette de
+                                    // l'axe des ordonnées doit
+                                    // être 'Moyenne / Ecart type'
+  fprintf(gnuplot, "set yrange [*:*] reverse\n");
+  fprintf(
+      gnuplot,
+      "plot '-' using 1:2 with lines title 'Domino 0', '-' using 1:2 with "
+      "lines title 'Domino 1', '-' using 1:2 with lines title 'Domino 2', "
+      "'-' using 1:2 with lines title 'Domino 3', '-' using 1:2 with lines "
+      "title 'Domino 4', '-' using 1:2 with lines title 'Domino 5', '-' "
+      "using 1:2 with lines title 'Domino 6', '-' using 1:2 with lines "
+      "title 'Domino 7', '-' using 1:2 with lines title 'Domino 8', '-' using "
+      "1:2 with lines title 'Domino 9'\n"); // Envoie une commande au processus
+                                            // Gnuplot ouvert par le programme
+                                            // pour tracer 2 courbes à partir
+                                            // du flux de sortie du processus
+                                            // Gnuplot ouvert par le programme
+                                            // C++. La commande using 1:2 qui
+                                            // indique que la première colonne
+                                            // du fichier de données sera
+                                            // utilisée pour les valeurs de x
+                                            // et la deuxième colonne sera
+                                            // utilisée pour les valeurs de y.
+                                            // La courbe sera tracée avec des
+                                            // lignes pleines (with lines) et
+                                            // portera le titre "Moyenne"
+                                            // (title 'Moyenne'). La deuxième
+                                            // courbe (Ecart type) est tracée
+                                            // avec la même commande using 1:2,
+                                            // mais elle sera tracée avec un
+                                            // autre titre
+                                            // ("Ecart type") (title 'Ecart
+                                            // type'). La commande '-' est
+                                            // utilisée pour dire à Gnuplot
+                                            // d'utiliser les données qui vont
+                                            // être envoyées via le flux
+                                            // d'entrée standard, plutôt que
+                                            // d'un fichier. La commande '\n'
+                                            // est utilisée pour terminer la
+                                            // commande Gnuplot.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y1.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][0]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
   }
+  fprintf(
+      gnuplot,
+      "e\n"); // indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][1]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][2]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][3]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][4]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][5]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][6]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][7]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][8]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][9]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  // Fermeture du canal de communication avec gnuplot
+  pclose(gnuplot);
+
+  // Trace les courbes moyenne et écart type pour la méthode rand() à l'aide de
+  // Gnuplot
+  FILE *gnuplot2 = popen("gnuplot -persist",
+                         "w"); // Ouvrir une connexion entre le programme C++ et
+                               // l'application de traçage de courbes gnuplot.
+  fprintf(gnuplot2,
+          "set title 'Évolution des longueurs des ressorts en fonction du "
+          "temps'\n"); // Précise le
+                       // titre du
+                       // graphique.
+  fprintf(gnuplot2,
+          "set xlabel 'Temps'\n"); // Plus précisément, cette commande
+                                   // Gnuplot set xlabel est utilisée
+                                   // pour définir l'étiquette de l'axe
+                                   // des abscisses (x) sur le graphique
+                                   // tracé. Ici, la commande 'set ylabel
+                                   // 'x'' indique que l'étiquette de
+                                   // l'axe des ordonnées doit être 'N'
+  fprintf(
+      gnuplot2,
+      "set ylabel 'Longueurs des ressorts'\n"); // Plus précisément, cette
+                                                // commande Gnuplot set ylabel
+                                                // est utilisée pour définir
+                                                // l'étiquette de l'axe des
+                                                // ordonnées (y) sur le
+                                                // graphique tracé. Ici, la
+                                                // commande 'set ylabel 'y''
+                                                // indique que l'étiquette de
+                                                // l'axe des ordonnées doit
+                                                // être 'Moyenne / Ecart type'
+  fprintf(
+      gnuplot2,
+      "plot '-' using 1:2 with lines title 'Domino 0', '-' using 1:2 with "
+      "lines title 'Domino 1', '-' using 1:2 with lines title 'Domino 2', "
+      "'-' using 1:2 with lines title 'Domino 3', '-' using 1:2 with lines "
+      "title 'Domino 4', '-' using 1:2 with lines title 'Domino 5', '-' "
+      "using 1:2 with lines title 'Domino 6', '-' using 1:2 with lines "
+      "title 'Domino 7', '-' using 1:2 with lines title 'Domino 8', '-' using "
+      "1:2 with lines title 'Domino 9'\n"); // Envoie une commande au processus
+                                            // Gnuplot ouvert par le programme
+                                            // pour tracer 2 courbes à partir
+                                            // du flux de sortie du processus
+                                            // Gnuplot ouvert par le programme
+                                            // C++. La commande using 1:2 qui
+                                            // indique que la première colonne
+                                            // du fichier de données sera
+                                            // utilisée pour les valeurs de x
+                                            // et la deuxième colonne sera
+                                            // utilisée pour les valeurs de y.
+                                            // La courbe sera tracée avec des
+                                            // lignes pleines (with lines) et
+                                            // portera le titre "Moyenne"
+                                            // (title 'Moyenne'). La deuxième
+                                            // courbe (Ecart type) est tracée
+                                            // avec la même commande using 1:2,
+                                            // mais elle sera tracée avec un
+                                            // autre titre
+                                            // ("Ecart type") (title 'Ecart
+                                            // type'). La commande '-' est
+                                            // utilisée pour dire à Gnuplot
+                                            // d'utiliser les données qui vont
+                                            // être envoyées via le flux
+                                            // d'entrée standard, plutôt que
+                                            // d'un fichier. La commande '\n'
+                                            // est utilisée pour terminer la
+                                            // commande Gnuplot.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y1.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][0]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][1]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][2]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][3]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][4]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][5]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][6]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][7]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][8]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][9]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  // Fermeture du canal de communication avec gnuplot
+  pclose(gnuplot2);
+
+  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
+  // copmpréssé): Y A T-IL UNE RAISON ? Les valeurs des angles finaux lorsque
+  // tous les dominos sont tombés est étrange (pas égales) ! Mais pas pour les
+  // ressorts.
+  // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
+  // temps et de la variation de la valeur des angles en fonction du temps
+  // (prévoir si Tmax bien supérieur au
+  // temps de chute de tous les dominos). Commentarisez conditions angles
+  // négatifs et longueur infinies. Commenter le tracé des courbes. Optimiser le
+  // code.
+  // Faire des bibliothèques peut-être ?
+  // Vitesse limite pprofil
+  // Pourquoi les ressorts se rallongent après se comprimer ?
 }
