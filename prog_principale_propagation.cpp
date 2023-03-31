@@ -136,9 +136,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
     /* mouvement du 1er domino n°0 après choc avec le 2ème domino n°1 */
 
     l[t][0] =
-          h * tan(alpha[t][1] - alpha[t][0]) +
-          delta / ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
-                   cos(alpha[t][0])); // Calcul et stockage dans le tableau des
+        h * tan(alpha[t][1] - alpha[t][0]) +
+        delta / ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
+                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
                                     // longueurs des ressorts l de la valeur de
                                     // la longueur l à l'instant t du ressort du
                                     // domino n°0, à l'aide de l'équation du pdf
