@@ -136,9 +136,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
     /* mouvement du 1er domino n°0 après choc avec le 2ème domino n°1 */
 
     l[t][0] =
-          h * tan(alpha[t][1] - alpha[t][0]) +
-          delta / ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
-                   cos(alpha[t][0])); // Calcul et stockage dans le tableau des
+        h * tan(alpha[t][1] - alpha[t][0]) +
+        delta / ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
+                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
                                     // longueurs des ressorts l de la valeur de
                                     // la longueur l à l'instant t du ressort du
                                     // domino n°0, à l'aide de l'équation du pdf
@@ -258,6 +258,31 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
             alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
       }
       n = n - 1;
+    }
+
+    n = Nmax - 1; // On se place dans le cas du dernier domino (son ressort ne
+                  // touche pas d'autre domino mais le sol)
+    if (alpha[t][n] <=
+        M_PI / 2 -
+            atan(l0 /
+                 h)) { // Si l'angle alpha du domino n est plus petit qu'une
+                       // certaine valeur qui correspond à la valeur ou le
+                       // ressort du domino entre en contact avec le sol
+      l[t][n] = l0; // La longueur de son ressort correspond à la longueur du
+                    // ressort à vide l0
+    } else {        // Sinon, après contact du ressort avec le sol, alors :
+      l[t][n] = l[t][n] =
+          h * tan(M_PI / 2 - alpha[t][n]) +
+          delta / ((1. + tan(alpha[t][n]) * tan(M_PI / 2)) *
+                   cos(alpha[t][n])); // Calcul de la valeur de la longueur du
+                                      // ressort l en fonction du temps. La
+                                      // formule reste la même que celle donnée
+                                      // dans le pdf avec juste un ajustement :
+                                      // celui qu'il n existe pas de domino
+                                      // après le dernier de la chaîne. Alors on
+                                      // remplace alpha[t][n + 1] par la valeur
+                                      // pi/2 soit 90 degrés car il s'agit de
+                                      // l'angle entre la normal et le sol.
     }
   }
 
