@@ -168,7 +168,14 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
     if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
       alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);
-    }
+    } // Nous considérons ici l'angle formé par le premier domino
+      // avec la verticale. Nous prenons en compte que l'angle maximal avec la
+      // verticale est donnée par cette condition. En effet, l'angle min est
+      // atteint lorsque tous les dominos sont couchés et donc que leur ressorts
+      // ont tous une longueur de lmin. Nous avons dans ce cas fait
+      // l'approximation aux petits angles en considerant que arctan((Nmax) *
+      // (lmin / h)) =
+      //(Nmax) * (lmin / h)
 
     /* mouvement domino n>=1 */
     int n = 1; // Initialisation du numéro du domino
