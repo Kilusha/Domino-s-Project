@@ -186,7 +186,7 @@ int main() {
   /*   double J = m * h * h / 3; // Définition du moment d'inertie */
   const double J = 7.5 / 10000000; // Définition du moment d'inertie
   const double g = 9.8;            // Définition de la pesanteur
-  const double k = 1.0; // Définition de la constante du raideur du ressort
+  const double k = 1; // Définition de la constante du raideur du ressort
   const double lmin = 0.0001; // Longueur minimale du ressort proche de 0 mais
                               // différet de 0 pour ne pas créer de problèmes
                               // dans les formules lors des calculs
@@ -319,7 +319,11 @@ int main() {
                        // domino indice 1, à l'aide de l'équation du pdf n°2.
 
     if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
-      alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);
+      alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);// Nous considérons ici l'angle formé par le premier domino
+      // avec la verticale. Nous prenons en compte que l'angle maximal avec la verticale est donnée par cette condition.
+      // En effet, l'angle min est atteint lorsque tous les dominos sont couchés et donc que leur ressorts ont tous une longueur
+      // de lmin. Nous avons dans ce cas fait l'approximation aux petits angles en considerant que arctan((Nmax) * (lmin / h)) =
+      //(Nmax) * (lmin / h)
     }
 
     /* mouvement domino n>=1 */
@@ -423,6 +427,29 @@ int main() {
       }
       n = n - 1;
     }
+
+// On se place dans le cas du dernier domino (son ressort ne touche pas d'autre domino mais le sol)
+    n = Nmax-1;
+      if (alpha[t][n] < M_PI / 2 - atan(l0/h)) {
+    l[t][n] = l0; // Nous avons cette condition pour un angle du dernier domino
+    // allant jusqu'a l'angle formée au moment ou le ressort touche le sol ainsi
+    // sa longueur de ressort correspond à la longueur du ressort à vide l0
+    }
+      else if (alpha[t][n] > M_PI / 2) {// cela correspond à la limite, en effet
+                                      //l'angle alpha ne peut pas dépasser pi/ 2
+    l[t][n] = lmin; // ainsi nous remettons la longueur du ressort égale à son minimum
+    // Donc à sa longueur la plus compressée qui correspond à lmin
+    }
+      else {
+    l[t][n] = (delta + h * cos(alpha[t][n]) * (tan(M_PI/2) - tan(alpha[t][n]))) /
+        ((1. + tan(alpha[t][n]) * tan(M_PI/2)) *
+         cos(alpha[t][n])); // au debut du pgm nous avions pris comme valeur de l[t][n] avec n = 0 qui correspondait au
+         // 1er domino : (delta + h * cos(alpha[t][0]) * (tan(alpha[t][1]) - tan(alpha[t][0]))) /
+        //((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
+         //cos(alpha[t][0])), dans notre cas il suffisait de reprendre la meme formule en supposant que l'angle du domino
+         //suivant donc alpha[t][1] était un domino avec un angle de pi/2 ce qui correspond au sol.
+
+}
 
   }
 
@@ -873,17 +900,11 @@ int main() {
   // Fermeture du canal de communication avec gnuplot
   pclose(gnuplot2);
 
-  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
-  // copmpréssé): Y A T-IL UNE RAISON ? Les valeurs des angles finaux lorsque
-  // tous les dominos sont tombés est étrange (pas égales) ! Mais pas pour les
-  // ressorts.
-  // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
-  // temps et de la variation de la valeur des angles en fonction du temps
-  // (prévoir si Tmax bien supérieur au
-  // temps de chute de tous les dominos). Commentarisez conditions angles
-  // négatifs et longueur infinies. Commenter le tracé des courbes. Optimiser le
-  // code.
+  // QUESTIONS :
+  // prévoir Tmax dynamique
+  // enlever dichotomie et mettre l'angle alpha
+  // Commentarisez conditions angles + le tracé des courbes
+  // Optimiser le code
+  // Vitesse limite profil
   // Faire des bibliothèques peut-être ?
-  // Vitesse limite pprofil
-  // Pourquoi les ressorts se rallongent après se comprimer ?
 }
