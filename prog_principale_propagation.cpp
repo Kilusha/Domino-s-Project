@@ -32,8 +32,8 @@ double trouve_Alpha(double delta, double l0, double h) {
   double alphaMin =
       0.0; // Définition de la borne inférieure de notre intervalle
   double alphaMax =
-      M_PI / 2;       // Définition de la borne supérieure de notre intervalle
-  double epsi = 1e-1; // définition de la tolérance
+      M_PI / 2; // Définition de la borne supérieure de notre intervalle
+  const double epsi = 1e-1; // définition de la tolérance
   double alphaChoc = (alphaMin + alphaMax) /
                      2.0; // Définition de la valeur initiale de l'angle choc
   while (fabs(calcul_Membre_Gauche(alphaChoc, delta, l0, h)) >
@@ -163,32 +163,33 @@ void save_Data(double **matrice, int Tmax, int Nmax,
 int main() {
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  int Nmax = 10; // Nombre de colonne de nos 2 tableau (équivalent au nombre de
-                 // dominos)
-  int Tmax = 1000; // Nombre de lignes maximale de nos 2 tableaux (équivalent au
-                   // temps maximal)
-  double l0 = 3e-3;    // Longueur du ressort au repos en cm
-  double delta = 1e-2; // Correspond à la distance entre 2 dominos successifs
-  double h = 3.0e-2;   // Correspond à la taille en hauteur des dominos
-  double alphaChoc = trouve_Alpha(
+  const int Nmax = 10;    // Nombre de colonne de nos 2 tableau (équivalent au
+                          // nombre de dominos)
+  const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
+                          // (équivalent au temps maximal)
+  const double l0 = 3e-3; // Longueur du ressort au repos en cm
+  const double delta =
+      1e-2; // Correspond à la distance entre 2 dominos successifs
+  const double h = 3.0e-2; // Correspond à la taille en hauteur des dominos
+  const double alphaChoc = trouve_Alpha(
       delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
-  double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
-  double dt = 0.001;    // intervalle de temps en s
+  const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
+  const double dt = 0.001;    // intervalle de temps en s
   /* double gamma = 15.8e-6; // Définition de la viscosité du milieu de
      propagation
                           // (ici l'air) */
-  double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
-                                // propagation (ici l'air)
-  double m = 10e-3;             // Définition de la masse de l'objet en kg
+  const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
+                                      // propagation (ici l'air)
+  const double m = 10e-3; // Définition de la masse de l'objet en kg
   /*   double J = m * h * h / 3; // Définition du moment d'inertie */
-  double J = 7.5 / 10000000; // Définition du moment d'inertie
-  double g = 9.8;            // Définition de la pesanteur
-  double k = 1.0;       // Définition de la constante du raideur du ressort
-  double lmin = 0.0001; // Longueur minimale du ressort proche de 0 mais
-                        // différet de 0 pour ne pas créer de problèmes dans les
-                        // formules lors des calculs
+  const double J = 7.5 / 10000000; // Définition du moment d'inertie
+  const double g = 9.8;            // Définition de la pesanteur
+  const double k = 1.0; // Définition de la constante du raideur du ressort
+  const double lmin = 0.0001; // Longueur minimale du ressort proche de 0 mais
+                              // différet de 0 pour ne pas créer de problèmes
+                              // dans les formules lors des calculs
 
   double **alpha =
       new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers la
@@ -406,7 +407,7 @@ int main() {
                      // domino d'indice n à l'aide de l'équation du pdf n°3.
 
       if (alpha[t + 1][n] >= (M_PI / 2 - (lmin / h))) {
-        alpha[t + 1][0] = M_PI / 2 - (lmin / h);
+        alpha[t + 1][n] = M_PI / 2 - (lmin / h);
       }
     }
 
@@ -422,14 +423,465 @@ int main() {
       }
       n = n - 1;
     }
+
   }
+
+
 
   save_Data(alpha, Tmax, Nmax,
             "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
   save_Data(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
-  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS : Y A
-  // T-IL UNE RAISON ? Les valeurs des angles finaux lorsque tous les dominos
-  // sont tombés est étrange ! Mais pas pour les ressorts.
+  // Trace les courbes moyenne et écart type pour la méthode rand() à l'aide de
+  // Gnuplot
+  FILE *gnuplot = popen("gnuplot -persist",
+                        "w"); // Ouvrir une connexion entre le programme C++ et
+                              // l'application de traçage de courbes gnuplot.
+  fprintf(
+      gnuplot,
+      "set title 'Évolution des angles en fonction du temps'\n"); // Précise le
+                                                                  // titre du
+                                                                  // graphique.
+  fprintf(gnuplot,
+          "set xlabel 'Temps'\n"); // Plus précisément, cette commande
+                                   // Gnuplot set xlabel est utilisée
+                                   // pour définir l'étiquette de l'axe
+                                   // des abscisses (x) sur le graphique
+                                   // tracé. Ici, la commande 'set ylabel
+                                   // 'x'' indique que l'étiquette de
+                                   // l'axe des ordonnées doit être 'N'
+  fprintf(gnuplot,
+          "set ylabel 'Angles'\n"); // Plus précisément, cette
+                                    // commande Gnuplot set ylabel
+                                    // est utilisée pour définir
+                                    // l'étiquette de l'axe des
+                                    // ordonnées (y) sur le
+                                    // graphique tracé. Ici, la
+                                    // commande 'set ylabel 'y''
+                                    // indique que l'étiquette de
+                                    // l'axe des ordonnées doit
+                                    // être 'Moyenne / Ecart type'
+  fprintf(gnuplot, "set yrange [*:*] reverse\n");
+  fprintf(
+      gnuplot,
+      "plot '-' using 1:2 with lines title 'Domino 0', '-' using 1:2 with "
+      "lines title 'Domino 1', '-' using 1:2 with lines title 'Domino 2', "
+      "'-' using 1:2 with lines title 'Domino 3', '-' using 1:2 with lines "
+      "title 'Domino 4', '-' using 1:2 with lines title 'Domino 5', '-' "
+      "using 1:2 with lines title 'Domino 6', '-' using 1:2 with lines "
+      "title 'Domino 7', '-' using 1:2 with lines title 'Domino 8', '-' using "
+      "1:2 with lines title 'Domino 9'\n"); // Envoie une commande au processus
+                                            // Gnuplot ouvert par le programme
+                                            // pour tracer 2 courbes à partir
+                                            // du flux de sortie du processus
+                                            // Gnuplot ouvert par le programme
+                                            // C++. La commande using 1:2 qui
+                                            // indique que la première colonne
+                                            // du fichier de données sera
+                                            // utilisée pour les valeurs de x
+                                            // et la deuxième colonne sera
+                                            // utilisée pour les valeurs de y.
+                                            // La courbe sera tracée avec des
+                                            // lignes pleines (with lines) et
+                                            // portera le titre "Moyenne"
+                                            // (title 'Moyenne'). La deuxième
+                                            // courbe (Ecart type) est tracée
+                                            // avec la même commande using 1:2,
+                                            // mais elle sera tracée avec un
+                                            // autre titre
+                                            // ("Ecart type") (title 'Ecart
+                                            // type'). La commande '-' est
+                                            // utilisée pour dire à Gnuplot
+                                            // d'utiliser les données qui vont
+                                            // être envoyées via le flux
+                                            // d'entrée standard, plutôt que
+                                            // d'un fichier. La commande '\n'
+                                            // est utilisée pour terminer la
+                                            // commande Gnuplot.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y1.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][0]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][1]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][2]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][3]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][4]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][5]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][6]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][7]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][8]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot, "%lf %lf\n", j * dt,
+            alpha[j][9]); // Permet d'écrire une chaîne de caractères formatée
+                          // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                          // de formatage qui indique que les deux arguments
+                          // suivants doivent être des nombres à virgule
+                          // flottante, et que la chaîne "\n" (retour à la
+                          // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  // Fermeture du canal de communication avec gnuplot
+  pclose(gnuplot);
+
+  // Trace les courbes moyenne et écart type pour la méthode rand() à l'aide de
+  // Gnuplot
+  FILE *gnuplot2 = popen("gnuplot -persist",
+                         "w"); // Ouvrir une connexion entre le programme C++ et
+                               // l'application de traçage de courbes gnuplot.
+  fprintf(gnuplot2,
+          "set title 'Évolution des longueurs des ressorts en fonction du "
+          "temps'\n"); // Précise le
+                       // titre du
+                       // graphique.
+  fprintf(gnuplot2,
+          "set xlabel 'Temps'\n"); // Plus précisément, cette commande
+                                   // Gnuplot set xlabel est utilisée
+                                   // pour définir l'étiquette de l'axe
+                                   // des abscisses (x) sur le graphique
+                                   // tracé. Ici, la commande 'set ylabel
+                                   // 'x'' indique que l'étiquette de
+                                   // l'axe des ordonnées doit être 'N'
+  fprintf(
+      gnuplot2,
+      "set ylabel 'Longueurs des ressorts'\n"); // Plus précisément, cette
+                                                // commande Gnuplot set ylabel
+                                                // est utilisée pour définir
+                                                // l'étiquette de l'axe des
+                                                // ordonnées (y) sur le
+                                                // graphique tracé. Ici, la
+                                                // commande 'set ylabel 'y''
+                                                // indique que l'étiquette de
+                                                // l'axe des ordonnées doit
+                                                // être 'Moyenne / Ecart type'
+  fprintf(
+      gnuplot2,
+      "plot '-' using 1:2 with lines title 'Domino 0', '-' using 1:2 with "
+      "lines title 'Domino 1', '-' using 1:2 with lines title 'Domino 2', "
+      "'-' using 1:2 with lines title 'Domino 3', '-' using 1:2 with lines "
+      "title 'Domino 4', '-' using 1:2 with lines title 'Domino 5', '-' "
+      "using 1:2 with lines title 'Domino 6', '-' using 1:2 with lines "
+      "title 'Domino 7', '-' using 1:2 with lines title 'Domino 8', '-' using "
+      "1:2 with lines title 'Domino 9'\n"); // Envoie une commande au processus
+                                            // Gnuplot ouvert par le programme
+                                            // pour tracer 2 courbes à partir
+                                            // du flux de sortie du processus
+                                            // Gnuplot ouvert par le programme
+                                            // C++. La commande using 1:2 qui
+                                            // indique que la première colonne
+                                            // du fichier de données sera
+                                            // utilisée pour les valeurs de x
+                                            // et la deuxième colonne sera
+                                            // utilisée pour les valeurs de y.
+                                            // La courbe sera tracée avec des
+                                            // lignes pleines (with lines) et
+                                            // portera le titre "Moyenne"
+                                            // (title 'Moyenne'). La deuxième
+                                            // courbe (Ecart type) est tracée
+                                            // avec la même commande using 1:2,
+                                            // mais elle sera tracée avec un
+                                            // autre titre
+                                            // ("Ecart type") (title 'Ecart
+                                            // type'). La commande '-' est
+                                            // utilisée pour dire à Gnuplot
+                                            // d'utiliser les données qui vont
+                                            // être envoyées via le flux
+                                            // d'entrée standard, plutôt que
+                                            // d'un fichier. La commande '\n'
+                                            // est utilisée pour terminer la
+                                            // commande Gnuplot.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y1.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][0]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][1]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][2]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][3]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][4]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][5]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][6]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][7]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][8]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  for (int j = 0; j < Tmax;
+       j++) { // Parcourt toutes les lignes des tableaux x, y2.
+    fprintf(gnuplot2, "%lf %lf\n", j * dt,
+            l[j][9]); // Permet d'écrire une chaîne de caractères formatée
+                      // dans un flux de sortie. "%lf %lf\n" est une chaîne
+                      // de formatage qui indique que les deux arguments
+                      // suivants doivent être des nombres à virgule
+                      // flottante, et que la chaîne "\n" (retour à la
+                      // ligne) doit être ajoutée à la fin.
+  }
+  fprintf(
+      gnuplot2,
+      "e\n"); // Indiquer à Gnuplot que les données pour la première courbe sont
+              // terminées et que Gnuplot doit passer à la deuxième courbe.
+
+  // Fermeture du canal de communication avec gnuplot
+  pclose(gnuplot2);
+
+  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
+  // copmpréssé): Y A T-IL UNE RAISON ? Les valeurs des angles finaux lorsque
+  // tous les dominos sont tombés est étrange (pas égales) ! Mais pas pour les
+  // ressorts.
+  // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
+  // temps et de la variation de la valeur des angles en fonction du temps
+  // (prévoir si Tmax bien supérieur au
+  // temps de chute de tous les dominos). Commentarisez conditions angles
+  // négatifs et longueur infinies. Commenter le tracé des courbes. Optimiser le
+  // code.
+  // Faire des bibliothèques peut-être ?
 }
