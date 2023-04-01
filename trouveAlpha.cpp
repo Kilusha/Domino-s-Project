@@ -6,16 +6,19 @@ using namespace std; // Directive en C++ qui facilite l'utilisation des noms de 
  * de gauche trouvé dans la partie théorique qui est censé valoir 0 lorsqu'un
  * domino entre en contact avec son voisin. Ainsi il nous permettra de
  * déterminer le bon angle alpha qui correspond à l'angle de choc */
-
+/*
 double calcul_Membre_Gauche(double alphaChoc, double delta, double l0,
                             double h) {
   return sin(alphaChoc) - (delta - l0 * cos(alphaChoc)) / h;
-}
-
+}*/
+double trouve_Alpha(double delta, double l0,
+                            double h) {
+  return M_PI/2 -atan(l0/h) - acos(delta/sqrt(h*h +l0*l0));
+                            }
 /* Création de la fonction trouve_Alpha_dicho qui permet de déterminer par dichotomie
  * la valeur de l'angle pour lequel un domino entre en contact avec son voisin
  */
-
+/*
 double trouve_Alpha_dicho(double delta, double l0, double h) {
   double alphaMin =
       0.0; // Définition de la borne inférieure de notre intervalle
@@ -52,4 +55,4 @@ double trouve_Alpha_dicho(double delta, double l0, double h) {
   }
   return alphaChoc; // Renvoie la valeur de l'angle pour lequel un domino entre
                     // en contact avec son voisin.
-}
+} */

@@ -30,7 +30,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // bien déroulé.
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  const int Nmax = 10;    // Nombre de colonne de nos 2 tableau (équivalent au
+  const int Nmax = 10;    // Nombre de colonne de nos 2 tableaux (équivalent au
                           // nombre de dominos)
   const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
                           // (équivalent au temps maximal)
@@ -38,15 +38,18 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   const double delta =
       1e-2; // Correspond à la distance entre 2 dominos successifs
   const double h = 3.0e-2; // Correspond à la taille en hauteur des dominos
-  const double alphaChoc = trouve_Alpha_dicho(
-      delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
+  const double alphaChoc = trouve_Alpha(
+     delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
+  //const double alphaChoc = M_PI/2 -atan(l0/h) - acos(delta/sqrt(h*h+l0*l0));
   const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
   const double dt = 0.001;    // intervalle de temps en s,
                           // (ici l'air) */
   const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
                                       // propagation (ici l'air)
+  //const double gamma = 1.15 / 1000; // Viscosité dans l'eau
+  //const double gamma = 6; //Viscosité du miel
   const double m = 10e-3; // Définition de la masse de l'objet en kg
   /*   double J = m * h * h / 3; // Définition du moment d'inertie */
   const double J = 7.5 / 10000000; // Définition du moment d'inertie
@@ -108,7 +111,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    // valeur de l'angle alpha à l'instant t + dt pour le 1 er
                    // domino indice 0, à l'aide de l'équation du pdf n°1.
 
-    t++; // Inrémentation du temps pour changer de ligne dans notre tableau et
+    t++; // Incrémentation du temps pour changer de ligne dans notre tableau et
          // pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
   }
 
@@ -287,7 +290,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                                       // après le dernier de la chaîne. Alors on
                                       // remplace alpha[t][n + 1] par la valeur
                                       // pi/2 soit 90 degrés car il s'agit de
-                                      // l'angle entre la normal et le sol.
+                                      // l'angle entre la normale et le sol.
     }
   }
 
@@ -317,7 +320,5 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   // Commentarisez conditions angles
   // négatifs et longueur infinies.
   // Commenter le tracé des courbes.
-  // Optimiser le
-  // code.
   // Vitesse limite pprofil
 }
