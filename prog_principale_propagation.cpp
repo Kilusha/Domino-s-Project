@@ -16,7 +16,7 @@ using namespace std; // Directive en C++ qui facilite l'utilisation des noms de
 // alpha[t][n] est l'angle alpha du domino n a l'instant t.
 // alpha[t+1][n] est l'angle alpha du domino n a l'instant t+dt.
 // alpha[t-1][n] est l'angle alpha du domino n a l'instant t-dt.
-// l[t][n] est la longueur du ressort n a l'instant t
+// l[t][n] est la longueur du ressort n a l'instant t.
 
 // Pour propager les équations on fait des tableaux alpha et l a 2 indices (du
 // type alpha[t][n]) afin de conserver la valeur des angles aux différents
@@ -30,72 +30,78 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // bien déroulé.
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  const int Nmax = 10;    // Nombre de colonne de nos 2 tableaux (équivalent au
-                          // nombre de dominos)
-  const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
-                          // (équivalent au temps maximal)
-  const double l0 = 3e-3; // Longueur du ressort au repos en cm
+  const int Nmax = 10;   // Nombre de colonnes de nos 2 tableaux (équivalent au
+                         // nombre de dominos).
+  const int Tmax = 2000; // Nombre de lignes maximale de nos 2 tableaux
+                         // (équivalent au temps maximal).
+  const double l0 = 3e-3; // Longueur du ressort au repos en m.
   const double delta =
-      1e-2; // Correspond à la distance entre 2 dominos successifs
-  const double h = 3.0e-2; // Correspond à la taille en hauteur des dominos
+      1e-2; // Correspond à la distance entre 2 dominos successifs en m.
+  const double h =
+      3.0e-2; // Correspond à la taille en hauteur des dominos en m.
   const double alphaChoc = trouve_Alpha(
-     delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
-                     // alphaChoc en la déterminant par dichotomie à l'aide des
-                     // fonctions trouve_Alpha et calcul_Membre_Gauche
-  //const double alphaChoc = M_PI/2 -atan(l0/h) - acos(delta/sqrt(h*h+l0*l0));
-  const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
-  const double dt = 0.001;    // intervalle de temps en s,
-                          // (ici l'air) */
-  const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
-                                      // propagation (ici l'air)
-  //const double gamma = 1.15 / 1000; // Viscosité dans l'eau
-  //const double gamma = 6; //Viscosité du miel
-  const double m = 10e-3; // Définition de la masse de l'objet en kg
-  /*   double J = m * h * h / 3; // Définition du moment d'inertie */
-  const double J = 7.5 / 10000000; // Définition du moment d'inertie
-  const double g = 9.8;            // Définition de la pesanteur
-  const double k = 1.0; // Définition de la constante du raideur du ressort
+      delta, l0,
+      h); // Stocke la valeur de l'angle choc en rad dans la variable
+          // alphaChoc en la déterminant à l'aide d'une formule utilisant de la
+          // trigonométrie stocké dans la fonction trouve_Alpha.
+  const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1).
+  const double dt = 0.001;    // Intervalle de temps en s.
+  const double gamma = 1.81 / 100000; // Définition de la viscosité moléculaire
+                                      // du milieu de propagation (ici l'air).
+  // const double gamma = 1.15 / 1000; // Définition de la viscosité moléculaire
+  // du milieu de propagation (ici l'eau). const double gamma = 6; //Définition
+  // de la viscosité moléculaire du milieu de propagation (ici le miel).
+  const double m = 10e-3; // Définition de la masse de l'objet en kg.
+  /*   double J = m * h * h / 3; // Définition du moment d'inertie en kg.m². */
+  const double J = 7.5 / 10000000; // Définition du moment d'inertie en kg.m².
+  const double g = 9.8;            // Définition de la pesanteur en m.s^(-2).
+  const double k =
+      1.0; // Définition de la constante du raideur du ressort en N.m^(-1).
   const double lmin =
-      0.0001; // Longueur minimale du ressort proche de 0 mais
-              // différet de 0 pour ne pas créer de problèmes
-              // dans les formules lors des calculs et pour définir la longueur
-              // minimale lors de l'impact avec le domino voisin ou le sol dans
-              // le cas du dernier domino, avant décompression pour valeur
-              // d'équilibre
+      1e-4; // Longueur minimale du ressort proche de 0 mais
+            // différet de 0 pour ne pas créer de problème
+            // dans les formules lors des calculs et pour définir la longueur
+            // minimale lors de l'impact avec le domino voisin ou le sol dans
+            // le cas du dernier domino, avant décompression pour valeur
+            // atteindre la longueur "d'équilibre" qui correspond au moment ou
+            // la longueur sera stable, tout en supportant le poids de tous
+            // les dominos précédents déjà écroulés. Elle est en m.
 
   double **alpha =
       new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers la
-                          // case ou sera stocké la valeur de l'angle alpha.
-  double **l = new double
-      *[Tmax]; // Déclaration du pointeur l qui pointera vers la case
-               // ou sera stocké la valeur de la longueur du ressort l.
+                          // case ou sera stockée la valeur de l'angle alpha de
+                          // chaque domino.
+  double **l = new double *[Tmax]; // Déclaration du pointeur l qui pointera
+                                   // vers la case ou sera stockée la valeur de
+                                   // la longueur du ressort l de chaque domino.
 
   /* Initialisation des 2 tableaux à 2 dimensions en allouant de la mémoire
-   * dynamique pour y stocker des variables de type "doubles" qui seront la
+   * dynamique pour y stocker des variables de type "double" qui seront la
    * valeur de l'angle alpha du domino n à l'nstant t, ainsi que la longueur de
    * son ressort à ce même instant : */
 
   creation_Matrice(
       alpha, Tmax, Nmax, 0.,
       M_PI / 2); // Créé le tableau alpha qui gardera en mémoire la valeur des
-                 // angles de tous les dominos à chaque instant de l'expérience
+                 // angles de tous les dominos à chaque instant de l'expérience.
   creation_Matrice(l, Tmax, Nmax, l0,
                    lmin); // Créé le tableau l qui gardera en mémoire la valeur
                           // des longueurs des ressorts de tous les dominos à
-                          // chaque instant de l'expérience
+                          // chaque instant de l'expérience.
 
   cout << endl
-       << "L'angle de choc est : " << alphaChoc << " rad."
-       << endl; // Affiche la valeur de l'angle choc
+       << "L'angle de choc entre les 2 peremiers dominos d'indice 0 et 1 "
+          "correspond à : "
+       << alphaChoc << " rad." << endl; // Affiche la valeur de l'angle choc
 
   /* Initialisation de l'angle du premier domino a l'instant t+dt => t = 1 */
 
   alpha[1][0] =
       w0 *
       dt; // Stockage de la valeur de l'angle alpha du 1er domino à l'instant
-          // t+dt qui correspond à t = 1. (Vitesse de chute * temps = angle)
+          // t+dt qui correspond à t = 1. (Vitesse de chute * temps = angle).
 
-  int t = 1; // Initialisation du temps t pour la suite du prog
+  int t = 1; // Initialisation du temps t pour la suite du prog.
 
   /* le 1er domino en mouvement jusqu'au choc*/
   while (alpha[t][0] <
@@ -121,20 +127,22 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   int t_choc = t; // Sauvegarde de la valeur du temps requis avant le choc entre
                   // le domino 0 et le domino 1.
 
-  cout << "La date du premier choc est : " << t_choc * dt
-       << " secondes après le début de l'expérience."
+  cout << "Le temps correspondant au choc du 1er domino d'indice 0 avec son "
+          "voisin de droite (i.e. le 2ème domino d'indice 1) est : "
+       << t_choc * dt << " secondes après le début de l'expérience."
        << endl; // Affiche la valeur du temps nécessaire avant le choc du domino
-                // 0 avec le domino 1.
+                // d'indice 0 avec le domino d'indice 1.
 
   /* Poursuite de la chute du 1er domino d'indice 0 après contact avec le
-   * deuxième d'indice 1 */
+   * deuxième domino d'indice 1 */
 
   for (t = t_choc; t < Tmax - 1;
-       t++) // ou for(t=0;t<Tmax;t++)  Poursuite de temps en partant de
-            // l'instant du choc entre les 2 premiers dominos (t = t_choc,
-            // jusqu'au moment ou les dominos seront tous à terre (t = Tmax=)
+       t++) // Poursuite de l'expérience en parcourant le temps à partir de
+            // l'instant du choc entre les 2 premiers dominos (t = t_choc),
+            // jusqu'au moment où les dominos seront tous "à terre" (ou du
+            // moins, lorsqu'il se chevaucheront tous) (t = Tmax-1).
   {
-    /* mouvement du 1er domino n°0 après choc avec le 2ème domino n°1 */
+    /* Mouvement du 1er domino d'indice 0 après choc avec le 2ème domino n°1 */
 
     l[t][0] =
         h * tan(alpha[t][1] - alpha[t][0]) +
@@ -142,19 +150,24 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                  cos(alpha[t][0])); // Calcul et stockage dans le tableau des
                                     // longueurs des ressorts l de la valeur de
                                     // la longueur l à l'instant t du ressort du
-                                    // domino n°0, à l'aide de l'équation du pdf
-                                    // tout en bas. */
+                                    // 1er domino d'indice 0, à l'aide de
+                                    // l'équation du pdf tout en bas. */
 
-    if (l[t][0] >
-        l0) // Vérifie si le calcul de la longueur du ressort du domino 0 est
-            // plus grande que sa longueur à vide car pour des petites valeurs
-            // d'angles, la formule peut donner des valeurs supérieures.
-      l[t][0] = l0; // Dans ce cas nous la remettons égale à la longueur à vide.
-    if (l[t][0] < lmin) // A l'inverse, cette commande permet de vérifier que le
-                        // ressort du domino 0 ne soit pas surcompréssé avec une
-                        // longueur plus petite que la longueur minimale.
-      l[t][0] =
-          lmin; // Dans ce cas nous la remettons égale à la valeur minimale.
+    if (l[t][0] > l0) // Vérifie si le calcul de la longueur du ressort du 1er
+                      // domino d'indice 0 est plus grande que sa longueur à
+                      // vide car pour des petites valeurs d'angles, la formule
+                      // peut donner ce genre de valeur abérrantes.
+      l[t][0] = l0; // Dans ce cas nous la remettons égale à la longueur à vide
+                    // du ressort.
+    if (l[t][0] <
+        lmin) // À l'inverse, cette commande permet de vérifier que le
+              // ressort du 1er domino d'indice 0 ne soit pas surcompréssé avec
+              // une longueur plus petite que la longueur minimale car ici aussi
+              // pour des petites valeurs
+      // d'angles, la formule peut donner ce genre de valeur abérrantes (des
+      // longueurs de rerssort négatives).
+      l[t][0] = lmin; // Dans ce cas nous la remettons égale à la valeur
+                      // minimale lors de sa compression.
 
     alpha[t + 1][0] =
         (2 * alpha[t][0] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][0] +
@@ -162,34 +175,36 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
          dt * dt * k * h * (1 / (2 * J)) * (l0 - l[t][0])) /
         (1 +
          gamma * dt /
-             (2 * J)); // Calcul et stockage dans le tableau des angles alpha de
-                       // la valeur de l'angle alpha à l'instant t + dt pour le
-                       // 1 er domino indice 0 après le choc avec son voisin le
-                       // domino indice 1, à l'aide de l'équation du pdf n°2.
+             (2 *
+              J)); // Calcul et stockage dans le tableau des angles alpha de
+                   // la valeur de l'angle alpha à l'instant t + dt pour le
+                   // 1 er domino d'indice 0 après le choc avec son voisin le
+                   // 2ème domino d'indice 1, à l'aide de l'équation du pdf n°2.
 
     if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
       alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);
-    } // Nous considérons ici l'angle formé par le premier domino
-      // avec la verticale. Nous prenons en compte que l'angle maximal avec la
-      // verticale est donnée par cette condition. En effet, l'angle min est
-      // atteint lorsque tous les dominos sont couchés et donc que leur ressorts
-      // ont tous une longueur de lmin. Nous avons dans ce cas fait
-      // l'approximation aux petits angles en considerant que arctan((Nmax) *
-      // (lmin / h)) =
+    } // Nous considérons ici l'angle formé par le premier domino d'indice 0
+      // avec la verticale. Nous prenons en compte que l'angle maximal est
+      // donnée par la condition écrite ici. En effet, ce dernier est atteint
+      // lorsque tous les dominos sont couchés les uns sur les autres et donc
+      // que leur ressorts ont tous une longueur de lmin. Nous avons dans ce cas
+      // fait l'approximation aux petits angles en considerant que arctan((Nmax)
+      // * (lmin / h)) =
       //(Nmax) * (lmin / h)
 
-    /* mouvement domino n>=1 */
-    int n = 1; // Initialisation du numéro du domino
-               // domino n en contact avec domino n-1 et avec domino n+1
+    /* Mouvement du domino d'indice n>=1 */
+    int n = 1; // Initialisation de l'indice du domino
+               // (ici à 1) qui est en contact avec le domino d'indice n-1 et
+               // celui d'indice n+1.
 
     while (
         alpha[t][n] > alphaChoc &&
         (n <
-         Nmax -
-             1)) // Traduit la condition : tant que le domino n est en contact
-                 // avec son voisin (que l'angle alpha est supérieur à l'angle
-                 // choc) et que le domino n existe (que n ne soit pas plus
-                 // grand que le nombre maximal en indice de dominos).
+         Nmax - 1)) // Traduit la condition : tant que le domino d'indice n
+                    // est en contact avec son voisin de droite (i.e. que
+                    // l'angle alpha est supérieur à l'angle choc) et que
+                    // l'indice n désigne bel et bien un domino autre que le
+                    // dernier qui n'a naturellement pas de voisin à sa droite.
     {
       l[t][n] =
           h * tan(alpha[t][n + 1] - alpha[t][n]) +
@@ -197,21 +212,25 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    cos(alpha[t][n])); // Calcul et stockage dans le tableau des
                                       // longueurs des ressorts l de la valeur
                                       // de la longueur l à l'instant t du
-                                      // ressort du domino indice n, à l'aide de
-                                      // l'équation du pdf tout en bas.
+                                      // ressort du domino d'indice n, à l'aide
+                                      // de l'équation du pdf tout en bas.
 
       if (l[t][n] >
-          l0) // Vérifie si le calcul de la longueur du ressort du domino n est
-              // plus grande que sa longueur à vide car pour des petites valeurs
-              // d'angles, la formule peut donner des valeurs supérieures.
+          l0) // Vérifie si le calcul de la longueur du ressort du nième + 1
+              // domino d'indice n est plus grande que sa longueur à vide car
+              // pour des petites valeurs d'angles, la formule peut donner ce
+              // genre de valeurs aberrantes.
         l[t][n] =
             l0; // Dans ce cas nous la remettons égale à la longueur à vide.
-      if (l[t][n] <
-          lmin) // A l'inverse, cette commande permet de vérifier que le ressort
-                // du domino 0 ne soit pas surcompréssé avec une longueur plus
-                // petite que la longueur minimale.
-        l[t][n] =
-            lmin; // Dans ce cas nous la remettons égale à la valeur minimale.
+      if (l[t][n] < lmin) // A l'inverse, cette commande permet de vérifier que
+                          // le ressort du nième + 1 domino d'indice n ne soit
+                          // pas surcompréssé avec une longueur plus petite que
+                          // la longueur minimale car ici aussi
+        // pour des petites valeurs
+        // d'angles, la formule peut donner ce genre de valeur abérrantes (des
+        // longueurs de rerssort négatives).
+        l[t][n] = lmin; // Dans ce cas nous la remettons égale à la valeur
+                        // minimale lors de sa compression.
 
       alpha[t + 1][n] =
           (2 * alpha[t][n] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][n] +
@@ -219,11 +238,13 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
            dt * dt * (1. / 2 * J) * k * (l0 - l[t][n - 1]) *
                (h - delta * sin(alpha[t][n - 1])) -
            dt * dt * k * h * (1 / (2 * J)) * (l0 - l[t][n])) /
-          (1 + gamma * dt /
-                   (2 * J)); // Calcul et stockage dans le tableau des angles
-                             // alpha de la valeur de l'angle alpha à l'instant
-                             // t + dt pour le domino d'indice n en contact avec
-                             // ses 2 voisins à l'aide de l'équation du pdf n°4.
+          (1 +
+           gamma * dt /
+               (2 *
+                J)); // Calcul et stockage dans le tableau des angles
+                     // alpha de la valeur de l'angle alpha à l'instant
+                     // t + dt pour le nième + 1 domino d'indice n en contact
+                     // avec ses 2 voisins à l'aide de l'équation du pdf n°4.
 
       if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * (lmin / h))) {
         alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * (lmin / h);
@@ -232,53 +253,54 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       n++; // Permet de passer au domino suivant
     }
 
-    if (n < Nmax) // Verification si il nous reste des dominos. Cette prochaine
-                  // ligne est dédié au mouvement du domino n en contact avec
-                  // domino n-1 (mais n'a pas encore touche domino n+1). Ainsi
-                  // contrairemet à ce qui était codé au départ, le condition
-                  // doit aller jusqu'au domino Nmax et pas Nmax - 1.
+    if (n < Nmax) // Verification s'il nous reste des dominos parmi tous les
+                  // dominos y compris le dernier, qui ne seraientt pas encore
+                  // en contact avec leur voisin de droite tout en étant en
+                  // contact avec leur voisin de gauche. Ainsi, la prochaine
+                  // ligne est dédié au mouvement du  nième + 1 domino d'indice
+                  // n en contact avec le nième domino d'indice n-1 (mais qui
+                  // n'a pas encore touché le nième + 2 domino d'indice n+1).
     {
       alpha[t + 1][n] =
           (2 * alpha[t][n] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][n] +
            3 * g * dt * dt / (2 * h) * sin(alpha[t][n]) +
            dt * dt * (1. / J) * k * (l0 - l[t][n - 1]) *
                (h - delta * sin(alpha[t][n - 1]))) /
-          (1 +
-           gamma * dt /
-               (2 *
-                J)); // Calcul et stockage dans le tableau des angles alpha de
-                     // la valeur de l'angle alpha à l'instant t + dt pour le
-                     // domino d'indice n à l'aide de l'équation du pdf n°3.
+          (1 + gamma * dt /
+                   (2 * J)); // Calcul et stockage dans le tableau des angles
+                             // alpha de la valeur de l'angle alpha à l'instant
+                             // t + dt pour le nième + 1 domino d'indice n à
+                             // l'aide de l'équation du pdf n°3.
 
       if (alpha[t + 1][n] >= (M_PI / 2 - (lmin / h))) {
         alpha[t + 1][n] = M_PI / 2 - (lmin / h);
       }
     }
 
-    n = Nmax - 2;  // Nous nous plaçons à l'avant dernier domino indice Nmax-2
+    n = Nmax - 2; // Nous nous plaçons à l'avant dernier domino d'indice Nmax-2.
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
                    // en place d'une sécurité : évite que le domino n traverse
-                   // le domino n+1 (ça peut ariver lors de la simulation ...)
+                   // le domino n+1 (ça peut ariver lors de la simulation ...).
     {
       if (alpha[t + 1][n] >
           (alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h))) {
         alpha[t + 1][n] =
             alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
       }
-      n = n - 1;
+      n -= 1; // Décrémentation de l'indice parcourant les dominos pour
+              // passer au domino inférieur.
     }
 
     n = Nmax - 1; // On se place dans le cas du dernier domino (son ressort ne
-                  // touche pas d'autre domino mais le sol)
-    if (alpha[t][n] <=
+                  // touche pas d'autre domino mais le sol). Stockagfe dans une
+                  // variable pour éviter de refaire le calcul plusieurs fois.
+    if (alpha[t][n] >
         M_PI / 2 -
-            atan(l0 /
-                 h)) { // Si l'angle alpha du domino n est plus petit qu'une
-                       // certaine valeur qui correspond à la valeur ou le
-                       // ressort du domino entre en contact avec le sol
-      l[t][n] = l0; // La longueur de son ressort correspond à la longueur du
-                    // ressort à vide l0
-    } else {        // Sinon, après contact du ressort avec le sol, alors :
+            atan(l0 / h)) { // Si l'angle alpha du nième + 1 domino d'indice n
+                            // (ici le dernier domino car n vaut Nmax - 1) est
+                            // plus grand qu'une certaine valeur qui correspond
+                            // à la valeur où le ressort du dernier domino entre
+                            // en contact avec le sol.
       l[t][n] = l[t][n] =
           h * tan(M_PI / 2 - alpha[t][n]) +
           delta / ((1. + tan(alpha[t][n]) * tan(M_PI / 2)) *
@@ -299,15 +321,25 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   save_Data(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
-  trace_Graph(alpha, dt, Tmax,
+  trace_Graph(alpha, dt, Tmax, Nmax,
               1); // Trace le graphe de l'évolution des angles alpha en fonction
                   // du temps (1 ici st un sélecteur pour savoir si nous voulons
-                  // tracer alpha ou l)
+                  // tracer alpha ou l).
 
-  trace_Graph(l, dt, Tmax,
+  trace_Graph(l, dt, Tmax, Nmax,
               2); // Trace le graphe de l'évolution de la longueur des ressorts
                   // en fonction du temps (2 ici st un sélecteur pour savoir si
-                  // nous voulons tracer alpha ou l)
+                  // nous voulons tracer alpha ou l).
+
+  // Libération de la mémoire pour les tableaux alpha et l
+  for (int i = 0; i < Tmax; i++) { // Parcourt les lignes des 2 tableaux.
+    delete[] alpha[i]; // delete [] permet de supprimer les valeurs de chaque
+                       // colonne de la ligne i du tableau alpha.
+    delete[] l[i];     // delete [] permet de supprimer les valeurs de chaque
+                       // colonne de la ligne i du tableau l.
+  }
+  delete[] alpha; // Libère le pointeur alpha.
+  delete[] l;     // Libère le pointeur l.
 
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 

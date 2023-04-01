@@ -6,5 +6,6 @@
 
 double trouve_Alpha_dicho(double delta, double l0, double h); // Annonce l'existence d'une fonction trouve_Alpha_dicho qui renvoie un double.
 double calcul_Membre_Gauche(double alphaChoc, double delta, double l0, double h); // Annonce l'existence d'une fonction calcul_Membre_Gauche qui renvoie un double.
+double trouve_Alpha(double delta, double l0, double h); // Annonce l'existence d'une fonction trouve_Alpha qui renvoie un double.
 
-#endif // Termine le code de création de la macro DICHO_H.
+#endif // Termine le code de création de la macro TROUVEALPHA_H.
