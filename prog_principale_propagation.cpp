@@ -30,27 +30,42 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // bien déroulé.
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  const int Nmax = 10;   // Nombre de colonnes de nos 2 tableaux (équivalent au
-                         // nombre de dominos).
-  const int Tmax = 2000; // Nombre de lignes maximale de nos 2 tableaux
-                         // (équivalent au temps maximal).
+  int Nmax; // Nombre de colonnes de nos 2 tableaux (équivalent au
+            // nombre de dominos).
+  cout << "Combien de dominos compose votre chef d'oeuvre artistique ? (Valeur "
+          "conséillée : 10) ";
+  cin >> Nmax;
+  const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
+                          // (équivalent au temps maximal).
   const double l0 = 3e-3; // Longueur du ressort au repos en m.
-  const double delta =
-      1e-2; // Correspond à la distance entre 2 dominos successifs en m.
-  const double h =
-      3.0e-2; // Correspond à la taille en hauteur des dominos en m.
+  double delta; // Correspond à la distance entre 2 dominos successifs en m.
+  cout << "Quel est l'espace (en mètres) qui sépare 2 dominos successifs ? "
+          "(Valeur conséillée 0.01 m) ";
+  cin >> delta;
+  double h; // Correspond à la taille en hauteur des dominos en m.
+  cout << "Quelle est la hauteur (en mètres) de vos dominos ? "
+          "(Valeur conséillée 0.03 m) ";
+  cin >> h;
   const double alphaChoc = trouve_Alpha(
       delta, l0,
       h); // Stocke la valeur de l'angle choc en rad dans la variable
           // alphaChoc en la déterminant à l'aide d'une formule utilisant de la
           // trigonométrie stocké dans la fonction trouve_Alpha.
-  const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1).
-  const double dt = 0.001;    // Intervalle de temps en s.
-  const double gamma = 1.81 / 100000; // Définition de la viscosité moléculaire
-                                      // du milieu de propagation (ici l'air).
+  double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1).
+  cout << "Quel est la vitesse de rotation initale (en rad par seconde) du 1er "
+          "domino ? "
+          "(Valeur conséillée pi sur 4 rad.s^-1) ";
+  cin >> w0;
+  const double dt = 0.001;      // Intervalle de temps en s.
+  double gamma = 1.81 / 100000; // Définition de la viscosité moléculaire
+                                // du milieu de propagation (ici l'air).
   // const double gamma = 1.15 / 1000; // Définition de la viscosité moléculaire
   // du milieu de propagation (ici l'eau). const double gamma = 6; //Définition
   // de la viscosité moléculaire du milieu de propagation (ici le miel).
+
+  cout << "Quel est la viscosité (en mètres) qui sépare 2 dominos successifs ? "
+          "(Valeur conséillée 0.01 m) ";
+  cin >> gamma;
   const double m = 10e-3; // Définition de la masse de l'objet en kg.
   /*   double J = m * h * h / 3; // Définition du moment d'inertie en kg.m². */
   const double J = 7.5 / 10000000; // Définition du moment d'inertie en kg.m².
@@ -343,14 +358,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 
-  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
-  // copmpréssé): Y A T-IL UNE RAISON ?
+  // QUESTIONS :
   // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
   // temps et de la variation de la valeur des angles en fonction du temps
   // (prévoir si Tmax bien supérieur au
   // temps de chute de tous les dominos).
-  // Commentarisez conditions angles
-  // négatifs et longueur infinies.
+  // Commentarisez conditions angles.
   // Commenter le tracé des courbes.
   // Vitesse limite pprofil
 }
