@@ -50,6 +50,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                           // (ici l'air) */
   const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
                                       // propagation (ici l'air)
+  //const double gamma = 1.15 / 1000; // Viscosité dans l'eau
+  //const double gamma = 6; //Viscosité du miel
   const double m = 10e-3; // Définition de la masse de l'objet en kg
   /*   double J = m * h * h / 3; // Définition du moment d'inertie */
   const double J = 7.5 / 10000000; // Définition du moment d'inertie
@@ -310,12 +312,6 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                   // nous voulons tracer alpha ou l)
 
   // QUESTIONS :
-  // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
-  // temps et de la variation de la valeur des angles en fonction du temps
-  // (prévoir si Tmax bien supérieur au
-  // temps de chute de tous les dominos).
-  // Commentarisez conditions angles
-  // négatifs et longueur infinies.
   // Commenter le tracé des courbes.
   // Vitesse limite pprofil
 }
