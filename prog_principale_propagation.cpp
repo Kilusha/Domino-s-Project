@@ -43,9 +43,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
   const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
-  const double dt = 0.001;    // intervalle de temps en s
-  /* double gamma = 15.8e-6; // Définition de la viscosité du milieu de
-     propagation
+  const double dt = 0.001;    // intervalle de temps en s,
                           // (ici l'air) */
   const double gamma = 1.81 / 100000; // Définition de la viscosité du milieu de
                                       // propagation (ici l'air)
@@ -307,6 +305,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
               2); // Trace le graphe de l'évolution de la longueur des ressorts
                   // en fonction du temps (2 ici st un sélecteur pour savoir si
                   // nous voulons tracer alpha ou l)
+
+  return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 
   // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
   // copmpréssé): Y A T-IL UNE RAISON ?
