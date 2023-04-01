@@ -30,7 +30,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // bien déroulé.
 
   /* Déclaration de toutes les variables utiles pour le programme */
-  const int Nmax = 10;    // Nombre de colonne de nos 2 tableau (équivalent au
+  const int Nmax = 10;    // Nombre de colonne de nos 2 tableaux (équivalent au
                           // nombre de dominos)
   const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
                           // (équivalent au temps maximal)
@@ -38,10 +38,11 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   const double delta =
       1e-2; // Correspond à la distance entre 2 dominos successifs
   const double h = 3.0e-2; // Correspond à la taille en hauteur des dominos
-  const double alphaChoc = trouve_Alpha_dicho(
-      delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
+  const double alphaChoc = trouve_Alpha(
+     delta, l0, h); // Stocke la valeur de l'angle choc dans la variable
                      // alphaChoc en la déterminant par dichotomie à l'aide des
                      // fonctions trouve_Alpha et calcul_Membre_Gauche
+  //const double alphaChoc = M_PI/2 -atan(l0/h) - acos(delta/sqrt(h*h+l0*l0));
   const double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1)
   const double dt = 0.001;    // intervalle de temps en s
   /* double gamma = 15.8e-6; // Définition de la viscosité du milieu de
@@ -110,7 +111,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    // valeur de l'angle alpha à l'instant t + dt pour le 1 er
                    // domino indice 0, à l'aide de l'équation du pdf n°1.
 
-    t++; // Inrémentation du temps pour changer de ligne dans notre tableau et
+    t++; // Incrémentation du temps pour changer de ligne dans notre tableau et
          // pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
   }
 
@@ -289,7 +290,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                                       // après le dernier de la chaîne. Alors on
                                       // remplace alpha[t][n + 1] par la valeur
                                       // pi/2 soit 90 degrés car il s'agit de
-                                      // l'angle entre la normal et le sol.
+                                      // l'angle entre la normale et le sol.
     }
   }
 
@@ -308,8 +309,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                   // en fonction du temps (2 ici st un sélecteur pour savoir si
                   // nous voulons tracer alpha ou l)
 
-  // QUESTIONS : LA LONGUEUR DU RESSORT DU DERNIER DOMINO NE VARIE PAS (jamais
-  // copmpréssé): Y A T-IL UNE RAISON ?
+  // QUESTIONS :
   // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
   // temps et de la variation de la valeur des angles en fonction du temps
   // (prévoir si Tmax bien supérieur au
@@ -317,7 +317,5 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   // Commentarisez conditions angles
   // négatifs et longueur infinies.
   // Commenter le tracé des courbes.
-  // Optimiser le
-  // code.
   // Vitesse limite pprofil
 }
