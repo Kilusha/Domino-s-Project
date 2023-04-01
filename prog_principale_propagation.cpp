@@ -32,18 +32,23 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   /* Déclaration de toutes les variables utiles pour le programme */
   int Nmax; // Nombre de colonnes de nos 2 tableaux (équivalent au
             // nombre de dominos).
-  cout << "Combien de dominos compose votre chef d'oeuvre artistique ? (Valeur "
+  cout << "Combien de dominos composent votre chef d'oeuvre artistique ? "
+          "(Valeur "
           "conséillée : 10) ";
   cin >> Nmax;
   const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
                           // (équivalent au temps maximal).
   const double l0 = 3e-3; // Longueur du ressort au repos en m.
   double delta; // Correspond à la distance entre 2 dominos successifs en m.
-  cout << "Quel est l'espace (en mètres) qui sépare 2 dominos successifs ? "
+  cout << endl
+       << "Quelle est la distance (en mètres) qui sépare 2 dominos successifs "
+          "éperdument amoureux l'un de l'autre et qui ne vont pas tarder à se "
+          "rejoindre ^^ ? "
           "(Valeur conséillée 0.01 m) ";
   cin >> delta;
   double h; // Correspond à la taille en hauteur des dominos en m.
-  cout << "Quelle est la hauteur (en mètres) de vos dominos ? "
+  cout << endl
+       << "Quelle est la hauteur (en mètres) de vos dominos ? "
           "(Valeur conséillée 0.03 m) ";
   cin >> h;
   const double alphaChoc = trouve_Alpha(
@@ -52,26 +57,59 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
           // alphaChoc en la déterminant à l'aide d'une formule utilisant de la
           // trigonométrie stocké dans la fonction trouve_Alpha.
   double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1).
-  cout << "Quel est la vitesse de rotation initale (en rad par seconde) du 1er "
+  cout << endl
+       << "Quelle est la vitesse de rotation initale (en rad par seconde) du "
+          "1er "
           "domino ? "
-          "(Valeur conséillée pi sur 4 rad.s^-1) ";
+          "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) ";
   cin >> w0;
-  const double dt = 0.001;      // Intervalle de temps en s.
-  double gamma = 1.81 / 100000; // Définition de la viscosité moléculaire
-                                // du milieu de propagation (ici l'air).
-  // const double gamma = 1.15 / 1000; // Définition de la viscosité moléculaire
-  // du milieu de propagation (ici l'eau). const double gamma = 6; //Définition
-  // de la viscosité moléculaire du milieu de propagation (ici le miel).
-
-  cout << "Quel est la viscosité (en mètres) qui sépare 2 dominos successifs ? "
-          "(Valeur conséillée 0.01 m) ";
+  const double dt = 0.001; // Intervalle de temps en s.
+  double gamma;            // Définition de la viscosité moléculaire
+                           // du milieu de propagation (ici l'air).
+  cout
+      << endl
+      << "Quelle est la viscosité moléculaire (en Newton seconde par mètre) du "
+         "milieu de propagation ? "
+         "(Valeur conséillée 0.00001881 N.s.m^(-1) pour l'air,"
+      << endl;
+  cout << "sinon 0.00115 N.s.m^(-1) pour l'eau ou encore 6 N.s.m^(-1) pour le "
+          "miel) ";
   cin >> gamma;
-  const double m = 10e-3; // Définition de la masse de l'objet en kg.
-  /*   double J = m * h * h / 3; // Définition du moment d'inertie en kg.m². */
-  const double J = 7.5 / 10000000; // Définition du moment d'inertie en kg.m².
-  const double g = 9.8;            // Définition de la pesanteur en m.s^(-2).
-  const double k =
-      1.0; // Définition de la constante du raideur du ressort en N.m^(-1).
+  double m; // Définition de la masse de l'objet en kg.
+  cout << endl
+       << "Quelle est la masse (en kilogramme) de vos dominos ? "
+          "(Valeur conséillée 0.010 kg) ";
+  cin >> m;
+  const double J = m * h * h / 3; // Définition du moment d'inertie en kg.m².
+  double g;                       // Définition de la pesanteur en m.s^(-2).
+  cout << endl
+       << "Quelle est la pesanteur (en mètre par seconde carré) de votre "
+          "planète, car, après tout n'ooubliez pas que ce code a été codé par "
+          "des M1 Astrophysique :) ? "
+       << endl;
+  cout << "(Valeur conséillée 9.81 m.s^(-2) pour la Terre, 3.7 m.s^(-2) pour "
+          "Mercure, 8.87 m.s^(-2) pour Vénus, 3.71 m.s^(-2) pour Mars, 24.79 "
+          "m.s^(-2) pour Jupiter,"
+       << endl;
+  cout << "10.44 m.s^(-2) pour Saturne, 8.69 m.s^(-2) pour "
+          "Uranus et 11.15 m.s^(-2) pour Neptune) ";
+  cin >> g;
+  double k; // Définition de la constante du raideur du ressort en N.m^(-1).
+  cout << endl
+       << "Quelle est la constante de raideur du ressort (en Newton par "
+          "mètre) des "
+          "dominos dans cette modélisation ? "
+          "(Valeur conséillée 1 N.m^(-1)) ";
+  cin >> k;
+  cout << endl
+       << "Merci pour toutes ces informations, la simulation est à présent en "
+          "cours de calcul... "
+       << endl;
+  cout << endl
+       << "Histoire de patienter voici de quoi réfléchir : "
+          "Patience et longueur de temps font plus que force ni que rage... "
+          "Surtout en informatique, n'est-il pas ? :) "
+       << endl;
   const double lmin =
       1e-4; // Longueur minimale du ressort proche de 0 mais
             // différet de 0 pour ne pas créer de problème
@@ -142,7 +180,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   int t_choc = t; // Sauvegarde de la valeur du temps requis avant le choc entre
                   // le domino 0 et le domino 1.
 
-  cout << "Le temps correspondant au choc du 1er domino d'indice 0 avec son "
+  cout << endl
+       << "Le temps correspondant au choc du 1er domino d'indice 0 avec son "
           "voisin de droite (i.e. le 2ème domino d'indice 1) est : "
        << t_choc * dt << " secondes après le début de l'expérience."
        << endl; // Affiche la valeur du temps nécessaire avant le choc du domino
@@ -333,6 +372,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   save_Data(alpha, Tmax, Nmax,
             "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
+
   save_Data(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
@@ -359,11 +399,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 
   // QUESTIONS :
-  // Reprendre le tracé des graphs de la longueur des ressorts en fonction du
-  // temps et de la variation de la valeur des angles en fonction du temps
-  // (prévoir si Tmax bien supérieur au
-  // temps de chute de tous les dominos).
-  // Commentarisez conditions angles.
-  // Commenter le tracé des courbes.
-  // Vitesse limite pprofil
+  // Paramétrer Tmax correctement pour qu'il soit toujours supérieur au temps de
+  // chute de tous les dominos.
+  // Commenter conditions angles.
+  // Commenter coonditions non transperçage des dominos voisins.
+  // Vitesse limite profil.
 }

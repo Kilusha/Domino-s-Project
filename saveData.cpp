@@ -26,7 +26,7 @@ void save_Data(double **matrice, int Tmax, int Nmax,
                        // revenir au domino 0.
     }
     fichier.close(); // Ferme le fichier.
-    cout << "Les valeurs ont été sauvegardé dans le fichier " << nomfichier
+    cout << endl << "Les valeurs ont été sauvegardé dans le fichier " << nomfichier
          << endl; // Permet d'informer que les valeurs ont bien été stocké et
                   // que la sauvegarde du tableau en question dans le fichier
                   // texte s'est déroulé avec succès.
