@@ -34,22 +34,20 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
             // nombre de dominos).
   cout << "Combien de dominos composent votre chef d'oeuvre artistique ? "
           "(Valeur "
-          "conséillée : 10) ";
+          "conséillée : 10) : ";
   cin >> Nmax;
-  const int Tmax = 2000;  // Nombre de lignes maximale de nos 2 tableaux
-                          // (équivalent au temps maximal).
   const double l0 = 3e-3; // Longueur du ressort au repos en m.
   double delta; // Correspond à la distance entre 2 dominos successifs en m.
   cout << endl
        << "Quelle est la distance (en mètres) qui sépare 2 dominos successifs "
           "éperdument amoureux l'un de l'autre et qui ne vont pas tarder à se "
           "rejoindre ^^ ? "
-          "(Valeur conséillée 0.01 m) ";
+          "(Valeur conséillée 0.01 m) : ";
   cin >> delta;
   double h; // Correspond à la taille en hauteur des dominos en m.
   cout << endl
        << "Quelle est la hauteur (en mètres) de vos dominos ? "
-          "(Valeur conséillée 0.03 m) ";
+          "(Valeur conséillée 0.03 m) : ";
   cin >> h;
   const double alphaChoc = trouve_Alpha(
       delta, l0,
@@ -61,7 +59,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
        << "Quelle est la vitesse de rotation initale (en rad par seconde) du "
           "1er "
           "domino ? "
-          "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) ";
+          "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) : ";
   cin >> w0;
   const double dt = 0.001; // Intervalle de temps en s.
   double gamma;            // Définition de la viscosité moléculaire
@@ -72,13 +70,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
          "milieu de propagation ? "
          "(Valeur conséillée 0.00001881 N.s.m^(-1) pour l'air,"
       << endl;
-  cout << "sinon 0.00115 N.s.m^(-1) pour l'eau ou encore 6 N.s.m^(-1) pour le "
-          "miel) ";
+  cout << "sinon 0.00115 N.s.m^(-1) pour l'eau) : ";
   cin >> gamma;
   double m; // Définition de la masse de l'objet en kg.
   cout << endl
        << "Quelle est la masse (en kilogramme) de vos dominos ? "
-          "(Valeur conséillée 0.010 kg) ";
+          "(Valeur conséillée 0.01 kg) : ";
   cin >> m;
   const double J = m * h * h / 3; // Définition du moment d'inertie en kg.m².
   double g;                       // Définition de la pesanteur en m.s^(-2).
@@ -92,14 +89,14 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
           "m.s^(-2) pour Jupiter,"
        << endl;
   cout << "10.44 m.s^(-2) pour Saturne, 8.69 m.s^(-2) pour "
-          "Uranus et 11.15 m.s^(-2) pour Neptune) ";
+          "Uranus et 11.15 m.s^(-2) pour Neptune) : ";
   cin >> g;
   double k; // Définition de la constante du raideur du ressort en N.m^(-1).
   cout << endl
        << "Quelle est la constante de raideur du ressort (en Newton par "
           "mètre) des "
           "dominos dans cette modélisation ? "
-          "(Valeur conséillée 1 N.m^(-1)) ";
+          "(Valeur conséillée 1 N.m^(-1)) : ";
   cin >> k;
   cout << endl
        << "Merci pour toutes ces informations, la simulation est à présent en "
@@ -110,15 +107,60 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
           "Patience et longueur de temps font plus que force ni que rage... "
           "Surtout en informatique, n'est-il pas ? :) "
        << endl;
-  const double lmin =
-      1e-4; // Longueur minimale du ressort proche de 0 mais
-            // différet de 0 pour ne pas créer de problème
-            // dans les formules lors des calculs et pour définir la longueur
-            // minimale lors de l'impact avec le domino voisin ou le sol dans
-            // le cas du dernier domino, avant décompression pour valeur
-            // atteindre la longueur "d'équilibre" qui correspond au moment ou
-            // la longueur sera stable, tout en supportant le poids de tous
-            // les dominos précédents déjà écroulés. Elle est en m.
+  const double lmin = 1e-4; // Longueur minimale du ressort proche de 0 mais
+  // différet de 0 pour ne pas créer de problème
+  // dans les formules lors des calculs et pour définir la longueur
+  // minimale lors de l'impact avec le domino voisin ou le sol dans
+  // le cas du dernier domino, avant décompression pour valeur
+  // atteindre la longueur "d'équilibre" qui correspond au moment ou
+  // la longueur sera stable, tout en supportant le poids de tous
+  // les dominos précédents déjà écroulés. Elle est en m.
+
+  int Tmax; // Déclaration du nombre de lignes maximale de nos 2 tableaux
+            // (équivalent au temps maximal).
+  /*  Attention : Étant donné que le programme de base disponnible sur le moodle
+   * nous faisait travailler avec des tableaux (pointeurs), nous avons alors
+   * continué. Cependant, les vecteurs auraient été bien plus approprié étant
+   * donné qu'ils ont l'avantage d'avoir une taille non fixe, que l'on peut
+   * agrandir au fil du code. Ici la taille des tableaux doit-être fixe lors de
+   * sa déclaration même si l'allocation de mémoire se fait dynamiquement.Cela
+   * nous oblige à faire une étude (tester toutes les combinaisons possibles
+   * avec notre code) pour prévoir la taille du tableau qu'il nous faut afin
+   * d'éviter tout problème de segmentation. C'est donc ce que nous avons
+   * réalisé dans les lignes de codes ci-dessous. La seule chose que nous
+   * n'avons pas pris en compte pour éviter d'allonger le code est un nombre de
+   * domino trop important. En effet il faudrait agrandir la fenêtre où le
+   * graphique est tracé pour voir apparaître la chute de 100 dominos par
+   * exemple. Mais nous ne l'avons volontairement pas prévu pour éviter un code
+   * trop lourd et inutile. Sachant qu'ici, nous proposons déjà pas mal de
+   * combinaisons possibles et sympathiques avec 10 dominos ou plus (15 dominos
+   * par exemple). */
+
+  /* Attention : Évidemment les tests réalisés sur les différentes planètes à
+   * travers cette simulation ne sont pas à prendre au sérieux, l'atmosphère
+   * terrestre ne représentant pas l'atmosphère de toutes les planètes
+   * malheureusement. Les simulations sont donc faite avec l'hyppothèse que les
+   * planètes ont un atmosphère avec la même viscosité moléculaire que celui de
+   * la Terre. */
+  if (gamma == 0.00115) { // Si le fluide choisi est l'eau.
+    if (g == 24.79) {     // Si Jupiter est choisie.
+      Tmax = 12000;       // Nombre de lignes maximale de nos 2 tableaux
+                          // (équivalent au temps maximal).
+    } else if (g == 11.15 || g == 10.44 ||
+               g == 9.81) { // Si Neptune, Saturne ou Jupiter est choisie.
+      Tmax = 20000;         // Nombre de lignes maximale de nos 2 tableaux
+                            // (équivalent au temps maximal).
+    } else if (g == 8.69 || g == 8.87) { // Si Uranus ou Venus est choisie.
+      Tmax = 22000; // Nombre de lignes maximale de nos 2 tableaux
+                    // (équivalent au temps maximal).
+    } else {        // Si Mars ou Mercure est choisie.
+      Tmax = 40000; // Nombre de lignes maximale de nos 2 tableaux
+                    // (équivalent au temps maximal).
+    }
+  } else {       // Si le fluide choisie est l'air.
+    Tmax = 2000; // Nombre de lignes maximale de nos 2 tableaux
+                 // (équivalent au temps maximal).
+  }
 
   double **alpha =
       new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers la
@@ -404,4 +446,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   // Commenter conditions angles.
   // Commenter coonditions non transperçage des dominos voisins.
   // Vitesse limite profil.
+  // Afficher le temps de chute total.
+  // Domino trop espacés ?
+  // Condition valeur erronée entrée par l'utilisateur.
 }
