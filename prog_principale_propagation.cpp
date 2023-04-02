@@ -317,7 +317,10 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   double **l = new double *[Tmax]; // Déclaration du pointeur l qui pointera
                                    // vers la case ou sera stockée la valeur de
                                    // la longueur du ressort l de chaque domino.
-  double **v = new double *[Tmax];
+  double **v = new double *[Tmax]; // Déclaration du pointeur v qui pointera
+                                   // vers la case ou sera stockée la valeur de
+                                   // la vitesse de propagation de l'onde.
+
   /* Initialisation des 2 tableaux à 2 dimensions en allouant de la mémoire
    * dynamique pour y stocker des variables de type "double" qui seront la
    * valeur de l'angle alpha du domino n à l'nstant t, ainsi que la longueur
@@ -331,7 +334,10 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    lmin); // Créé le tableau l qui gardera en mémoire la
                           // valeur des longueurs des ressorts de tous les
                           // dominos à chaque instant de l'expérience.
-  creation_Matrice(v, Tmax,Nmax, 0., 0.);
+  creation_Matrice(v, Tmax, Nmax, 0.,
+                   0.); // Créé le tableau v qui gardera en mémoire la
+                        // valeur des vitesses de propagation de tous les
+                        // dominos à chaque instant de l'expérience.
   cout << endl
        << "L'angle de choc entre les 2 peremiers dominos d'indice 0 et 1 "
           "correspond à : "
@@ -348,7 +354,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   int t = 1; // Initialisation du temps t pour la suite du prog.
 
   /* le 1er domino en mouvement jusqu'au choc*/
-  v[t][0] =( alpha[t][0] - alpha[t+1][0])*h/dt;
+  v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
 
   while (alpha[t][0] <
          alphaChoc) { // Condition portant sur l'angle signifiant : Tant que le
@@ -365,6 +371,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
     t++; // Incrémentation du temps pour changer de ligne dans notre tableau
     // et pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
+
+    v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
   }
 
   /* Sortie de la boucle while. Ainsi le temps t correspond au temps pour
@@ -435,13 +443,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       // les dominos (soit Nmax) sont couchés les uns sur les autres et donc que
       // leur ressorts ont tous une longueur de lmin.
 
+    v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
+
     /* Mouvement du domino d'indice n>=1 */
     int n = 1; // Initialisation de l'indice du domino
                // (ici à 1) qui est en contact avec le domino d'indice n-1 et
                // celui d'indice n+1.
-
-
-    v[t][n] =( alpha[t][n] - alpha[t+1][n])*h/dt;
 
     while (
         alpha[t][n] > alphaChoc &&
@@ -496,9 +503,11 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * atan((lmin / h));
       } // Nous considérons ici l'angle maximal que peut formé le n-ieme -1
         // domino d'indice n
-      // avec la verticale. Cette condition est atteinte
+        // avec la verticale. Cette condition est atteinte
       // lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns sur
       // les autres et donc que leur ressorts ont tous une longueur de lmin.
+
+      v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t -1][n])) * h / dt;
 
       n++; // Permet de passer au domino suivant
     }
@@ -530,6 +539,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       // lorsque ce domino est couché et que
       // que son ressort a une longueur lmin.
 
+    v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t][n])) * h / dt;
+
     n = Nmax - 2; // Nous nous plaçons à l'avant dernier domino d'indice Nmax-2.
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
                    // en place d'une sécurité : évite que le domino n traverse
@@ -540,6 +551,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         alpha[t + 1][n] =
             alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
       }
+
+      v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t][n])) * h / dt;
 
       n -= 1; // Décrémentation de l'indice parcourant les dominos pour
               // passer au domino inférieur.
@@ -590,14 +603,14 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   save_Data(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
-  save_Data(v,Tmax,Nmax,"vitesse.txt");
+  save_Data(v, Tmax, Nmax, "vitesse.txt");
 
   trace_Graph(alpha, dt, Tmax, Nmax,
               1); // Trace le graphe de l'évolution des angles alpha en
                   // fonction du temps (1 ici st un sélecteur pour savoir si
                   // nous voulons tracer alpha ou l).
 
-  trace_Graph(v,dt,Tmax,Nmax,3);
+  trace_Graph(v, dt, Tmax, Nmax, 3);
 
   trace_Graph(l, dt, Tmax, Nmax,
               2); // Trace le graphe de l'évolution de la longueur des
