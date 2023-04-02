@@ -29,6 +29,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // retour "int" qui sera renvoyé en exécutant ce code si tout s'est
              // bien déroulé.
 
+  /* Déclaration de toutes les variables utiles pour le programme */
   const double l0 = 3e-3;  // Longueur du ressort au repos en m.
   const double dt = 0.001; // Intervalle de temps en s.
   double delta; // Correspond à la distance entre 2 dominos successifs en m.
@@ -41,8 +42,15 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   double k;  // Définition de la constante du raideur du ressort en N.m^(-1).
   int c = 0; // Simple compteur qui va nous servir à pouvoir afficher le temps
              // de chute total de tous les dominos.
+  const double lmin = 1e-4; // Longueur minimale du ressort proche de 0 mais
+  // différet de 0 pour ne pas créer de problème
+  // dans les formules lors des calculs et pour définir la longueur
+  // minimale lors de l'impact avec le domino voisin ou le sol dans
+  // le cas du dernier domino, avant décompression pour valeur
+  // atteindre la longueur "d'équilibre" qui correspond au moment ou
+  // la longueur sera stable, tout en supportant le poids de tous
+  // les dominos précédents déjà écroulés. Elle est en m.
 
-  /* Déclaration de toutes les variables utiles pour le programme */
   int Nmax; // Nombre de colonnes de nos 2 tableaux (équivalent au
             // nombre de dominos).
 
@@ -254,15 +262,6 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
        << endl; // Affiche un message de méditation le temps de l'affichage des
                 // graphes.
 
-  const double lmin = 1e-4; // Longueur minimale du ressort proche de 0 mais
-  // différet de 0 pour ne pas créer de problème
-  // dans les formules lors des calculs et pour définir la longueur
-  // minimale lors de l'impact avec le domino voisin ou le sol dans
-  // le cas du dernier domino, avant décompression pour valeur
-  // atteindre la longueur "d'équilibre" qui correspond au moment ou
-  // la longueur sera stable, tout en supportant le poids de tous
-  // les dominos précédents déjà écroulés. Elle est en m.
-
   int Tmax; // Déclaration du nombre de lignes maximale de nos 2 tableaux
             // (équivalent au temps maximal).
   /*  Attention : Étant donné que le programme de base disponnible sur le
@@ -400,25 +399,28 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
     /* Mouvement du 1er domino d'indice 0 après choc avec le 2ème domino n°1
      */
 
-    if (Nmax==1){
+    if (Nmax == 1 || delta > 0.03) {
       l[t][0] =
-        h * tan(M_PI/2 - alpha[t][0]) +
-        delta / ((1. + tan(alpha[t][0]) * tan(M_PI/2)) *
-                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
-                                    // longueurs des ressorts l de la valeur de
-                                    // la longueur l à l'instant t du ressort du
-                                    // 1er domino d'indice 0, à l'aide de
-                                    // l'équation du pdf tout en bas. */
-    }
+          h * tan(M_PI / 2 - alpha[t][0]) +
+          delta /
+              ((1. + tan(alpha[t][0]) * tan(M_PI / 2)) *
+               cos(alpha[t][0])); // Calcul et stockage dans le tableau des
+                                  // longueurs des ressorts l de la valeur de
+                                  // la longueur l à l'instant t du ressort du
+                                  // 1er domino d'indice 0, à l'aide de
+                                  // l'équation du pdf tout en bas. */
+    } else {
 
-    l[t][0] =
-        h * tan(alpha[t][1] - alpha[t][0]) +
-        delta / ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
-                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
-                                    // longueurs des ressorts l de la valeur de
-                                    // la longueur l à l'instant t du ressort du
-                                    // 1er domino d'indice 0, à l'aide de
-                                    // l'équation du pdf tout en bas. */
+      l[t][0] =
+          h * tan(alpha[t][1] - alpha[t][0]) +
+          delta /
+              ((1. + tan(alpha[t][0]) * tan(alpha[t][1])) *
+               cos(alpha[t][0])); // Calcul et stockage dans le tableau des
+                                  // longueurs des ressorts l de la valeur de
+                                  // la longueur l à l'instant t du ressort du
+                                  // 1er domino d'indice 0, à l'aide de
+                                  // l'équation du pdf tout en bas. */
+    }
 
     if (l[t][0] > l0) // Vérifie si le calcul de la longueur du ressort du 1er
                       // domino d'indice 0 est plus grande que sa longueur à
@@ -463,8 +465,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
     while (
         alpha[t][n] > alphaChoc &&
-        (n <
-         Nmax - 1)) // Traduit la condition : tant que le domino d'indice n
+        (n < Nmax - 1 &&
+         delta <
+             0.03)) // Traduit la condition : tant que le domino d'indice n
                     // est en contact avec son voisin de droite (i.e. que
                     // l'angle alpha est supérieur à l'angle choc) et que
                     // l'indice n désigne bel et bien un domino autre que le
@@ -523,7 +526,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       n++; // Permet de passer au domino suivant
     }
 
-    if (n < Nmax) // Verification s'il nous reste des dominos parmi tous les
+    if (n < Nmax &&
+        delta <
+            0.03) // Verification s'il nous reste des dominos parmi tous les
                   // dominos y compris le dernier, qui ne seraientt pas encore
                   // en contact avec leur voisin de droite tout en étant en
                   // contact avec leur voisin de gauche. Ainsi, la prochaine
@@ -553,9 +558,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
     v[t][n] = (sin(alpha[t + 1][n]) - sin(alpha[t][n])) * h / dt;
 
     n = Nmax - 2; // Nous nous plaçons à l'avant dernier domino d'indice Nmax-2.
-    while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
-                   // en place d'une sécurité : évite que le domino n traverse
-                   // le domino n+1 (ça peut ariver lors de la simulation ...).
+    while (
+        n >= 0 &&
+        delta <
+            0.03) // Tant que nous désignons un domino avec la lettre n. Mise
+                  // en place d'une sécurité : évite que le domino n traverse
+                  // le domino n+1 (ça peut ariver lors de la simulation ...).
     {
       if (alpha[t + 1][n] >
           (alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h))) {
@@ -648,4 +656,5 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   // Ressort invariable domino = 1 ou domino trop espacé.
   // Domino = 1 : 1 ressort dédoublé
   // Optimiser le calcul de la vitesse.
+  // Alphachoc = nan ou 13 degré pour nmax = 1 ou delta = 1.
 }
