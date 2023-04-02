@@ -29,84 +29,231 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
              // retour "int" qui sera renvoyé en exécutant ce code si tout s'est
              // bien déroulé.
 
+  const double l0 = 3e-3;  // Longueur du ressort au repos en m.
+  const double dt = 0.001; // Intervalle de temps en s.
+  double delta; // Correspond à la distance entre 2 dominos successifs en m.
+  double h;     // Correspond à la taille en hauteur des dominos en m.
+  double w0;    // Vitesse de chute du domino en rad.s^(-1).
+  double gamma; // Définition de la viscosité moléculaire
+                // du milieu de propagation (ici l'air).
+  double m;     // Définition de la masse de l'objet en kg.
+  double g;     // Définition de la pesanteur en m.s^(-2).
+  double k;  // Définition de la constante du raideur du ressort en N.m^(-1).
+  int c = 0; // Simple compteur qui va nous servir à pouvoir afficher le temps
+             // de chute total de tous les dominos.
+
   /* Déclaration de toutes les variables utiles pour le programme */
   int Nmax; // Nombre de colonnes de nos 2 tableaux (équivalent au
             // nombre de dominos).
-  cout << "Combien de dominos composent votre chef d'oeuvre artistique ? "
-          "(Valeur "
-          "conséillée : 10) : ";
-  cin >> Nmax;
-  const double l0 = 3e-3; // Longueur du ressort au repos en m.
-  double delta; // Correspond à la distance entre 2 dominos successifs en m.
-  cout << endl
-       << "Quelle est la distance (en mètres) qui sépare 2 dominos successifs "
-          "éperdument amoureux l'un de l'autre et qui ne vont pas tarder à se "
-          "rejoindre ^^ ? "
-          "(Valeur conséillée 0.01 m) : ";
-  cin >> delta;
-  double h; // Correspond à la taille en hauteur des dominos en m.
-  cout << endl
-       << "Quelle est la hauteur (en mètres) de vos dominos ? "
-          "(Valeur conséillée 0.03 m) : ";
-  cin >> h;
+
+  /* Toutes les boucles do while ci-dessous sont utilisées pour demander à
+   * l'utilisateur les valeurs de chaque variable en ajoutant une sécurité afin
+   * de ne pas planter le pogramme au cas où les valeurs rentrées sont erronées
+   */
+
+  do { // Exécute le code ci-dessous de manière certaine.
+
+    cout << "Combien de dominos composent votre chef d'oeuvre artistique ? "
+            "(Valeur "
+            "conséillée : 10) : "; // Demande à l'utilisateur le nombre de
+                                   // dominos qui composent sa chaine.
+    cin >> Nmax; // Stocke la valeur entrée par l'utilisateur dans la variable
+                 // Nmax.
+
+    if (Nmax <= 0) // Si le nombre de domino est négatif ou nul.
+    {
+      cout << "Le nombre de dominos que vous avez choisi est incorrect. "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+
+  } while (Nmax <=
+           0); // Condition qui permet de répété la boucle do tant que le nombre
+               // de domino entré par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout
+        << endl
+        << "Quelle est la distance (en mètres) qui sépare 2 dominos successifs "
+           "éperdument amoureux l'un de l'autre et qui ne vont pas tarder à se "
+           "rejoindre ^^ ? "
+           "(Valeur conséillée 0.01 m) : "; // Demande à l'utilisateur la
+                                            // distance qui sépare deux dominos
+                                            // successifs.
+    cin >> delta; // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // delta.
+    if (delta <= 0.003) { // Si l'espacement entre deux dominos successifs est
+                          // inférieur à 3 mm.
+      cout << "La distance que vous avez choisie entre les dominos est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (delta <= 0.003); // Condition qui permet de répété la boucle do tant
+                            // que la distance qui sépare 2 dominos successifs
+                            // entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout << endl
+
+         << "Quelle est la hauteur (en mètres) de vos dominos ? "
+            "(Valeur conséillée 0.03 m) : "; // Demande à l'utilisateur la
+                                             // hauteur des dominos qui
+                                             // composent sa chaine.
+    cin >> h;     // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // h.
+    if (h <= 0) { // Si la hauteur des dominos est négative ou nulle.
+      cout << "La hauteur des domninos que vous avez choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (h <=
+           0); // Condition qui permet de répété la boucle do tant que la
+               // hauteur des dominos entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout
+        << endl
+        << "Quelle est la vitesse de rotation initale (en rad par seconde) du "
+           "1er "
+           "domino ? "
+           "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) : "; // Demande à l'utilisateur
+    // la vitesse initiale du 1er domino qui compose sa chaine.
+    cin >> w0; // Stocke la valeur entrée par l'utilisateur dans la variable
+               // w0.
+    if (w0 <= 0) { // Si la vitesse de rotation initiale est négative ou nulle.
+      cout << "La vitesse de rotation initiale du 1er domino que vous avez "
+              "choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (
+      w0 <=
+      0); // Condition qui permet de répété la boucle do tant que la vitesse de
+          // rotation du 1er domino entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout << endl
+         << "Quelle est la viscosité moléculaire (en Newton seconde par mètre) "
+            "du "
+            "milieu de propagation ? "
+            "(Valeur conséillée 0.00001881 N.s.m^(-1) pour l'air,"
+         << endl;
+    cout
+        << "sinon 0.00115 N.s.m^(-1) pour l'eau) : "; // Demande à l'utilisateur
+                                                      // la viscosité
+                                                      // moléculaire du milieu
+                                                      // de propagation de
+                                                      // l'onde de chute à
+                                                      // travers les dominos.
+    cin >> gamma; // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // gamma.
+    if (gamma <=
+        0) { // Si la viscosité du milieu de propagation est négative ou nulle.
+      cout << "La viscosité du milieu de propagation que vous avez "
+              "choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (gamma <= 0); // Condition qui permet de répété la boucle do tant que
+                        // lla viscosité moléculaire du milieu de propagation
+                        // entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout << endl
+         << "Quelle est la masse (en kilogramme) de vos dominos ? "
+            "(Valeur conséillée 0.01 kg) : "; // Demande à l'utilisateur la
+                                              // masse des dominos qui composent
+                                              // sa chaine.
+    cin >> m;     // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // m.
+    if (m <= 0) { // Si la masse des dominos est négative ou nulle.
+      cout << "La masse des domino que vous avez "
+              "choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (m <=
+           0); // Condition qui permet de répété la boucle do tant que la masse
+               // des dominos entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout
+        << endl
+        << "Quelle est la pesanteur (en mètre par seconde carré) de votre "
+           "planète, car, après tout n'ooubliez pas que ce code a été codé par "
+           "des M1 Astrophysique :) ? "
+        << endl;
+    cout << "(Valeur conséillée 9.81 m.s^(-2) pour la Terre, 3.7 m.s^(-2) pour "
+            "Mercure, 8.87 m.s^(-2) pour Vénus, 3.71 m.s^(-2) pour Mars, 24.79 "
+            "m.s^(-2) pour Jupiter,"
+         << endl;
+    cout << "10.44 m.s^(-2) pour Saturne, 8.69 m.s^(-2) pour "
+            "Uranus et 11.15 m.s^(-2) pour Neptune) : "; // Demande à
+                                                         // l'utilisateur le
+                                                         // champ de pesanteur
+                                                         // de la planète sur
+                                                         // laquelle il réalise
+                                                         // son expérience.
+    cin >> g;     // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // g.
+    if (g <= 0) { // Si la pesanteur est négative ou nulle.
+      cout << "La pesanteur que vous avez "
+              "choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (g <= 0); // Condition qui permet de répété la boucle do tant que la
+                    // pesanteur entrée par l'utilisateur n'est pas valide.
+
+  do { // Exécute le code ci-dessous de manière certaine.
+    cout << endl
+         << "Quelle est la constante de raideur du ressort (en Newton par "
+            "mètre) des "
+            "dominos dans cette modélisation ? "
+            "(Valeur conséillée 1 N.m^(-1)) : "; // Demande à l'utilisateur la
+                                                 // constante de raideur des
+                                                 // ressorts qui sont fixés sur
+                                                 // chaque domino.
+    cin >> k;     // Stocke la valeur entrée par l'utilisateur dans la variable
+                  // k.
+    if (k <= 0) { // Si la constante de raideur des ressorts des dominos est
+                  // négative ou nulle.
+      cout << "La constante de raideur des ressorts de chaque domino que vous "
+              "avez "
+              "choisie est "
+              "incorrect (trop petite). "
+              "Veuillez rééssayer. "
+           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    }
+  } while (
+      k <=
+      0); // Condition qui permet de répété la boucle do tant que la constante
+          // de raideur des ressorts entrée par l'utilisateur n'est pas valide.
+
   const double alphaChoc = trouve_Alpha(
       delta, l0,
       h); // Stocke la valeur de l'angle choc en rad dans la variable
-          // alphaChoc en la déterminant à l'aide d'une formule utilisant de la
-          // trigonométrie stocké dans la fonction trouve_Alpha.
-  double w0 = M_PI / 4; // Vitesse de chute du domino en rad.s^(-1).
-  cout << endl
-       << "Quelle est la vitesse de rotation initale (en rad par seconde) du "
-          "1er "
-          "domino ? "
-          "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) : ";
-  cin >> w0;
-  const double dt = 0.001; // Intervalle de temps en s.
-  double gamma;            // Définition de la viscosité moléculaire
-                           // du milieu de propagation (ici l'air).
-  cout
-      << endl
-      << "Quelle est la viscosité moléculaire (en Newton seconde par mètre) du "
-         "milieu de propagation ? "
-         "(Valeur conséillée 0.00001881 N.s.m^(-1) pour l'air,"
-      << endl;
-  cout << "sinon 0.00115 N.s.m^(-1) pour l'eau) : ";
-  cin >> gamma;
-  double m; // Définition de la masse de l'objet en kg.
-  cout << endl
-       << "Quelle est la masse (en kilogramme) de vos dominos ? "
-          "(Valeur conséillée 0.01 kg) : ";
-  cin >> m;
+          // alphaChoc en la déterminant à l'aide d'une formule utilisant de
+          // la trigonométrie stocké dans la fonction trouve_Alpha.
   const double J = m * h * h / 3; // Définition du moment d'inertie en kg.m².
-  double g;                       // Définition de la pesanteur en m.s^(-2).
-  cout << endl
-       << "Quelle est la pesanteur (en mètre par seconde carré) de votre "
-          "planète, car, après tout n'ooubliez pas que ce code a été codé par "
-          "des M1 Astrophysique :) ? "
-       << endl;
-  cout << "(Valeur conséillée 9.81 m.s^(-2) pour la Terre, 3.7 m.s^(-2) pour "
-          "Mercure, 8.87 m.s^(-2) pour Vénus, 3.71 m.s^(-2) pour Mars, 24.79 "
-          "m.s^(-2) pour Jupiter,"
-       << endl;
-  cout << "10.44 m.s^(-2) pour Saturne, 8.69 m.s^(-2) pour "
-          "Uranus et 11.15 m.s^(-2) pour Neptune) : ";
-  cin >> g;
-  double k; // Définition de la constante du raideur du ressort en N.m^(-1).
-  cout << endl
-       << "Quelle est la constante de raideur du ressort (en Newton par "
-          "mètre) des "
-          "dominos dans cette modélisation ? "
-          "(Valeur conséillée 1 N.m^(-1)) : ";
-  cin >> k;
+
   cout << endl
        << "Merci pour toutes ces informations, la simulation est à présent en "
           "cours de calcul... "
-       << endl;
+       << endl; // Affiche un message de remerciement
   cout << endl
        << "Histoire de patienter voici de quoi réfléchir : "
           "Patience et longueur de temps font plus que force ni que rage... "
           "Surtout en informatique, n'est-il pas ? :) "
-       << endl;
+       << endl; // Affiche un message de méditation le temps de l'affichage des
+                // graphes.
+
   const double lmin = 1e-4; // Longueur minimale du ressort proche de 0 mais
   // différet de 0 pour ne pas créer de problème
   // dans les formules lors des calculs et pour définir la longueur
@@ -118,30 +265,31 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   int Tmax; // Déclaration du nombre de lignes maximale de nos 2 tableaux
             // (équivalent au temps maximal).
-  /*  Attention : Étant donné que le programme de base disponnible sur le moodle
-   * nous faisait travailler avec des tableaux (pointeurs), nous avons alors
-   * continué. Cependant, les vecteurs auraient été bien plus approprié étant
-   * donné qu'ils ont l'avantage d'avoir une taille non fixe, que l'on peut
-   * agrandir au fil du code. Ici la taille des tableaux doit-être fixe lors de
-   * sa déclaration même si l'allocation de mémoire se fait dynamiquement.Cela
-   * nous oblige à faire une étude (tester toutes les combinaisons possibles
-   * avec notre code) pour prévoir la taille du tableau qu'il nous faut afin
-   * d'éviter tout problème de segmentation. C'est donc ce que nous avons
-   * réalisé dans les lignes de codes ci-dessous. La seule chose que nous
-   * n'avons pas pris en compte pour éviter d'allonger le code est un nombre de
-   * domino trop important. En effet il faudrait agrandir la fenêtre où le
-   * graphique est tracé pour voir apparaître la chute de 100 dominos par
-   * exemple. Mais nous ne l'avons volontairement pas prévu pour éviter un code
-   * trop lourd et inutile. Sachant qu'ici, nous proposons déjà pas mal de
-   * combinaisons possibles et sympathiques avec 10 dominos ou plus (15 dominos
-   * par exemple). */
+  /*  Attention : Étant donné que le programme de base disponnible sur le
+   * moodle nous faisait travailler avec des tableaux (pointeurs), nous avons
+   * alors continué. Cependant, les vecteurs auraient été bien plus approprié
+   * étant donné qu'ils ont l'avantage d'avoir une taille non fixe, que l'on
+   * peut agrandir au fil du code. Ici la taille des tableaux doit-être fixe
+   * lors de sa déclaration même si l'allocation de mémoire se fait
+   * dynamiquement.Cela nous oblige à faire une étude (tester toutes les
+   * combinaisons possibles avec notre code) pour prévoir la taille du tableau
+   * qu'il nous faut afin d'éviter tout problème de segmentation. C'est donc
+   * ce que nous avons réalisé dans les lignes de codes ci-dessous. La seule
+   * chose que nous n'avons pas pris en compte pour éviter d'allonger le code
+   * est un nombre de domino trop important. En effet il faudrait agrandir la
+   * fenêtre où le graphique est tracé pour voir apparaître la chute de 100
+   * dominos par exemple. Mais nous ne l'avons volontairement pas prévu pour
+   * éviter un code trop lourd et inutile. Sachant qu'ici, nous proposons déjà
+   * pas mal de combinaisons possibles et sympathiques avec 10 dominos ou plus
+   * (15 dominos par exemple). */
 
   /* Attention : Évidemment les tests réalisés sur les différentes planètes à
    * travers cette simulation ne sont pas à prendre au sérieux, l'atmosphère
    * terrestre ne représentant pas l'atmosphère de toutes les planètes
-   * malheureusement. Les simulations sont donc faite avec l'hyppothèse que les
-   * planètes ont un atmosphère avec la même viscosité moléculaire que celui de
-   * la Terre. */
+   * malheureusement. Les simulations sont donc faite avec l'hyppothèse que
+   * les planètes ont un atmosphère avec la même viscosité moléculaire que
+   * celui de la Terre. */
+
   if (gamma == 0.00115) { // Si le fluide choisi est l'eau.
     if (g == 24.79) {     // Si Jupiter est choisie.
       Tmax = 12000;       // Nombre de lignes maximale de nos 2 tableaux
@@ -163,31 +311,32 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   }
 
   double **alpha =
-      new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers la
-                          // case ou sera stockée la valeur de l'angle alpha de
-                          // chaque domino.
+      new double *[Tmax]; // Déclaration du pointeur alpha qui pointera vers
+                          // la case ou sera stockée la valeur de l'angle
+                          // alpha de chaque domino.
   double **l = new double *[Tmax]; // Déclaration du pointeur l qui pointera
                                    // vers la case ou sera stockée la valeur de
                                    // la longueur du ressort l de chaque domino.
   double **v = new double *[Tmax];
   /* Initialisation des 2 tableaux à 2 dimensions en allouant de la mémoire
    * dynamique pour y stocker des variables de type "double" qui seront la
-   * valeur de l'angle alpha du domino n à l'nstant t, ainsi que la longueur de
-   * son ressort à ce même instant : */
+   * valeur de l'angle alpha du domino n à l'nstant t, ainsi que la longueur
+   * de son ressort à ce même instant : */
 
   creation_Matrice(
       alpha, Tmax, Nmax, 0.,
       M_PI / 2); // Créé le tableau alpha qui gardera en mémoire la valeur des
                  // angles de tous les dominos à chaque instant de l'expérience.
   creation_Matrice(l, Tmax, Nmax, l0,
-                   lmin); // Créé le tableau l qui gardera en mémoire la valeur
-                          // des longueurs des ressorts de tous les dominos à
-                          // chaque instant de l'expérience.
+                   lmin); // Créé le tableau l qui gardera en mémoire la
+                          // valeur des longueurs des ressorts de tous les
+                          // dominos à chaque instant de l'expérience.
   creation_Matrice(v, Tmax,Nmax, 0., 0.);
   cout << endl
        << "L'angle de choc entre les 2 peremiers dominos d'indice 0 et 1 "
           "correspond à : "
-       << alphaChoc << " rad." << endl; // Affiche la valeur de l'angle choc
+       << alphaChoc << " rad, soit : " << alphaChoc * 180 / M_PI << " degrés."
+       << endl; // Affiche la valeur de l'angle choc
 
   /* Initialisation de l'angle du premier domino a l'instant t+dt => t = 1 */
 
@@ -210,26 +359,26 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         (1 +
          gamma * dt /
              (2 *
-              J)); // Calcul et stockage dans le tableau des angles alpha de la
-                   // valeur de l'angle alpha à l'instant t + dt pour le 1 er
-                   // domino indice 0, à l'aide de l'équation du pdf n°1.
+              J)); // Calcul et stockage dans le tableau des angles alpha de
+                   // la valeur de l'angle alpha à l'instant t + dt pour le 1
+                   // er domino indice 0, à l'aide de l'équation du pdf n°1.
 
-    t++; // Incrémentation du temps pour changer de ligne dans notre tableau et
-         // pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
+    t++; // Incrémentation du temps pour changer de ligne dans notre tableau
+    // et pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
   }
 
-  /* Sortie de la boucle while. Ainsi le temps t correspond au temps pour lequel
-   * il y a le choc entre le domino 0 et le domino 1 */
+  /* Sortie de la boucle while. Ainsi le temps t correspond au temps pour
+   * lequel il y a le choc entre le domino 0 et le domino 1 */
 
-  int t_choc = t; // Sauvegarde de la valeur du temps requis avant le choc entre
-                  // le domino 0 et le domino 1.
+  int t_choc = t; // Sauvegarde de la valeur du temps requis avant le choc
+                  // entre le domino 0 et le domino 1.
 
   cout << endl
        << "Le temps correspondant au choc du 1er domino d'indice 0 avec son "
-          "voisin de droite (i.e. le 2ème domino d'indice 1) est : "
+          "voisin de droite (i.e. le 2ème domino d'indice 1) est de : "
        << t_choc * dt << " secondes après le début de l'expérience."
-       << endl; // Affiche la valeur du temps nécessaire avant le choc du domino
-                // d'indice 0 avec le domino d'indice 1.
+       << endl; // Affiche la valeur du temps nécessaire avant le choc du
+                // domino d'indice 0 avec le domino d'indice 1.
 
   /* Poursuite de la chute du 1er domino d'indice 0 après contact avec le
    * deuxième domino d'indice 1 */
@@ -240,7 +389,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
             // jusqu'au moment où les dominos seront tous "à terre" (ou du
             // moins, lorsqu'il se chevaucheront tous) (t = Tmax-1).
   {
-    /* Mouvement du 1er domino d'indice 0 après choc avec le 2ème domino n°1 */
+    /* Mouvement du 1er domino d'indice 0 après choc avec le 2ème domino n°1
+     */
 
     l[t][0] =
         h * tan(alpha[t][1] - alpha[t][0]) +
@@ -253,15 +403,15 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
     if (l[t][0] > l0) // Vérifie si le calcul de la longueur du ressort du 1er
                       // domino d'indice 0 est plus grande que sa longueur à
-                      // vide car pour des petites valeurs d'angles, la formule
-                      // peut donner ce genre de valeur abérrantes.
-      l[t][0] = l0; // Dans ce cas nous la remettons égale à la longueur à vide
-                    // du ressort.
+                      // vide car pour des petites valeurs d'angles, la
+                      // formule peut donner ce genre de valeur abérrantes.
+      l[t][0] = l0;   // Dans ce cas nous la remettons égale à la longueur à
+                      // vide du ressort.
     if (l[t][0] <
         lmin) // À l'inverse, cette commande permet de vérifier que le
-              // ressort du 1er domino d'indice 0 ne soit pas surcompréssé avec
-              // une longueur plus petite que la longueur minimale car ici aussi
-              // pour des petites valeurs
+              // ressort du 1er domino d'indice 0 ne soit pas surcompréssé
+              // avec une longueur plus petite que la longueur minimale car
+              // ici aussi pour des petites valeurs
       // d'angles, la formule peut donner ce genre de valeur abérrantes (des
       // longueurs de rerssort négatives).
       l[t][0] = lmin; // Dans ce cas nous la remettons égale à la valeur
@@ -271,13 +421,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         (2 * alpha[t][0] - (1 - gamma * dt / (2 * J)) * alpha[t - 1][0] +
          3 * g * dt * dt / (2 * h) * sin(alpha[t][0]) -
          dt * dt * k * h * (1 / (2 * J)) * (l0 - l[t][0])) /
-        (1 +
-         gamma * dt /
-             (2 *
-              J)); // Calcul et stockage dans le tableau des angles alpha de
-                   // la valeur de l'angle alpha à l'instant t + dt pour le
-                   // 1 er domino d'indice 0 après le choc avec son voisin le
-                   // 2ème domino d'indice 1, à l'aide de l'équation du pdf n°2.
+        (1 + gamma * dt /
+                 (2 * J)); // Calcul et stockage dans le tableau des angles
+                           // alpha de la valeur de l'angle alpha à l'instant
+                           // t + dt pour le 1 er domino d'indice 0 après le
+                           // choc avec son voisin le 2ème domino d'indice 1,
+                           // à l'aide de l'équation du pdf n°2.
 
     if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * atan((lmin / h)))) {
       alpha[t + 1][0] = M_PI / 2 - (Nmax) * atan((lmin / h));
@@ -319,10 +468,10 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
               // genre de valeurs aberrantes.
         l[t][n] =
             l0; // Dans ce cas nous la remettons égale à la longueur à vide.
-      if (l[t][n] < lmin) // A l'inverse, cette commande permet de vérifier que
-                          // le ressort du nième + 1 domino d'indice n ne soit
-                          // pas surcompréssé avec une longueur plus petite que
-                          // la longueur minimale car ici aussi
+      if (l[t][n] < lmin) // A l'inverse, cette commande permet de vérifier
+                          // que le ressort du nième + 1 domino d'indice n ne
+                          // soit pas surcompréssé avec une longueur plus
+                          // petite que la longueur minimale car ici aussi
         // pour des petites valeurs
         // d'angles, la formule peut donner ce genre de valeur abérrantes (des
         // longueurs de rerssort négatives).
@@ -368,9 +517,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                (h - delta * sin(alpha[t][n - 1]))) /
           (1 + gamma * dt /
                    (2 * J)); // Calcul et stockage dans le tableau des angles
-                             // alpha de la valeur de l'angle alpha à l'instant
-                             // t + dt pour le nième + 1 domino d'indice n à
-                             // l'aide de l'équation du pdf n°3.
+                             // alpha de la valeur de l'angle alpha à
+                             // l'instant t + dt pour le nième + 1 domino
+                             // d'indice n à l'aide de l'équation du pdf n°3.
 
       if (alpha[t + 1][n] >= (M_PI / 2 - atan((lmin / h)))) {
         alpha[t + 1][n] = M_PI / 2 - atan((lmin / h));
@@ -390,6 +539,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         alpha[t + 1][n] =
             alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
       }
+
       n -= 1; // Décrémentation de l'indice parcourant les dominos pour
               // passer au domino inférieur.
     }
@@ -401,9 +551,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
         M_PI / 2 -
             atan(l0 / h)) { // Si l'angle alpha du nième + 1 domino d'indice n
                             // (ici le dernier domino car n vaut Nmax - 1) est
-                            // plus grand qu'une certaine valeur qui correspond
-                            // à la valeur où le ressort du dernier domino entre
-                            // en contact avec le sol.
+                            // plus grand qu'une certaine valeur qui
+                            // correspond à la valeur où le ressort du dernier
+                            // domino entre en contact avec le sol.
       l[t][n] = l[t][n] =
           h * tan(M_PI / 2 - alpha[t][n]) +
           delta / ((1. + tan(alpha[t][n]) * tan(M_PI / 2)) *
@@ -417,6 +567,20 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                                       // pi/2 soit 90 degrés car il s'agit de
                                       // l'angle entre la normale et le sol.
     }
+    /* Lignes suivantes permettent d'afficher le temps de chute de tous les
+     * dominos */
+    if (c == 0 && alpha[t][Nmax - 1] == alpha[t - 1][Nmax - 1] &&
+        alpha[t - 1][Nmax - 1] !=
+            0) { // Traduit la condition : si le compteur est à 0 et que les
+                 // deux valeurs des angles alphas successives du dernier domino
+                 // sont différentes de 0 et égales, alors dans ce cas :
+      cout << "Le temps de chute total de votre chaine de domino est de : "
+           << t * dt << " secondes."
+           << endl; // affichage du temps de chute globale qui correspond à la
+                    // durée de l'expérience.
+      c++; // Incrémentation du compteur de 1 pour nous permettre de ne passer
+           // qu'une fois dans cette boucle.
+    }
   }
 
   save_Data(alpha, Tmax, Nmax,
@@ -428,16 +592,16 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   save_Data(v,Tmax,Nmax,"vitesse.txt");
 
   trace_Graph(alpha, dt, Tmax, Nmax,
-              1); // Trace le graphe de l'évolution des angles alpha en fonction
-                  // du temps (1 ici st un sélecteur pour savoir si nous voulons
-                  // tracer alpha ou l).
-
-  trace_Graph(l, dt, Tmax, Nmax,
-              2); // Trace le graphe de l'évolution de la longueur des ressorts
-                  // en fonction du temps (2 ici st un sélecteur pour savoir si
+              1); // Trace le graphe de l'évolution des angles alpha en
+                  // fonction du temps (1 ici st un sélecteur pour savoir si
                   // nous voulons tracer alpha ou l).
 
   trace_Graph(v,dt,Tmax,Nmax,3);
+
+  trace_Graph(l, dt, Tmax, Nmax,
+              2); // Trace le graphe de l'évolution de la longueur des
+                  // ressorts en fonction du temps (2 ici st un sélecteur pour
+                  // savoir si nous voulons tracer alpha ou l).
 
   // Libération de la mémoire pour les tableaux alpha et l
   for (int i = 0; i < Tmax; i++) { // Parcourt les lignes des 2 tableaux.
@@ -454,12 +618,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 
   // QUESTIONS :
-  // Paramétrer Tmax correctement pour qu'il soit toujours supérieur au temps de
-  // chute de tous les dominos.
-  // Commenter conditions angles.
-  // Commenter coonditions non transperçage des dominos voisins.
-  // Vitesse limite profil.
-  // Afficher le temps de chute total.
-  // Domino trop espacés ?
-  // Condition valeur erronée entrée par l'utilisateur.
+  // Commenter conditions angles. Commenter
+  // conditions non transperçage des dominos voisins. Vitesse limite profil.
+  // Ressort invariable domino = 1 ou domino trop espacé.
+  // Domino = 1 : 1 ressort dédoublé
 }
