@@ -426,12 +426,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                            // choc avec son voisin le 2ème domino d'indice 1,
                            // à l'aide de l'équation du pdf n°2.
 
-    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * atan((lmin / h)))) {
-      alpha[t + 1][0] = M_PI / 2 - (Nmax) * atan((lmin / h));
-    } // Nous considérons ici l'angle maximal que peut formé le premier domino d'indice 0
-      // avec la verticale. Cette condition est atteinte
-      // lorsque tous les dominos (soit Nmax) sont couchés les uns sur les autres et donc
-      // que leur ressorts ont tous une longueur de lmin.
+    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax)*atan((lmin / h)))) {
+      alpha[t + 1][0] = M_PI / 2 - (Nmax)*atan((lmin / h));
+    } // Nous considérons ici l'angle maximal que peut formé le premier domino
+      // d'indice 0 avec la verticale. Cette condition est atteinte lorsque tous
+      // les dominos (soit Nmax) sont couchés les uns sur les autres et donc que
+      // leur ressorts ont tous une longueur de lmin.
 
     /* Mouvement du domino d'indice n>=1 */
     int n = 1; // Initialisation de l'indice du domino
@@ -489,10 +489,11 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
       if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * atan((lmin / h)))) {
         alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * atan((lmin / h));
-      }// Nous considérons ici l'angle maximal que peut formé le n-ieme domino
+      } // Nous considérons ici l'angle maximal que peut formé le n-ieme -1
+        // domino d'indice n
       // avec la verticale. Cette condition est atteinte
-      // lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns sur les autres et donc
-      // que leur ressorts ont tous une longueur de lmin.
+      // lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns sur
+      // les autres et donc que leur ressorts ont tous une longueur de lmin.
 
       n++; // Permet de passer au domino suivant
     }
@@ -519,7 +520,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       if (alpha[t + 1][n] >= (M_PI / 2 - atan((lmin / h)))) {
         alpha[t + 1][n] = M_PI / 2 - atan((lmin / h));
       }
-    }// Nous considérons ici l'angle maximal que peut formé le dernier domino
+    } // Nous considérons ici l'angle maximal que peut former le dernier domino
       // avec la verticale. Cette condition est atteinte
       // lorsque ce domino est couché et que
       // que son ressort a une longueur lmin.
