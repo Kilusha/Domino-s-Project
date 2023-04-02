@@ -169,7 +169,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   double **l = new double *[Tmax]; // Déclaration du pointeur l qui pointera
                                    // vers la case ou sera stockée la valeur de
                                    // la longueur du ressort l de chaque domino.
-
+  double **v = new double *[Tmax];
   /* Initialisation des 2 tableaux à 2 dimensions en allouant de la mémoire
    * dynamique pour y stocker des variables de type "double" qui seront la
    * valeur de l'angle alpha du domino n à l'nstant t, ainsi que la longueur de
@@ -183,7 +183,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    lmin); // Créé le tableau l qui gardera en mémoire la valeur
                           // des longueurs des ressorts de tous les dominos à
                           // chaque instant de l'expérience.
-
+  creation_Matrice(v, Tmax,Nmax, 0., 0.);
   cout << endl
        << "L'angle de choc entre les 2 peremiers dominos d'indice 0 et 1 "
           "correspond à : "
@@ -199,6 +199,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   int t = 1; // Initialisation du temps t pour la suite du prog.
 
   /* le 1er domino en mouvement jusqu'au choc*/
+  v[t][0] =( alpha[t][0] - alpha[t+1][0])*h/dt;
+
   while (alpha[t][0] <
          alphaChoc) { // Condition portant sur l'angle signifiant : Tant que le
                       // premier domino n'entre pas en contact avec son voisin.
@@ -288,6 +290,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
     int n = 1; // Initialisation de l'indice du domino
                // (ici à 1) qui est en contact avec le domino d'indice n-1 et
                // celui d'indice n+1.
+
+
+    v[t][n] =( alpha[t][n] - alpha[t+1][n])*h/dt;
 
     while (
         alpha[t][n] > alphaChoc &&
@@ -420,6 +425,8 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   save_Data(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
+  save_Data(v,Tmax,Nmax,"vitesse.txt");
+
   trace_Graph(alpha, dt, Tmax, Nmax,
               1); // Trace le graphe de l'évolution des angles alpha en fonction
                   // du temps (1 ici st un sélecteur pour savoir si nous voulons
@@ -430,15 +437,19 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                   // en fonction du temps (2 ici st un sélecteur pour savoir si
                   // nous voulons tracer alpha ou l).
 
+  trace_Graph(v,dt,Tmax,Nmax,3);
+
   // Libération de la mémoire pour les tableaux alpha et l
   for (int i = 0; i < Tmax; i++) { // Parcourt les lignes des 2 tableaux.
     delete[] alpha[i]; // delete [] permet de supprimer les valeurs de chaque
                        // colonne de la ligne i du tableau alpha.
     delete[] l[i];     // delete [] permet de supprimer les valeurs de chaque
                        // colonne de la ligne i du tableau l.
+    delete[] v[i];
   }
   delete[] alpha; // Libère le pointeur alpha.
   delete[] l;     // Libère le pointeur l.
+  delete[] v;
 
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 

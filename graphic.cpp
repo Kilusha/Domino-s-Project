@@ -12,6 +12,7 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
   FILE *gnuplot = popen("gnuplot -persist",
                         "w"); // Ouvre une connexion entre le programme C++ et
                               // l'application de traçage de courbes gnuplot.
+
   if (s == 1) { // Si nous souhaitons tracer le graphe des angles en fonction du
                 // temps.
     fprintf(
@@ -36,7 +37,7 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
                                            // l'axe des ordonnées.
   }
 
-  else { // Si nous souhaitons tracer la longueur des ressorts en fonction du
+  else if(s==2){ // Si nous souhaitons tracer la longueur des ressorts en fonction du
          // temps.
     fprintf(gnuplot,
             "set title 'Évolution des longueurs des ressorts en fonction du "
@@ -58,7 +59,15 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
                                                   // être 'Longueur des
                                                   // ressorts'
   }
+  else if (s==3){
+        fprintf(gnuplot,
+            "set title 'vitesse "
+            "temps'\n");
+        fprintf(
+        gnuplot,
+        "set ylabel 'vitesse'\n");
 
+  }
   fprintf(gnuplot,
           "set xlabel 'Temps'\n"); // Plus précisément, cette commande
                                    // Gnuplot set xlabel est utilisée
