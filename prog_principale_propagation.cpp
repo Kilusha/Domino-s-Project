@@ -354,7 +354,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   int t = 1; // Initialisation du temps t pour la suite du prog.
 
   /* le 1er domino en mouvement jusqu'au choc*/
-  v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
+  v[t][0] = (sin(alpha[t][0]) - sin(alpha[t - 1][0])) * h / dt;
 
   while (alpha[t][0] <
          alphaChoc) { // Condition portant sur l'angle signifiant : Tant que le
@@ -369,10 +369,10 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    // la valeur de l'angle alpha à l'instant t + dt pour le 1
                    // er domino indice 0, à l'aide de l'équation du pdf n°1.
 
+    v[t][0] = (sin(alpha[t + 1][0]) - sin(alpha[t][0])) * h / dt;
+
     t++; // Incrémentation du temps pour changer de ligne dans notre tableau
     // et pour passer à l'instant suivant. Ajout de 1 à t donc de dt à t.
-
-    v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
   }
 
   /* Sortie de la boucle while. Ainsi le temps t correspond au temps pour
@@ -399,6 +399,17 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   {
     /* Mouvement du 1er domino d'indice 0 après choc avec le 2ème domino n°1
      */
+
+    if (Nmax==1){
+      l[t][0] =
+        h * tan(M_PI/2 - alpha[t][0]) +
+        delta / ((1. + tan(alpha[t][0]) * tan(M_PI/2)) *
+                 cos(alpha[t][0])); // Calcul et stockage dans le tableau des
+                                    // longueurs des ressorts l de la valeur de
+                                    // la longueur l à l'instant t du ressort du
+                                    // 1er domino d'indice 0, à l'aide de
+                                    // l'équation du pdf tout en bas. */
+    }
 
     l[t][0] =
         h * tan(alpha[t][1] - alpha[t][0]) +
@@ -443,7 +454,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       // les dominos (soit Nmax) sont couchés les uns sur les autres et donc que
       // leur ressorts ont tous une longueur de lmin.
 
-    v[t][0] = (sin(alpha[t+1][0]) - sin(alpha[t][0])) * h / dt;
+    v[t][0] = (sin(alpha[t + 1][0]) - sin(alpha[t][0])) * h / dt;
 
     /* Mouvement du domino d'indice n>=1 */
     int n = 1; // Initialisation de l'indice du domino
@@ -507,7 +518,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       // lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns sur
       // les autres et donc que leur ressorts ont tous une longueur de lmin.
 
-      v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t -1][n])) * h / dt;
+      v[t][n] = (sin(alpha[t + 1][n]) - sin(alpha[t][n])) * h / dt;
 
       n++; // Permet de passer au domino suivant
     }
@@ -539,7 +550,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
       // lorsque ce domino est couché et que
       // que son ressort a une longueur lmin.
 
-    v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t][n])) * h / dt;
+    v[t][n] = (sin(alpha[t + 1][n]) - sin(alpha[t][n])) * h / dt;
 
     n = Nmax - 2; // Nous nous plaçons à l'avant dernier domino d'indice Nmax-2.
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
@@ -552,7 +563,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
             alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
       }
 
-      v[t][n] = (sin(alpha[t+1][n]) - sin(alpha[t][n])) * h / dt;
+      v[t][n] = (sin(alpha[t + 1][n]) - sin(alpha[t][n])) * h / dt;
 
       n -= 1; // Décrémentation de l'indice parcourant les dominos pour
               // passer au domino inférieur.
@@ -632,8 +643,9 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
 
   // QUESTIONS :
-  // Commenter conditions angles. Commenter
+  // Commenter
   // conditions non transperçage des dominos voisins. Vitesse limite profil.
   // Ressort invariable domino = 1 ou domino trop espacé.
   // Domino = 1 : 1 ressort dédoublé
+  // Optimiser le calcul de la vitesse.
 }
