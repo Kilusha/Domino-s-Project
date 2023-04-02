@@ -26,7 +26,8 @@ void save_Data(double **matrice, int Tmax, int Nmax,
                        // revenir au domino 0.
     }
     fichier.close(); // Ferme le fichier.
-    cout << endl << "Les valeurs ont été sauvegardé dans le fichier " << nomfichier
+    cout << endl
+         << "Les valeurs ont été sauvegardé dans le fichier " << nomfichier
          << endl; // Permet d'informer que les valeurs ont bien été stocké et
                   // que la sauvegarde du tableau en question dans le fichier
                   // texte s'est déroulé avec succès.
@@ -36,4 +37,10 @@ void save_Data(double **matrice, int Tmax, int Nmax,
          << endl; // Affiche un code d'erreur en précisant que le fichier n'a
                   // pas pu être ouvert.
   }
+}
+
+double vitesse(double alpha1, double alpha2,
+               double dt) { // Création d'une fonction qui permet de calculer la
+                            // vitesse de chute d'un domino à un instant donné.
+  return (alpha1 - alpha2) / dt; // REnvoie la vitesse en question.
 }
