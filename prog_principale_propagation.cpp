@@ -277,16 +277,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    // 1 er domino d'indice 0 après le choc avec son voisin le
                    // 2ème domino d'indice 1, à l'aide de l'équation du pdf n°2.
 
-    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * (lmin / h))) {
-      alpha[t + 1][0] = M_PI / 2 - (Nmax) * (lmin / h);
-    } // Nous considérons ici l'angle formé par le premier domino d'indice 0
-      // avec la verticale. Nous prenons en compte que l'angle maximal est
-      // donnée par la condition écrite ici. En effet, ce dernier est atteint
-      // lorsque tous les dominos sont couchés les uns sur les autres et donc
-      // que leur ressorts ont tous une longueur de lmin. Nous avons dans ce cas
-      // fait l'approximation aux petits angles en considerant que arctan((Nmax)
-      // * (lmin / h)) =
-      //(Nmax) * (lmin / h)
+    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax) * atan((lmin / h)))) {
+      alpha[t + 1][0] = M_PI / 2 - (Nmax) * atan((lmin / h));
+    } // Nous considérons ici l'angle maximal que peut formé le premier domino d'indice 0
+      // avec la verticale. Cette condition est atteinte
+      // lorsque tous les dominos (soit Nmax) sont couchés les uns sur les autres et donc
+      // que leur ressorts ont tous une longueur de lmin.
 
     /* Mouvement du domino d'indice n>=1 */
     int n = 1; // Initialisation de l'indice du domino
@@ -342,9 +338,12 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                      // t + dt pour le nième + 1 domino d'indice n en contact
                      // avec ses 2 voisins à l'aide de l'équation du pdf n°4.
 
-      if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * (lmin / h))) {
-        alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * (lmin / h);
-      }
+      if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * atan((lmin / h)))) {
+        alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * atan((lmin / h));
+      }// Nous considérons ici l'angle maximal que peut formé le n-ieme domino
+      // avec la verticale. Cette condition est atteinte
+      // lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns sur les autres et donc
+      // que leur ressorts ont tous une longueur de lmin.
 
       n++; // Permet de passer au domino suivant
     }
@@ -368,10 +367,13 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                              // t + dt pour le nième + 1 domino d'indice n à
                              // l'aide de l'équation du pdf n°3.
 
-      if (alpha[t + 1][n] >= (M_PI / 2 - (lmin / h))) {
-        alpha[t + 1][n] = M_PI / 2 - (lmin / h);
+      if (alpha[t + 1][n] >= (M_PI / 2 - atan((lmin / h)))) {
+        alpha[t + 1][n] = M_PI / 2 - atan((lmin / h));
       }
-    }
+    }// Nous considérons ici l'angle maximal que peut formé le dernier domino
+      // avec la verticale. Cette condition est atteinte
+      // lorsque ce domino est couché et que
+      // que son ressort a une longueur lmin.
 
     n = Nmax - 2; // Nous nous plaçons à l'avant dernier domino d'indice Nmax-2.
     while (n >= 0) // Tant que nous désignons un domino avec la lettre n. Mise
