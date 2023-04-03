@@ -64,12 +64,20 @@ double trouve_Alpha_dicho(double delta, double l0, double h) {
                     // en contact avec son voisin.
 }
 
-double trouve_Alpha(
-    double delta, double l0,
-    double h, double Nmax) { // Création d'une fonction permettant de trouver l'angle alpha
-                // choc à l'aide d'une formule de trigonométrie.
-  return M_PI / 2 - atan(l0 / h) -
-         acos(
-             delta /
-             sqrt(h * h + l0 * l0)); // Renvoie la valeur de l'angle alpha choc.
+double trouve_Alpha(double delta, double l0, double h,
+                    int Nmax) { // Création d'une fonction permettant de
+                                // trouver l'angle alpha choc à l'aide d'une
+                                // formule de trigonométrie.
+  if (Nmax == 1 ||
+      delta > h) { // Si le nombre de domino qui compose la chaine est de 1 ou
+                   // que la distance séparant les dominos est plus grande que
+                   // la hauteur des dominos.
+    return M_PI / 2; // Renvoie 0 à titre indicatif pour signifier qu'il n'y a
+                     // pas de choque et que alphachoc n'existe donc pas
+  } else { // Si toutes les conditions sont réunies pour qu'il est un choc
+    return M_PI / 2 - atan(l0 / h) -
+           acos(delta /
+                sqrt(h * h +
+                     l0 * l0)); // Renvoie la valeur de l'angle alpha choc.
+  }
 }

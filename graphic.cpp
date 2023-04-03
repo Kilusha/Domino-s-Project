@@ -22,23 +22,23 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
                                                                     // du
                                                                     // graphique.
     fprintf(gnuplot,
-            "set ylabel 'Angles'\n"); // Plus précisément, cette
-                                      // commande Gnuplot set ylabel
-                                      // est utilisée pour définir
-                                      // l'étiquette de l'axe des
-                                      // ordonnées (y) sur le
-                                      // graphique tracé. Ici, la
-                                      // commande 'set ylabel 'y''
-                                      // indique que l'étiquette de
-                                      // l'axe des ordonnées doit
-                                      // être 'Angles'
+            "set ylabel 'Angles en degrés'\n"); // Plus précisément, cette
+                                             // commande Gnuplot set ylabel
+                                             // est utilisée pour définir
+                                             // l'étiquette de l'axe des
+                                             // ordonnées (y) sur le
+                                             // graphique tracé. Ici, la
+                                             // commande 'set ylabel 'y''
+                                             // indique que l'étiquette de
+                                             // l'axe des ordonnées doit
+                                             // être 'Angles'
     fprintf(gnuplot,
             "set yrange [*:*] reverse\n"); // Permet de renverser le sens de
                                            // l'axe des ordonnées.
   }
 
-  else if(s==2){ // Si nous souhaitons tracer la longueur des ressorts en fonction du
-         // temps.
+  else if (s == 2) { // Si nous souhaitons tracer la longueur des ressorts en
+                     // fonction du temps.
     fprintf(gnuplot,
             "set title 'Évolution des longueurs des ressorts en fonction du "
             "temps'\n"); // Précise le
@@ -47,35 +47,51 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
 
     fprintf(
         gnuplot,
-        "set ylabel 'Longueurs des ressorts'\n"); // Plus précisément, cette
-                                                  // commande Gnuplot set ylabel
-                                                  // est utilisée pour définir
-                                                  // l'étiquette de l'axe des
-                                                  // ordonnées (y) sur le
-                                                  // graphique tracé. Ici, la
-                                                  // commande 'set ylabel 'y''
-                                                  // indique que l'étiquette de
-                                                  // l'axe des ordonnées doit
-                                                  // être 'Longueur des
-                                                  // ressorts'
-  }
-  else if (s==3){
-        fprintf(gnuplot,
-            "set title 'vitesse "
-            "temps'\n");
-        fprintf(
-        gnuplot,
-        "set ylabel 'vitesse'\n");
+        "set ylabel 'Longueurs des ressorts en m'\n"); // Plus précisément,
+                                                       // cette commande Gnuplot
+                                                       // set ylabel est
+                                                       // utilisée pour définir
+                                                       // l'étiquette de l'axe
+                                                       // des ordonnées (y) sur
+                                                       // le graphique tracé.
+                                                       // Ici, la commande 'set
+                                                       // ylabel 'y'' indique
+                                                       // que l'étiquette de
+                                                       // l'axe des ordonnées
+                                                       // doit être 'Longueur
+                                                       // des ressorts'
+  } else if (s == 3) { // Si nous souhaitons tracer la vitesse de propagation de
+                       // l'onde en fonction du temps.
 
+    fprintf(gnuplot, "set title 'Évolution de la vitesse de propagation de "
+                     "l onde de chute  en focntion du temps'\n"); // Précise
+                                                                  // le titre
+                                                                  // du
+                                                                  // graphique.
+
+    fprintf(gnuplot,
+            "set ylabel 'Vitesses en m.s^(-1)'\n"); // Plus précisément,
+                                                    // cette commande Gnuplot
+                                                    // set ylabel est
+                                                    // utilisée pour définir
+                                                    // l'étiquette de l'axe
+                                                    // des ordonnées (y) sur
+                                                    // le graphique tracé.
+                                                    // Ici, la commande 'set
+                                                    // ylabel 'y'' indique
+                                                    // que l'étiquette de
+                                                    // l'axe des ordonnées
+                                                    // doit être 'Vitesses
+                                                    // en m.s^(-1)'
   }
   fprintf(gnuplot,
-          "set xlabel 'Temps'\n"); // Plus précisément, cette commande
-                                   // Gnuplot set xlabel est utilisée
-                                   // pour définir l'étiquette de l'axe
-                                   // des abscisses (x) sur le graphique
-                                   // tracé. Ici, la commande 'set ylabel
-                                   // 'x'' indique que l'étiquette de
-                                   // l'axe des abscisses doit être 'Temps'
+          "set xlabel 'Temps en s'\n"); // Plus précisément, cette commande
+                                        // Gnuplot set xlabel est utilisée
+                                        // pour définir l'étiquette de l'axe
+                                        // des abscisses (x) sur le graphique
+                                        // tracé. Ici, la commande 'set ylabel
+                                        // 'x'' indique que l'étiquette de
+                                        // l'axe des abscisses doit être 'Temps'
 
   fprintf(gnuplot, "plot "); // Envoie une commande au
                              // processus Gnuplot ouvert par le
@@ -120,14 +136,28 @@ void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
     for (int j = 0; j < Tmax;
          j++) { // Parcourt toutes les colonnes du tableaux placé en argument.
 
-      fprintf(
-          gnuplot, "%lf %lf\n", j * dt,
-          tableau[j][i]); // Permet d'écrire une chaîne de caractères formatée
-                          // dans un flux de sortie. "%lf %lf\n" est une
-                          // chaîne de formatage qui indique que les deux
-                          // arguments suivants doivent être des nombres à
-                          // virgule flottante, et que la chaîne "\n" (retour
-                          // à la ligne) doit être ajoutée à la fin.
+      if (s == 1) {
+
+        fprintf(
+            gnuplot, "%lf %lf\n", j * dt,
+            tableau[j][i] * 180 / M_PI); // Permet d'écrire une chaîne de caractères formatée
+                            // dans un flux de sortie. "%lf %lf\n" est une
+                            // chaîne de formatage qui indique que les deux
+                            // arguments suivants doivent être des nombres à
+                            // virgule flottante, et que la chaîne "\n" (retour
+                            // à la ligne) doit être ajoutée à la fin.
+
+      } else {
+
+        fprintf(
+            gnuplot, "%lf %lf\n", j * dt,
+            tableau[j][i]); // Permet d'écrire une chaîne de caractères formatée
+                            // dans un flux de sortie. "%lf %lf\n" est une
+                            // chaîne de formatage qui indique que les deux
+                            // arguments suivants doivent être des nombres à
+                            // virgule flottante, et que la chaîne "\n" (retour
+                            // à la ligne) doit être ajoutée à la fin.
+      }
     }
     fprintf(gnuplot,
             "e\n"); // Indique à Gnuplot que les données pour la
