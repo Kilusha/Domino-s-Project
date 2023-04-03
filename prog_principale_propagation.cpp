@@ -246,7 +246,7 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   const double alphaChoc = trouve_Alpha(
       delta, l0,
-      h); // Stocke la valeur de l'angle choc en rad dans la variable
+      h,Nmax); // Stocke la valeur de l'angle choc en rad dans la variable
           // alphaChoc en la déterminant à l'aide d'une formule utilisant de
           // la trigonométrie stocké dans la fonction trouve_Alpha.
   const double J = m * h * h / 3; // Définition du moment d'inertie en kg.m².
@@ -337,11 +337,31 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
                    0.); // Créé le tableau v qui gardera en mémoire la
                         // valeur des vitesses de propagation de tous les
                         // dominos à chaque instant de l'expérience.
-  cout << endl
-       << "L'angle de choc entre les 2 peremiers dominos d'indice 0 et 1 "
+  if (delta>h){  // comme expliquer dans la condition ci apres, si l'espace entre les dominos est plus grand que la longueur des dominos alors le choc ne peux pas avoir lieu.
+    if (Nmax==1){
+    cout <<"Vous avez choisi une longueur entre domino plus grande que la longueur du domino, ainsi il ne peut pas y avoir de choc. "
+         << "L'angle de choc n'existe pas, car nous avons 1 seul domino, celui-ci n'entre en contact avec aucun autre domino."
+         <<endl;
+    }
+    else {
+    cout <<"Vous avez choisi une longueur entre domino plus grande que la longueur du domino, ainsi il ne peut pas y avoir de choc. "
+         << "L'angle de choc n'existe donc pas."
+         <<endl;
+    }
+
+  }
+  else if (delta<h){
+   if (Nmax >1){
+    cout << endl
+       << "L'angle de choc entre les 2 premiers dominos d'indice 0 et 1 "
           "correspond à : "
        << alphaChoc << " rad, soit : " << alphaChoc * 180 / M_PI << " degrés."
        << endl; // Affiche la valeur de l'angle choc
+   }
+   if (Nmax == 1){
+      cout << endl
+         << "L'angle de choc n'existe pas, car nous avons 1 seul domino, celui-ci n'entre en contact avec aucun autre domino."
+         <<endl;}}
 
   /* Initialisation de l'angle du premier domino a l'instant t+dt => t = 1 */
 
@@ -354,7 +374,6 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   /* le 1er domino en mouvement jusqu'au choc*/
   v[t][0] = (sin(alpha[t][0]) - sin(alpha[t - 1][0])) * h / dt;
-
   while (alpha[t][0] <
          alphaChoc) { // Condition portant sur l'angle signifiant : Tant que le
                       // premier domino n'entre pas en contact avec son voisin.
@@ -379,14 +398,15 @@ int main() { // Fonction spéciale dans un programme C++ qui est appelée
 
   int t_choc = t; // Sauvegarde de la valeur du temps requis avant le choc
                   // entre le domino 0 et le domino 1.
+  if (Nmax > 1){ // nous posons cette condition car dans le cas ou Nmax = 1, nous n'avons pas d'angle de choc.
 
-  cout << endl
+    cout << endl
        << "Le temps correspondant au choc du 1er domino d'indice 0 avec son "
           "voisin de droite (i.e. le 2ème domino d'indice 1) est de : "
        << t_choc * dt << " secondes après le début de l'expérience."
        << endl; // Affiche la valeur du temps nécessaire avant le choc du
                 // domino d'indice 0 avec le domino d'indice 1.
-
+  }
   /* Poursuite de la chute du 1er domino d'indice 0 après contact avec le
    * deuxième domino d'indice 1 */
 

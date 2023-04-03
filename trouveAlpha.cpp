@@ -66,7 +66,7 @@ double trouve_Alpha_dicho(double delta, double l0, double h) {
 
 double trouve_Alpha(
     double delta, double l0,
-    double h) { // Création d'une fonction permettant de trouver l'angle alpha
+    double h, double Nmax) { // Création d'une fonction permettant de trouver l'angle alpha
                 // choc à l'aide d'une formule de trigonométrie.
   return M_PI / 2 - atan(l0 / h) -
          acos(
