@@ -471,6 +471,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                         la longueur l à l'instant t du ressort
                                         du 1er domino d'indice 0, à l'aide de
                                         l'équation du pdf tout en bas. */
+
     } else {
 
       l[t][0] =
@@ -509,12 +510,45 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                 choc avec son voisin le 2ème domino d'indice 1,
                                 à l'aide de l'équation du pdf n°2. */
 
-    if (alpha[t + 1][0] >= (M_PI / 2 - (Nmax)*atan((lmin / h)))) {
-      alpha[t + 1][0] = M_PI / 2 - (Nmax)*atan((lmin / h));
-    } /* Nous considérons ici l'angle maximal que peut formé le premier domino
-      d'indice 0 avec la verticale. Cette condition est atteinte lorsque tous
-      les dominos (soit Nmax) sont couchés les uns sur les autres et donc que
-      leur ressorts ont tous une longueur de lmin. */
+    if (delta < h &&
+        alpha[t + 1][0] >=
+            (M_PI / 2 -
+             (Nmax)*atan(
+                 (lmin /
+                  h)))) { /* Nous considérons ici l'angle maximal que peut formé
+                             le premier domino d'indice 0 avec la verticale.
+                             Cette condition est atteinte lorsque tous les
+                             dominos (soit Nmax) sont couchés les uns sur les
+                             autres et donc que leur ressorts ont tous une
+                             longueur de lmin. si le calcul de l'angle a donné
+                             une valeur supérieure à celle ci : */
+
+      alpha[t + 1][0] =
+          M_PI / 2 -
+          (Nmax)*atan(
+              (lmin /
+               h)); // Alors on fixe la valeur erronnée à la valeur maximale.
+
+    } else if (delta > h && // Nous différencions les delta supérieur à h ou non
+                            // car lorsque ce dernier est trop grand, il ne faut
+                            // pas prendre en compte tous les dominos. Il faut
+                            // utiliser uniquement le 1er domino.
+               alpha[t + 1][0] >=
+                   (M_PI / 2 - (1) * atan((lmin / h)))) { /* Nous considérons
+              ici l'angle maximal que peut formé le premier domino d'indice 0
+              avec la verticale. Cette condition est atteinte lorsque tous les
+              dominos (soit Nmax) sont couchés les uns sur les
+              autres et donc que leur ressorts ont tous une
+              longueur de lmin. si le calcul de l'angle a donné
+              une valeur supérieure à celle ci : */
+
+      alpha[t + 1][0] =
+          M_PI / 2 -
+          (1) *
+              atan((
+                  lmin /
+                  h)); // Alors on fixe la valeur erronnée à la valeur maximale.
+    }
 
     /* Mouvement du domino d'indice n>=1 */
 
@@ -667,11 +701,21 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     /* Lignes suivantes permettent d'afficher le temps de chute de tous les
      * dominos */
 
-    if (c == 0 && alpha[t][Nmax - 1] == alpha[t - 1][Nmax - 1] &&
-        alpha[t - 1][Nmax - 1] !=
-            0) { /* Traduit la condition : si le compteur est à 0 et que les
-                 deux valeurs des angles alphas successives du dernier domino
-                 sont différentes de 0 et égales, alors dans ce cas : */
+    if (c == 0 &&
+            alpha[t][Nmax - 1] ==
+                alpha[t - 1]
+                     [Nmax -
+                      1] && // Nous veillons à faire la différence sur le delta
+                            // par rapport au h car selon sa valeur, il faut ou
+                            // non prendre en compte l'ensemble des dominos
+                            // (ainsi il faut changer l'indice des angle alpha
+                            // que l'on compare).
+            alpha[t - 1][Nmax - 1] != 0 &&
+            delta < h ||
+        c == 0 && alpha[t][0] == alpha[t - 1][0] && alpha[t - 1][0] != 0 &&
+            delta > h) { /* Traduit la condition : si le compteur est à 0 et que
+            les deux valeurs des angles alphas successives du dernier domino
+            sont différentes de 0 et égales, alors dans ce cas : */
 
       cout << endl
            << "Le temps de chute total de votre chaine de domino est de : "
@@ -697,11 +741,22 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                     fonction du temps (1 ici st un sélecteur pour savoir si
                     nous voulons tracer alpha ou l ou v). */
 
-  trace_Graph(
-      v, dt, Tmax, Nmax,
-      3); /* Trace le graphe de l'évolution de la vitesse de propagation de
-             l'onde de chute en fonction du temps (3 ici st un sélecteur pour
-             savoir si nous voulons tracer alpha ou l ou v). */
+  if (delta < h) { // Nous avons besoin de faire cette disjonction de cas sinon
+                   // le graphique s'affiche avec une echelle en ordonnée qui
+                   // est troip importante (c'est le seul cas où ça le fait sans
+                   // savoir réellement pourquoi).
+    trace_Graph(
+        v, dt, Tmax, Nmax,
+        3); /* Trace le graphe de l'évolution de la vitesse de propagation de
+               l'onde de chute en fonction du temps (3 ici st un sélecteur pour
+               savoir si nous voulons tracer alpha ou l ou v). */
+  } else {
+    trace_Graph(
+        v, dt, Tmax, 1,
+        3); /* Trace le graphe de l'évolution de la vitesse de propagation de
+               l'onde de chute en fonction du temps (3 ici st un sélecteur pour
+               savoir si nous voulons tracer alpha ou l ou v). */
+  }
 
   trace_Graph(l, dt, Tmax, Nmax,
               2); /* Trace le graphe de l'évolution de la longueur des
@@ -724,5 +779,5 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
 
   // QUESTIONS :
   // Commenter conditions non transperçage des dominos voisins.
-  // Ressort invariable domino trop espacé.
+  // Ligne 238 longueur ressort négative QUE POUR nmax = 1.
 }
