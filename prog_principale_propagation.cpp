@@ -307,7 +307,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
    * terrestre ne représentant pas l'atmosphère de toutes les planètes
    * malheureusement. Les simulations sont donc faite avec l'hyppothèse que
    * les planètes ont un atmosphère avec la même viscosité moléculaire que
-   * celui de la Terre. */
+   * celle de la Terre. */
 
   /* Les prochaines lignes de codes sont écrites pour pouvoir dimensionner les
    * tableaux alpha, l, et v en fonction des paramètres de l'expérience qui ont
@@ -610,7 +610,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
 
         if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * atan((lmin / h)))) {
           alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * atan((lmin / h));
-        } /* Nous considérons ici l'angle maximal que peut formé le n-ieme -1
+        } /* Nous considérons ici l'angle maximal que peut formé le n-ieme +1
           domino d'indice n
           avec la verticale. Cette condition est atteinte
           lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns
