@@ -1,11 +1,10 @@
 /*
-* Projet des Dominos C++
-*
-* main.cpp
-*
-* @auteurs PALAY Kiliann & SERRE Marina
-*/
-
+ * Projet des Dominos C++
+ *
+ * main.cpp
+ *
+ * @auteurs PALAY Kiliann & SERRE Marina
+ */
 
 #include "graphic.cpp" // Directive de préprocesseur en C++. Elle permet d'inclure le fichier graphic dans le programme, qui contient la définition des fonctions permettant d'effectuer des opérations particulières.
 #include "graphic.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
@@ -122,7 +121,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
 
     if (saisie.find_first_not_of("0123456789") != string::npos) {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre entier et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -136,14 +136,17 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                          // l'utilisateur en entier puisqu'elle ne comporte que
                          // des chiffres, et la stocke dans la variable Nmax.
 
-    if (Nmax <= 0) // Si le nombre de domino est négatif ou nul.
+    if (Nmax == 0) // Si le nombre de domino est nul (le cas négatif ayant déjà
+                   // été prévu dans le "if" précédent puisque le signe "-"
+                   // n'est pas un chiffre).
     {
-      cout << "Le nombre de dominos que vous avez choisi est incorrect. "
+      cerr << "Erreur : Le nombre de dominos que vous avez choisi est "
+              "incorrect. "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
 
-  } while (Nmax <=
+  } while (Nmax ==
            0); // Condition qui permet de répété la boucle do tant que le nombre
                // de domino entré par l'utilisateur n'est pas valide.
 
@@ -171,7 +174,9 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre réel."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "supérieur ou égal à 0.004 m (limite de fonctionnement fixées "
+              "par les formules)."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -186,14 +191,17 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                           // des chiffres avec une virgule potentiellement, et
                           // la stocke dans la variable delta.
 
-    if (delta <= h) { // Si l'espacement entre deux dominos successifs est
-                      // inférieur à 3 mm.
-      cout << "La distance que vous avez choisie entre les dominos est "
-              "incorrect (trop petite). "
-              "Veuillez rééssayer. "
-           << endl; // Demande une nouvelle saisie à l'utilisateur.
+    if (delta == 0) { // Si l'espacement entre deux dominos successifs est
+                      // nul (le cas négatif ayant déjà
+                      // été prévu dans le "if" précédent puisque le signe "-"
+                      // n'est pas un chiffre).
+      cerr
+          << "Erreur : La distance que vous avez choisie entre les dominos est "
+             "incorrect (trop petite). "
+             "Veuillez rééssayer. "
+          << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
-  } while (delta <= h); // Condition qui permet de répété la boucle do tant
+  } while (delta == 0); // Condition qui permet de répété la boucle do tant
                         // que la distance qui sépare 2 dominos successifs
                         // entrée par l'utilisateur n'est pas valide.
 
@@ -213,7 +221,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -228,13 +237,15 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                       // des chiffres avec une virgule potentiellement, et la
                       // stocke dans la variable h.
 
-    if (h <= 0) { // Si la hauteur des dominos est négative ou nulle.
-      cout << "La hauteur des domninos que vous avez choisie est "
+    if (h == 0) { // Si la hauteur des dominos est nulle (le cas négatif ayant
+                  // déjà été prévu dans le "if" précédent puisque le signe "-"
+                  // n'est pas un chiffre).
+      cerr << "Erreur : La hauteur des domninos que vous avez choisie est "
               "incorrect (trop petite). "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
-  } while (h <=
+  } while (h ==
            0); // Condition qui permet de répété la boucle do tant que la
                // hauteur des dominos entrée par l'utilisateur n'est pas valide.
 
@@ -256,7 +267,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -271,15 +283,18 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                        // des chiffres et une virgule potentiellement, et la
                        // stocke dans la variable w0.
 
-    if (w0 <= 0) { // Si la vitesse de rotation initiale est négative ou nulle.
-      cout << "La vitesse de rotation initiale du 1er domino que vous avez "
+    if (w0 == 0) { // Si la vitesse de rotation initiale est nulle (le cas
+                   // négatif ayant déjà été prévu dans le "if" précédent
+                   // puisque le signe "-" n'est pas un chiffre).
+      cerr << "Erreur : La vitesse de rotation initiale du 1er domino que vous "
+              "avez "
               "choisie est "
               "incorrect (trop petite). "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
   } while (
-      w0 <=
+      w0 ==
       0); // Condition qui permet de répété la boucle do tant que la vitesse de
           // rotation du 1er domino entrée par l'utilisateur n'est pas valide.
 
@@ -306,7 +321,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -321,15 +337,16 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                           // des chiffres et pôtentiellement une virgule, et la
                           // stocke dans la variable gamma.
 
-    if (gamma <=
-        0) { // Si la viscosité du milieu de propagation est négative ou nulle.
-      cout << "La viscosité du milieu de propagation que vous avez "
+    if (gamma == 0) { // Si la viscosité du milieu de propagation est nulle (le
+                      // cas négatif ayant déjà été prévu dans le "if" précédent
+                      // puisque le signe "-" n'est pas un chiffre).
+      cerr << "Erreur : La viscosité du milieu de propagation que vous avez "
               "choisie est "
               "incorrect (trop petite). "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
-  } while (gamma <= 0); // Condition qui permet de répété la boucle do tant que
+  } while (gamma == 0); // Condition qui permet de répété la boucle do tant que
                         // lla viscosité moléculaire du milieu de propagation
                         // entrée par l'utilisateur n'est pas valide.
 
@@ -348,7 +365,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -363,14 +381,16 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                       // des chiffres et potentiellement une virgule, et la
                       // stocke dans la variable m.
 
-    if (m <= 0) { // Si la masse des dominos est négative ou nulle.
-      cout << "La masse des domino que vous avez "
+    if (m == 0) { // Si la masse des dominos est nulle (le
+                  // cas négatif ayant déjà été prévu dans le "if" précédent
+                  // puisque le signe "-" n'est pas un chiffre).
+      cerr << "Erreur : La masse des domino que vous avez "
               "choisie est "
               "incorrect (trop petite). "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
-  } while (m <=
+  } while (m ==
            0); // Condition qui permet de répété la boucle do tant que la masse
                // des dominos entrée par l'utilisateur n'est pas valide.
 
@@ -401,7 +421,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -416,14 +437,16 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                       // des chiffres et une virgule potentiellement, et la
                       // stocke dans la variable g.
 
-    if (g <= 0) { // Si la pesanteur est négative ou nulle.
-      cout << "La pesanteur que vous avez "
+    if (g == 0) { // Si la pesanteur est nulle (le
+                  // cas négatif ayant déjà été prévu dans le "if" précédent
+                  // puisque le signe "-" n'est pas un chiffre).
+      cerr << "Erreur : La pesanteur que vous avez "
               "choisie est "
               "incorrect (trop petite). "
               "Veuillez rééssayer. "
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
-  } while (g <= 0); // Condition qui permet de répété la boucle do tant que la
+  } while (g == 0); // Condition qui permet de répété la boucle do tant que la
                     // pesanteur entrée par l'utilisateur n'est pas valide.
 
   do { // Exécute le code ci-dessous de manière certaine.
@@ -444,7 +467,8 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     if (saisie.find_first_not_of("0123456789.") != string::npos ||
         saisie == ".") {
 
-      cout << "Erreur : vous devez entrer un nombre entier."
+      cerr << "Erreur : Vous devez entrer un nombre réel et strictement "
+              "positif."
            << endl; //, Une erreur est affichée
       continue; // Permet de relancer la boucle à partir du début du do sans
                 // traiter la suite des caractères contenu dans la chaîne de
@@ -459,9 +483,11 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                       // des chiffres et une virgule potentiellement, et la
                       // stocke dans la variable k.
 
-    if (k <= 0) { // Si la constante de raideur des ressorts des dominos est
-                  // négative ou nulle.
-      cout << "La constante de raideur des ressorts de chaque domino que vous "
+    if (k == 0) { // Si la constante de raideur des ressorts des dominos est
+                  // nulle (le cas négatif ayant déjà été prévu dans le "if"
+                  // précédent puisque le signe "-" n'est pas un chiffre).
+      cerr << "Erreur : La constante de raideur des ressorts de chaque domino "
+              "que vous "
               "avez "
               "choisie est "
               "incorrect (trop petite). "
@@ -469,7 +495,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
            << endl; // Demande une nouvelle saisie à l'utilisateur.
     }
   } while (
-      k <=
+      k ==
       0); // Condition qui permet de répété la boucle do tant que la constante
           // de raideur des ressorts entrée par l'utilisateur n'est pas valide.
 
