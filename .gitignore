@@ -49,6 +49,7 @@ Local/
 *.out
 *.obj
 *.o
+main
 # Linker output
 *.ilk
 *.map
