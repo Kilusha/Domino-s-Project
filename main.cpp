@@ -6,13 +6,21 @@
  * @auteurs PALAY Kiliann & SERRE Marina
  */
 
-#include "graphic.cpp" // Directive de préprocesseur en C++. Elle permet d'inclure le fichier graphic dans le programme, qui contient la définition des fonctions permettant d'effectuer des opérations particulières.
+//#include "graphic.cpp" // Directive de préprocesseur en C++. Elle permet
+// d'inclure le fichier graphic dans le programme, qui contient la définition
+// des fonctions permettant d'effectuer des opérations particulières.
 #include "graphic.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-#include "matrice.cpp" // Directive de préprocesseur en C++. Elle permet d'inclure le fichier matrice dans le programme, qui contient la définition des fonctions permettant d'effectuer des opérations particulières.
+//#include "matrice.cpp" // Directive de préprocesseur en C++. Elle permet
+// d'inclure le fichier matrice dans le programme, qui contient la définition
+// des fonctions permettant d'effectuer des opérations particulières.
 #include "matrice.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque matrice dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-#include "saveData.cpp" // Directive de préprocesseur en C++. Elle permet d'inclure le fichier saveData dans le programme, qui contient la définition des fonctions permettant d'effectuer des opérations particulières.
+//#include "saveData.cpp" // Directive de préprocesseur en C++. Elle permet
+// d'inclure le fichier saveData dans le programme, qui contient la définition
+// des fonctions permettant d'effectuer des opérations particulières.
 #include "saveData.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-#include "trouveAlpha.cpp" // Directive de préprocesseur en C++. Elle permet d'inclure le fichier trouveAlpha dans le programme, qui contient la définition des fonctions permettant d'effectuer des opérations particulières.
+//#include "trouveAlpha.cpp" // Directive de préprocesseur en C++. Elle permet
+// d'inclure le fichier trouveAlpha dans le programme, qui contient la
+// définition des fonctions permettant d'effectuer des opérations particulières.
 #include "trouveAlpha.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque trouveAlpha dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <cmath> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque cmath dans le programme, qui contient toutes les fonctions mathématiques.
 #include <iostream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque iostream dans le programme, qui contient des fonctions permettant d'effectuer des entrées/sorties de données.
@@ -958,21 +966,20 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     /* Lignes suivantes permettent d'afficher le temps de chute de tous les
      * dominos */
 
-    if (c == 0 &&
-            alpha[t][Nmax - 1] ==
-                alpha[t - 1]
-                     [Nmax -
-                      1] && // Nous veillons à faire la différence sur le delta
-                            // par rapport au h car selon sa valeur, il faut ou
-                            // non prendre en compte l'ensemble des dominos
-                            // (ainsi il faut changer l'indice des angle alpha
-                            // que l'on compare).
-            alpha[t - 1][Nmax - 1] != 0 &&
-            delta < h ||
-        c == 0 && alpha[t][0] == alpha[t - 1][0] && alpha[t - 1][0] != 0 &&
-            delta > h) { /* Traduit la condition : si le compteur est à 0 et que
-            les deux valeurs des angles alphas successives du dernier domino
-            sont différentes de 0 et égales, alors dans ce cas : */
+    if ((c == 0 &&
+         alpha[t][Nmax - 1] ==
+             alpha[t - 1]
+                  [Nmax - 1] && // Nous veillons à faire la différence sur le
+                                // delta par rapport au h car selon sa valeur,
+                                // il faut ou non prendre en compte l'ensemble
+                                // des dominos (ainsi il faut changer l'indice
+                                // des angle alpha que l'on compare).
+         alpha[t - 1][Nmax - 1] != 0 &&
+         delta < h) ||
+        (c == 0 && alpha[t][0] == alpha[t - 1][0] && alpha[t - 1][0] != 0 &&
+         delta > h)) { /* Traduit la condition : si le compteur est à 0 et que
+         les deux valeurs des angles alphas successives du dernier domino
+         sont différentes de 0 et égales, alors dans ce cas : */
 
       cout << endl
            << "Le temps de chute total de votre chaine de domino est de : "

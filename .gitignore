@@ -47,6 +47,8 @@ html/
 *.out
 *.obj
 *o
+*exe
+*txt
 # Linker output
 *.ilk
 *.map

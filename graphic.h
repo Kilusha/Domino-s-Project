@@ -1,10 +1,10 @@
 /*
-* Projet des Dominos C++
-*
-* graphic.h
-*
-* @auteurs PALAY Kiliann & SERRE Marina
-*/
+ * Projet des Dominos C++
+ *
+ * graphic.h
+ *
+ * @auteurs PALAY Kiliann & SERRE Marina
+ */
 
 #ifndef GRAPHIC_H // Directive de préprocesseur qui permet de vérifier si la
                   // macro GRAPHIC_H n'a pas été définie auparavant. Si
@@ -22,8 +22,8 @@
 #include <cmath> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque cmath dans le programme, qui contient toutes les fonctions mathématiques.
 #include <iostream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque iostream dans le programme, qui contient des fonctions permettant d'effectuer des entrées/sorties de données.
 
-void trace_Graph(double **alpha, int dt,
-                 int Tmax); // Annonce l'existence d'une fonction trace_Graph
-                            // qui ne renvoie rien.
+void trace_Graph(double **tableau, double dt, int Tmax, int Nmax,
+                 int s); // Annonce l'existence d'une fonction trace_Graph
+                         // qui ne renvoie rien.
 
 #endif // Termine le code de création de la macro GRAPHIC_H.

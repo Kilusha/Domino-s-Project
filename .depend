@@ -1,0 +1,5 @@
+matrice.o: matrice.cpp matrice.h
+trouveAlpha.o: trouveAlpha.cpp trouveAlpha.h
+saveData.o: saveData.cpp saveData.h
+graphic.o: graphic.cpp graphic.h
+main.o: main.cpp graphic.h matrice.h saveData.h trouveAlpha.h
