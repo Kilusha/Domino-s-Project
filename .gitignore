@@ -4,6 +4,7 @@
 *.pptx
 *.pdf
 *.txt
+*.md
 
 ################################
 ########### FOLDERS ############
@@ -20,7 +21,6 @@ html/
 # Compiled Object files
 *.slo
 *.lo
-*.o
 *.obj
 *.ko
 *.elf
