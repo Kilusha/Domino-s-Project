@@ -1,3 +1,11 @@
+/*
+* Projet des Dominos C++
+*
+* graphic.h
+*
+* @auteurs PALAY Kiliann & SERRE Marina
+*/
+
 #ifndef GRAPHIC_H // Directive de préprocesseur qui permet de vérifier si la
                   // macro GRAPHIC_H n'a pas été définie auparavant. Si
                   // GRAPHIC_H n'a pas été définie, alors le code contenu entre

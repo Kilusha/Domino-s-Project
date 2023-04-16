@@ -1,3 +1,11 @@
+/*
+* Projet des Dominos C++
+*
+* saveData.cpp
+*
+* @auteurs PALAY Kiliann & SERRE Marina
+*/
+
 #include "saveData.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <fstream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque fstream dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 

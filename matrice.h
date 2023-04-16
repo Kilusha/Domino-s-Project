@@ -1,3 +1,11 @@
+/*
+* Projet des Dominos C++
+*
+* matrice.h
+*
+* @auteurs PALAY Kiliann & SERRE Marina
+*/
+
 #ifndef MATRICE_H // Directive de préprocesseur qui permet de vérifier si la macro MATRICE_H n'a pas été définie auparavant. Si MATRICE_H n'a pas été définie, alors le code contenu entre #ifndef et #endif est inclus, sinon ce code est ignoré. Cette technique permet d'éviter les problèmes de double inclusion de fichiers d'en-tête.
 #define MATRICE_H // Directive de préprocesseur qui permet de définir la macro MATRICE_H à une valeur donnée (ici, rien, car MATRICE_H est juste une macro de protection). Cette technique est couramment utilisée pour éviter les problèmes de double inclusion de fichiers d'en-tête et pour faciliter la gestion des dépendances entre fichiers.
 

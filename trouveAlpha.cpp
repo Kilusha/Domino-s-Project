@@ -1,3 +1,11 @@
+/*
+* Projet des Dominos C++
+*
+* trouveAlpha.cpp
+*
+* @auteurs PALAY Kiliann & SERRE Marina
+*/
+
 #include "trouveAlpha.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque trouveAlpha dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 
 using namespace std; // Directive en C++ qui facilite l'utilisation des noms de

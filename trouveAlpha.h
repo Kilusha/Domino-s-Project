@@ -1,3 +1,11 @@
+/*
+* Projet des Dominos C++
+*
+* trouveAlpha.h
+*
+* @auteurs PALAY Kiliann & SERRE Marina
+*/
+
 #ifndef TROUVEALPHA_H // Directive de préprocesseur qui permet de vérifier si la macro TROUVEALPHA_H n'a pas été définie auparavant. Si TROUVEALPHA_H n'a pas été définie, alors le code contenu entre #ifndef et #endif est inclus, sinon ce code est ignoré. Cette technique permet d'éviter les problèmes de double inclusion de fichiers d'en-tête.
 #define TROUVEALPHA_H // Directive de préprocesseur qui permet de définir la macro TROUVEALPHA_H à une valeur donnée (ici, rien, car TROUVEALPHA_H est juste une macro de protection). Cette technique est couramment utilisée pour éviter les problèmes de double inclusion de fichiers d'en-tête et pour faciliter la gestion des dépendances entre fichiers.
 
