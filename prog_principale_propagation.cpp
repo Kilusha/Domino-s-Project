@@ -889,7 +889,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                               plus grand qu'une certaine valeur qui
                               correspond à la valeur où le ressort du dernier
                               domino entre en contact avec le sol. */
-      l[t][n] = l[t][n] =
+      l[t][n] =
           h * tan(M_PI / 2 - alpha[t][n]) +
           delta / ((1. + tan(alpha[t][n]) * tan(M_PI / 2)) *
                    cos(alpha[t][n])); /* Calcul de la valeur de la longueur du
@@ -901,6 +901,23 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                         remplace alpha[t][n + 1] par la valeur
                                         pi/2 soit 90 degrés car il s'agit de
                                         l'angle entre la normale et le sol. */
+
+      if (l[t][0] > l0) /* Vérifie si le calcul de la longueur du ressort du 1er
+                           domino d'indice 0 est plus grande que sa longueur à
+                           vide car pour des petites valeurs d'angles, la
+                           formule peut donner ce genre de valeur abérrantes. */
+        l[t][0] = l0; /* Dans ce cas nous la remettons égale à la longueur à
+                      vide du ressort. */
+      if (l[t][0] <
+          lmin) { /* À l'inverse, cette commande permet de vérifier que le
+                ressort du 1er domino d'indice 0 ne soit pas
+                surcompréssé avec une longueur plus petite que la
+                longueur minimale car ici aussi pour des petites valeurs
+                d'angles, la formule peut donner ce genre de valeur
+                abérrantes (des longueurs de rerssort négatives). */
+        l[t][0] = lmin; /* Dans ce cas nous la remettons égale à la valeur
+                        minimale lors de sa compression. */
+      }
     }
 
     /* Lignes suivantes permettent d'afficher le temps de chute de tous les
@@ -981,8 +998,4 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
   delete[] v;     // Libère le pointeur l.
 
   return 0; // Renvoie 0 une fois que le code a été exécuté avec succès.
-
-  // QUESTIONS :
-  // Commenter conditions non transperçage des dominos voisins.
-  // Ligne 238 longueur ressort négative QUE POUR nmax = 1.
 }
