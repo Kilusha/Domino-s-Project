@@ -860,10 +860,10 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                asin(delta * cos(alpha[t + 1][n + 1]) / h))) {
           alpha[t + 1][n] =
               alpha[t + 1][n + 1] + asin(delta * cos(alpha[t + 1][n + 1]) / h);
-        } /*condition si l'angle d'inclinaison du domino à la position n est
-        trop grand par rapport à l'angle d'inclinaison du domino à sa droite,
-        alors l'angle d'inclinaison du domino à la position n sera ajusté pour
-        éviter que les dominos ne se chevauchent*/
+        } /* Condition si l'angle d'inclinaison du domino d'indice n est
+        trop grand par rapport à l'angle d'inclinaison du domino à sa droite
+        d'indice n+1, alors l'angle d'inclinaison de ce premier sera ajusté pour
+        éviter que les dominos se transpercent les uns les autres. */
 
         v[t][n] = (sin(alpha[t + 1][n]) - sin(alpha[t][n])) * h /
                   dt; // Calcul de la vitesse de propagation de l'onde à travers
