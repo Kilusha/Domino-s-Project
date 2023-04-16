@@ -8,6 +8,7 @@
 #include "trouveAlpha.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque trouveAlpha dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <cmath> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque cmath dans le programme, qui contient toutes les fonctions mathématiques.
 #include <iostream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque iostream dans le programme, qui contient des fonctions permettant d'effectuer des entrées/sorties de données.
+#include <string> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque string dans le programme, qui contient des fonctions qui vont être utilisées dans le code.
 
 using namespace std; // Directive en C++ qui facilite l'utilisation des noms de
                      // l'espace de noms standard (std).
@@ -77,14 +78,54 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
    * de ne pas planter le pogramme au cas où les valeurs rentrées sont erronées
    */
 
+  string saisie; // Déclaration d'une variable nommée "saisie" de type string
+                 // (chaine de caractères) qui va récupérer la saisie de
+                 // l'utilisateur lorsqu'elle lui est demandée.
+
   do { // Exécute le code ci-dessous de manière certaine.
 
     cout << "Combien de dominos composent votre chef d'oeuvre artistique ? "
             "(Valeur "
             "conséillée : 10) : "; // Demande à l'utilisateur le nombre de
                                    // dominos qui composent sa chaine.
-    cin >> Nmax; // Stocke la valeur entrée par l'utilisateur dans la variable
-                 // Nmax.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* La fonction/méthode find_first_not_of permet de vérifier si la chaîne de
+     * caractères contient uniquement des chiffres (entre 0 et 9) en cherchant
+     * la première occurence d'un caractère qui n'appartient pas à la chaine de
+     * caractères placé en argument (ici tous les chgiffres de 0 à 9). Si elle
+     * ne trouve pas de caractère qui n'est pas un chiffre, la méthode renvoie
+     * la constante string::npos qui est de type size_t. qui vaut en général, la
+     * valeur maximale que peut prendre un size_t (i.e. size_t-1). Elle traduit
+     * l'absence de position valide ou de résultat dans les opérations de
+     * recherche de chaînes de caractères.  Et par convention, lorsque
+     * find_first_not_of ou find_last_not_of ne trouvent pas le caractère
+     * recherché dans la chaîne de caractères, elles renvoient string::npos.
+     * Ainsi, si la saisie de l'utilisateur ne contient aucun autre caractère,
+     * dans ce cas la condition n'est pas vérifié, la comparaison renvoie un
+     * booléen de la valeur Faux puisque la fonction renverra la valeur
+     * string::npos. En revanche, si d'autres caractères sont contenus dans la
+     * saisie de l'utilisateur, alors la fonction renverra la position dans la
+     * saisie du caractère qui n'est pas un chiffre et donc la condition sera
+     * varifiée et la comparaison renverra un booléen de la valeur True". Et le
+     * code dans la boucle sera exécuté. */
+
+    if (saisie.find_first_not_of("0123456789") != string::npos) {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier. Ici, la commande "break;" nous arait totalement fait
+                // soirtir de la boucle dans son entièreté (même de la boucle
+                // while).
+    }
+
+    Nmax = stoi(saisie); // Convertit la chaîne de caractères entrée par
+                         // l'utilisateur en entier puisqu'elle ne comporte que
+                         // des chiffres, et la stocke dans la variable Nmax.
 
     if (Nmax <= 0) // Si le nombre de domino est négatif ou nul.
     {
@@ -106,8 +147,36 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
            "(Valeur conséillée 0.01 m) : "; // Demande à l'utilisateur la
                                             // distance qui sépare deux dominos
                                             // successifs.
-    cin >> delta; // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // delta.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici même principe que lors de la dernière utilisation de la méthode
+     * find_first_not_of mais cette fois ci avec une chaîne de caractère qui
+     * contient un point (qui fait office de virgule) car la valeur que doit
+     * entrer l'utilisateur est un double donc nous pouvons nous attendre à la
+     * présence d'une décimale. Si l'utilisateur entre un entier alors celui-ci
+     * sera caster en doute par la suite donc il n'y a pas de problème. Nous
+     * rajoutons juste la condition que la saisie ne soit pas uniquement égale à
+     * un point sinon ça n'aurait pas de sens. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre réel."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    delta = stod(saisie); // Convertit la chaîne de caractères entrée par
+                          // l'utilisateur en double puisqu'elle ne comporte que
+                          // des chiffres avec une virgule potentiellement, et
+                          // la stocke dans la variable delta.
+
     if (delta <= h) { // Si l'espacement entre deux dominos successifs est
                       // inférieur à 3 mm.
       cout << "La distance que vous avez choisie entre les dominos est "
@@ -126,8 +195,30 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
             "(Valeur conséillée 0.03 m) : "; // Demande à l'utilisateur la
                                              // hauteur des dominos qui
                                              // composent sa chaine.
-    cin >> h;     // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // h.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    h = stod(saisie); // Convertit la chaîne de caractères entrée par
+                      // l'utilisateur en double puisqu'elle ne comporte que
+                      // des chiffres avec une virgule potentiellement, et la
+                      // stocke dans la variable h.
+
     if (h <= 0) { // Si la hauteur des dominos est négative ou nulle.
       cout << "La hauteur des domninos que vous avez choisie est "
               "incorrect (trop petite). "
@@ -146,8 +237,31 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
            "domino ? "
            "(Valeur conséillée pi sur 4 rad.s^-1 soit 0.7854 rad.s^(-1)) : "; // Demande à l'utilisateur
     // la vitesse initiale du 1er domino qui compose sa chaine.
-    cin >> w0; // Stocke la valeur entrée par l'utilisateur dans la variable
-               // w0.
+
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    w0 = stod(saisie); // Convertit la chaîne de caractères entrée par
+                       // l'utilisateur en double puisqu'elle ne comporte que
+                       // des chiffres et une virgule potentiellement, et la
+                       // stocke dans la variable w0.
+
     if (w0 <= 0) { // Si la vitesse de rotation initiale est négative ou nulle.
       cout << "La vitesse de rotation initiale du 1er domino que vous avez "
               "choisie est "
@@ -174,8 +288,30 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                                       // de propagation de
                                                       // l'onde de chute à
                                                       // travers les dominos.
-    cin >> gamma; // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // gamma.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    gamma = stod(saisie); // Convertit la chaîne de caractères entrée par
+                          // l'utilisateur en double puisqu'elle ne comporte que
+                          // des chiffres et pôtentiellement une virgule, et la
+                          // stocke dans la variable gamma.
+
     if (gamma <=
         0) { // Si la viscosité du milieu de propagation est négative ou nulle.
       cout << "La viscosité du milieu de propagation que vous avez "
@@ -194,8 +330,30 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
             "(Valeur conséillée 0.01 kg) : "; // Demande à l'utilisateur la
                                               // masse des dominos qui composent
                                               // sa chaine.
-    cin >> m;     // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // m.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    m = stod(saisie); // Convertit la chaîne de caractères entrée par
+                      // l'utilisateur en double puisqu'elle ne comporte que
+                      // des chiffres et potentiellement une virgule, et la
+                      // stocke dans la variable m.
+
     if (m <= 0) { // Si la masse des dominos est négative ou nulle.
       cout << "La masse des domino que vous avez "
               "choisie est "
@@ -225,8 +383,30 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                                          // de la planète sur
                                                          // laquelle il réalise
                                                          // son expérience.
-    cin >> g;     // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // g.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    g = stod(saisie); // Convertit la chaîne de caractères entrée par
+                      // l'utilisateur en double puisqu'elle ne comporte que
+                      // des chiffres et une virgule potentiellement, et la
+                      // stocke dans la variable g.
+
     if (g <= 0) { // Si la pesanteur est négative ou nulle.
       cout << "La pesanteur que vous avez "
               "choisie est "
@@ -246,8 +426,30 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
                                                  // constante de raideur des
                                                  // ressorts qui sont fixés sur
                                                  // chaque domino.
-    cin >> k;     // Stocke la valeur entrée par l'utilisateur dans la variable
-                  // k.
+    cin >> saisie; // Stocke l'entrée de l'utilisateur comme une chaine de
+                   // caractères dans la variable saisie.
+
+    /* Ici exactement même principe que précédemment pour vérifier si la valeur
+     * entrer par l'utilisateur est bien un double ou un entier peu importe. */
+
+    if (saisie.find_first_not_of("0123456789.") != string::npos ||
+        saisie == ".") {
+
+      cout << "Erreur : vous devez entrer un nombre entier."
+           << endl; //, Une erreur est affichée
+      continue; // Permet de relancer la boucle à partir du début du do sans
+                // traiter la suite des caractères contenu dans la chaîne de
+                // caractères puisque nous savons déjà que ce n'est pas un
+                // entier ou un double. Ici, la commande "break;" nous arait
+                // totalement fait soirtir de la boucle dans son entièreté (même
+                // de la boucle while).
+    }
+
+    k = stod(saisie); // Convertit la chaîne de caractères entrée par
+                      // l'utilisateur en double puisqu'elle ne comporte que
+                      // des chiffres et une virgule potentiellement, et la
+                      // stocke dans la variable k.
+
     if (k <= 0) { // Si la constante de raideur des ressorts des dominos est
                   // négative ou nulle.
       cout << "La constante de raideur des ressorts de chaque domino que vous "
@@ -307,7 +509,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
    * terrestre ne représentant pas l'atmosphère de toutes les planètes
    * malheureusement. Les simulations sont donc faite avec l'hyppothèse que
    * les planètes ont un atmosphère avec la même viscosité moléculaire que
-   * celui de la Terre. */
+   * celle de la Terre. */
 
   /* Les prochaines lignes de codes sont écrites pour pouvoir dimensionner les
    * tableaux alpha, l, et v en fonction des paramètres de l'expérience qui ont
@@ -610,7 +812,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
 
         if (alpha[t + 1][n] >= (M_PI / 2 - (Nmax - n) * atan((lmin / h)))) {
           alpha[t + 1][n] = M_PI / 2 - (Nmax - n) * atan((lmin / h));
-        } /* Nous considérons ici l'angle maximal que peut formé le n-ieme -1
+        } /* Nous considérons ici l'angle maximal que peut formé le n-ieme +1
           domino d'indice n
           avec la verticale. Cette condition est atteinte
           lorsque tous les dominos suivant (soit Nmax-n) sont couchés les uns
