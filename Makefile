@@ -1,5 +1,5 @@
 EXEC = main
-SRCS =  matrice.cpp trouveAlpha.cpp saveData.cpp graphic.cpp main.cpp
+SRCS =   $(wildcard *.cpp)
 CXXFLAGS = -Wall
 
 # Ne rien changer a partir d'ici
