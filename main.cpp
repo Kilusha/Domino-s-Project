@@ -6,21 +6,9 @@
  * @auteurs PALAY Kiliann & SERRE Marina
  */
 
-//#include "graphic.cpp" // Directive de préprocesseur en C++. Elle permet
-// d'inclure le fichier graphic dans le programme, qui contient la définition
-// des fonctions permettant d'effectuer des opérations particulières.
 #include "graphic.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-//#include "matrice.cpp" // Directive de préprocesseur en C++. Elle permet
-// d'inclure le fichier matrice dans le programme, qui contient la définition
-// des fonctions permettant d'effectuer des opérations particulières.
 #include "matrice.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque matrice dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-//#include "saveData.cpp" // Directive de préprocesseur en C++. Elle permet
-// d'inclure le fichier saveData dans le programme, qui contient la définition
-// des fonctions permettant d'effectuer des opérations particulières.
 #include "saveData.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-//#include "trouveAlpha.cpp" // Directive de préprocesseur en C++. Elle permet
-// d'inclure le fichier trouveAlpha dans le programme, qui contient la
-// définition des fonctions permettant d'effectuer des opérations particulières.
 #include "trouveAlpha.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque trouveAlpha dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <cmath> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque cmath dans le programme, qui contient toutes les fonctions mathématiques.
 #include <iostream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque iostream dans le programme, qui contient des fonctions permettant d'effectuer des entrées/sorties de données.
