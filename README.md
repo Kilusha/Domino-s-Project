@@ -5,8 +5,13 @@
 ## Usage
 
 ```sh
-make et ./main
+make
 ```
+
+```sh
+./main
+```
+
 
 ## Author
 
