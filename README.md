@@ -12,7 +12,7 @@ Pour cela nous modélisons Nmax dominos avec chacun une tige de masse m, de haut
 
 ### 🏠 [Homepage](https://github.com/Kilusha/Domino-s-Project/tree/KILUSHA)
 
-## Usage
+## Utilisation
 
 La première commande à éxecutée pour faire fonctionner ce code est de le compiler à l'aide de la ligne de commande suivante :
 ```sh
@@ -44,7 +44,7 @@ Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter e
 À noter que ce programme est dotée de toutes les sécurités nécéssaire pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
 
 
-## Author
+## Auteurs
 
 👤 **Kiliann**
 
@@ -57,4 +57,4 @@ Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter e
 Laissez une ⭐️ dans votre commentaire sur notre page git si vous avez aimé ce projet !
 
 ***
-_This README was generated with ❤️_
+_Ce README a été généré avec ❤️_
