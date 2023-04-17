@@ -11,7 +11,7 @@ Pour cela nous modélisons Nmax dominos avec chacun une tige de masse m, de haut
 
 ## 📝 Utilisation
 
-La première commande à éxecutée pour faire fonctionner ce code est de le compiler à l'aide de la ligne de commande suivante :
+La première commande à éxecuter pour faire fonctionner ce code est de le compiler à l'aide de la ligne de commande suivante :
 ```sh
 make
 ```
@@ -38,7 +38,7 @@ Une fois toutes ces instructions réalisées, vous pourrez constater l'apparitio
 
 Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter et méditer pendant l'exécution du programme, ainsi que certaines délarations ou affirmations afin de vous présenter des informations utiles comme la valeur de l'angle choc entre les 2 premiers dominos, le temps correspondant au choc du premier domino avec son voisin de droite, le temps de chute total de la chaîne de dominos, la bonne sauvegarde des différents fichiers texte, et d'autres informations qui diffèrent selon la configuration de votre expérience.
 
-À noter que ce programme est dotée de toutes les sécurités nécéssaire pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
+À noter que ce programme est doté de toutes les sécurités nécéssaires pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
 
 
 ## 👥 Auteurs
