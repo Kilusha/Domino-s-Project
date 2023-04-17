@@ -32,7 +32,7 @@ Vous allez être amené à saisir :
     * la pesanteur de la planète sur laquelle vous souhaitez réaliser l'expérience,
     * la constante de raideur du ressort.
 
-### ⚠️ Attention : Toutes les données à saisir doivent être renseignées dans les unitées du système international (qui sont toujours précisées dans les questions).
+### ⚠️ Attention : Toutes les données à saisir doivent être renseignées dans les unités du système international (qui sont toujours précisées dans les questions).
 
 Une fois toutes ces instructions réalisées, vous pourrez constater l'apparition des 3 graphiques dans 3 fenêtres différentes qui s'ouvriront devant vous.
 
