@@ -6,9 +6,9 @@
  * @auteurs PALAY Kiliann & SERRE Marina
  */
 
-#include "graphic.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
+#include "graphique.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphique dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include "matrice.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque matrice dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
-#include "saveData.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
+#include "sauvegardeDonnees.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque sauvegardeDonnes dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include "trouveAlpha.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque trouveAlpha dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <cmath> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque cmath dans le programme, qui contient toutes les fonctions mathématiques.
 #include <iostream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque iostream dans le programme, qui contient des fonctions permettant d'effectuer des entrées/sorties de données.
@@ -979,13 +979,13 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
     }
   }
 
-  save_Data(alpha, Tmax, Nmax,
+  sauvegarde_Donnees(alpha, Tmax, Nmax,
             "alpha.txt"); // Sauvegarde du tableau alpha dans alpha.txt.
 
-  save_Data(l, Tmax, Nmax,
+  sauvegarde_Donnees(l, Tmax, Nmax,
             "longueur.txt"); // Sauvegarde du tableau l dans longueur.txt.
 
-  save_Data(v, Tmax, Nmax,
+  sauvegarde_Donnees(v, Tmax, Nmax,
             "vitesse.txt"); // Sauvegarde du tableau v dans vitesse.txt.
 
   trace_Graph(alpha, dt, Tmax, Nmax,
