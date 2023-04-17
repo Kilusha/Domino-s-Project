@@ -1,4 +1,4 @@
-# Bienvenue au Projet : Domino 👋
+# Bienvenue au Projet : Domino 👋 🎲
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/Kilusha/Domino-s-Project/blob/KILUSHA/Projet___Domino_Final_V3.pdf)
 
 > Le but de ce projet est de simuler la chute d'une chaine de Nmax dominos afin d'observer la propagation de l'onde de chute qui la traverse et d'en tirer quelques caratéristiques.
@@ -8,7 +8,7 @@ Pour cela nous modélisons Nmax dominos avec chacun une tige de masse m, de haut
 
 ### 🏠 [Homepage](https://github.com/Kilusha/Domino-s-Project/tree/KILUSHA)
 
-## Utilisation
+## 📝 Utilisation
 
 La première commande à éxecutée pour faire fonctionner ce code est de le compiler à l'aide de la ligne de commande suivante :
 ```sh
@@ -31,7 +31,7 @@ Vous allez être amené à saisir :
     * la pesanteur de la planète sur laquelle vous souhaitez réaliser l'expérience,
     * la constante de raideur du ressort.
 
-Attention : Toutes les données à saisir doivent être renseignées dans les unitées du système international (qui sont toujours précisées dans les questions).
+### ⚠️ Attention : Toutes les données à saisir doivent être renseignées dans les unitées du système international (qui sont toujours précisées dans les questions).
 
 Une fois toutes ces instructions réalisées, vous pourrez constater l'apparition des 3 graphiques dans 3 fenêtres différentes qui s'ouvriront devant vous.
 
@@ -40,14 +40,19 @@ Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter e
 À noter que ce programme est dotée de toutes les sécurités nécéssaire pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
 
 
-## Author
+## 👥 Auteurs
 
-👤 **Kilusha**
+👤 **Kiliann Palay**
 
-* Github: [@Kilusha](https://github.com/Kilusha) et [@marinightx](https://github.com/marinightx)
-* LinkedIn: [@kiliannpalay](https://linkedin.com/in/kiliannpalay) et [@marinaserre](https://linkedin.com/in/marinaserre)
+* Github: [@Kilusha](https://github.com/Kilusha)
+* LinkedIn: [@kiliannpalay](https://linkedin.com/in/kiliannpalay)
 
-## Show your support
+👤 **Marina Serre**
+
+* Github: [@marinightx](https://github.com/marinightx)
+* LinkedIn: [@marinaserre](https://linkedin.com/in/marinaserre)
+
+## 💌 Show your support
 
 Laissez une ⭐️ dans votre commentaire sur notre page git si vous avez aimé ce projet !
 
