@@ -1,18 +1,18 @@
 /*
 * Projet des Dominos C++
 *
-* saveData.cpp
+* sauvegardeDonnees.cpp
 *
 * @auteurs PALAY Kiliann & SERRE Marina
 */
 
-#include "saveData.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
+#include "sauvegardeDonnees.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque saveData dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 #include <fstream> // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque fstream dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 
 using namespace std; // Directive en C++ qui facilite l'utilisation des noms de
                      // l'espace de noms standard (std).
 
-void save_Data(double **matrice, int Tmax, int Nmax,
+void sauvegarde_Donnees(double **matrice, int Tmax, int Nmax,
                const string &nomfichier) { // Création d'une fonction permettant
                                            // de sauvegarder
   // les valeurs de nos tableau alpha et l en imposant le nom du fichier à

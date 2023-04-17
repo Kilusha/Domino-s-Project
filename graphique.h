@@ -1,7 +1,7 @@
 /*
  * Projet des Dominos C++
  *
- * graphic.h
+ * graphique.h
  *
  * @auteurs PALAY Kiliann & SERRE Marina
  */

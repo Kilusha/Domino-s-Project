@@ -1,12 +1,12 @@
 /*
 * Projet des Dominos C++
 *
-* graphic.cpp
+* graphique.cpp
 *
 * @auteurs PALAY Kiliann & SERRE Marina
 */
 
-#include "graphic.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
+#include "graphique.h" // Directive de préprocesseur en C++. Elle permet d'inclure la bibliothèque graphic dans le programme, qui contient des fonctions permettant d'effectuer des opérations particulières.
 
 using namespace std; // Directive en C++ qui facilite l'utilisation des noms de
                      // l'espace de noms standard (std).

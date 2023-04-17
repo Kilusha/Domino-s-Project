@@ -1,109 +1,60 @@
-# Domino-s-Project
-Projet des Dominos modélisation semestre 2 M1
+# Bienvenue au Projet : Domino 👋 🎲
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/Kilusha/Domino-s-Project/blob/KILUSHA/Projet___Domino_Final_V3.pdf)
 
-HAHA JE CHANGE
+> Le but de ce projet est de simuler la chute d'une chaine de Nmax dominos afin d'observer la propagation de l'onde de chute qui la traverse et d'en tirer quelques caratéristiques.
 
+Pour cela nous modélisons Nmax dominos avec chacun une tige de masse m, de hauteur h et d’épaisseur négligeable. Chaque domino est séparé du suivant d’une distance Delta selon l’axe x. Chacun d'entre eux pivote autour de sa base (rotation d’axe y) en faisant un angle alpha avec l'axe vertical (axe z). De plus, nous plaçons au sommet de chacun, un ressort de masse négligeable, de constante de raideur k et de longueur à vide l0 afin de modéliser les forces appliquées entre chaque domino lors de la chute de ces derniers. Nous tenons compte de la viscosité gamma du milieu de propagation dans lequel a lieu l'expérience, ainsi que de la pesanteur qui entre indéniablement en jeu. L'amorce de la chute est donnée par une vitesse de rotation initiale fournie au 1er domino de la chaîne. À chaque instant t séparé d'un intervalle de temps dt fixé dans le programme et non-modifiable, ce dernier enregistre les valeurs de tous les angles que forment les dominos par rapport à l'axe vertical afin de les stocker dans un fichier texte. Il en est de même pour la longueur des ressorts de tous les dominos qui est donc stockée par le programme dans un fichier texte également. La vitesse de propagation linéaire de l'onde de chute à travers la chaîne de domino est aussi calculée et stockée dans un fichier texte à chaque instant par le programme. Tous ces fichiers ayant été générés dans le but de pouvoir tracer 3 graphiques : celui de l'évolution de l'angle de chaque domino en fonction du temps, celui de l'évolution de la longueur du ressort de chaque domino en fonction du temps, et enfin celui de l'évolution de la vitesse linéaire de l'onde de chute en fonction du temps. Les graphiques sont tracés automatiquement sans qu'il n'y ait besoin d'utiliser gnuplot dans un terminal à part.
 
-Instructions du git :
 
+### 🏠 [Homepage](https://github.com/Kilusha/Domino-s-Project/tree/KILUSHA)
 
+## 📝 Utilisation
 
-QUELQUES COMMANDES CLEFS DE BASE :
+La première commande à éxecutée pour faire fonctionner ce code est de le compiler à l'aide de la ligne de commande suivante :
+```sh
+make
+```
+La seconde étape à suivre consiste à exécuter l'exécutable depuis votre terminal grâce à la ligne de commande suivante :
+```sh
+./main
+```
+À partir de là, il vous suffit de vous laisser guider par les instructions du programme.
 
+Vous allez être amené à saisir : 
 
+    * le nombre de dominos Nmax qui compose votre chaîne,
+    * la distance delta qui sépare vos dominos,
+    * la hauteur de vos dominos,
+    * la vitesse de rotation initiale de vos dominos,
+    * la viscosité moléculaire du milieu de propagation,
+    * la masse de vos dominos,
+    * la pesanteur de la planète sur laquelle vous souhaitez réaliser l'expérience,
+    * la constante de raideur du ressort.
 
-git help blabla \\If you forgot how to use blabla
+### ⚠️ Attention : Toutes les données à saisir doivent être renseignées dans les unitées du système international (qui sont toujours précisées dans les questions).
 
-git status \\For checking if it's up to date
+Une fois toutes ces instructions réalisées, vous pourrez constater l'apparition des 3 graphiques dans 3 fenêtres différentes qui s'ouvriront devant vous.
 
-git branch -a \\Give the list of all branches
+Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter et méditer pendant l'exécution du programme, ainsi que certaines délarations ou affirmations afin de vous présenter des informations utiles comme la valeur de l'angle choc entre les 2 premiers dominos, le temps correspondant au choc du premier domino avec son voisin de droite, le temps de chute total de la chaîne de dominos, la bonne sauvegarde des différents fichiers texte, et d'autres informations qui diffèrent selon la configuration de votre expérience.
 
-git pull \\Met tout le dépot local à jour
+À noter que ce programme est dotée de toutes les sécurités nécéssaire pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
 
-git pull origin MA_BRANCHE \\Met à jour le dépot local d'une branche spécifique
 
-git diff HEAD \\Liste les différences entre le contenu du dernier commit et celui du répertoir de travail
+## 👥 Auteurs
 
-git fetch \\Permet de récupérer toutes les données des commits effectués sur la branche courante qui n'existent pas encore dans ta version en local. Ces données seront stockées dans le répertoire de travail local mais ne seront pas fusionnées avec ta branche locale. Si tu souhaites fusionner ces données pour que ta branche soit à jour, tu dois utiliser ensuite la commande git merge.
+👤 **Kiliann Palay**
 
-git merge main \\Fusionne 2 branches ensembles. Permet de copier coller la branche spécifiée (ici main) sur l'autre (celle où tu te trouves) si tu préfères en remplaçant les données existantes sur la branche cible. Pour se faire il faut se placer sur la branche cible en vérifiant d'y être avec le HEAD de git status. Vérifier qu'elle soit à jour avec un git fetch. Vérifier que le dépot est à jour avec un git pull. et Ensuite effectuer le git merge.
+* Github: [@Kilusha](https://github.com/Kilusha)
+* LinkedIn: [@kiliannpalay](https://linkedin.com/in/kiliannpalay)
 
-git push -u origin KILUSHA \\POUR MOI TKT PAS T'EN PREOCUPES PAS. Permet de créer une branche distante nommée KILUSHA. Ainsi la branche sur laquelle je me trouve en tapant cette commande va suivre cette branche distante.
+👤 **Marina Serre**
 
+* Github: [@marinightx](https://github.com/marinightx)
+* LinkedIn: [@marinaserre](https://linkedin.com/in/marinaserre)
 
+## 💌 Show your support
 
-LES COMMITS :
+Laissez une ⭐️ dans votre commentaire sur notre page git si vous avez aimé ce projet !
 
-
-
-Le but de git est de récupérer ce qui est sur le dépôt distant (sur github qui est l'équivalent du cloud Apple ou Samsung ou du Drive Google), pour pouvoir travailler sur tous les fichiers du projet souhaitée sans avoir de risques de pertes de données. L'avantage c'est que tu récupères tous les fchiers, tu bosses de ton côté, moi du mien, sans que ça pose le moindre problème, et ensuite on met à jour le dépot distant lorsque nous sommes prêts. Ainsi je récipère ta version, tu récupère la mienne également, et nous pouvons les fusionnées en toute simplicité à l'aide de certaines ligne de commandes que tu découvriras dans ce résumé de Github.
-
-Ainsi quand tu as ton dossier sur les dominos qui est à jour, tu peux travailler sur ton code. Tout ce que tu modifieras sera changé sur ton ordinateur SEULEMENT. Une fois que tu as fait tous les changements que tu voulais, tu es donc prête à le déposer sur le dépôt distant ce qui aura pour but de mettre à jour les versions distantes qui se trouvent sur Github. Pour ce faire, il va falloir utiliser les commandes suivantes :
-
-git add . \\N'oublie pas le point à la fin il est très important. Cette commande ici revient à dire : Prend un carton et ajoute TOUS les fichiers qui sont dans le répertoire où je me trouve. Si tu veux pas sélectionner TOUS les fichiers car par exemple il y en a que tu n'as pas modifier ou autre, alors tu peux explicitement écrire lesquels tu choisis d'ajouter dans ton carton en remplaçant le . par le nom du ou des fichiers concernés. Perso je te conseil de toujours utilisé le . car même si tu ne modifies pas tout, au moins tu ne risques pas d'oublier quoique ce soit et si les fichiers sont identiques bah ça les remplacera mais ça restera les même alors c'est tout bénef. De plus, les commandes qui suivent sont assez exigentes donc il est préférable que tu privilégies cette commande pour le bon déroulement de la suite. 
-
-git commit -m "Tape ton message" \\Cette commande signifie : Vazy ferme le carton qui contient tous les fichiers que j'ai ajouté avec la commande précédente et met le scotch pour qu'il soit prêt à être expédié et ajoute le message "Tape ton message" dessus (genre "Correction du problème avec l'angle choc + correction de la durée de chute des dominos" histoire de savoir ce que tu as fait comme travail pour identifier ce qu'il y a de nouveau, ça permet d'avoir un super historique bien propre). N'OUBLIE PAS LES GUILLEMETS ICI !
-
-
-git push <dépôt> <Branche> \\Ici tu envoies le colis avec toutes tes modifications dans le dépôt distant (nommé origin pour nous car Git donne ce nom par défaut) tout simplement. Il va donc écraser ce qu'il y a dans le dépot distant de la branche où tu veux envoyer tes données (que tu auras spécifié dans la commande) pour y remplacer par ce que tu as mis dans le carton (qui correspond à ce que tu as sur ton dépôt local à savoir ce que tu as sur ton pc). LES < > NE SONT PAS A METTRE BIEN SÛR, ICI ILS SONT UTILES UNIQUEMENT POUR TE MONTRER CE QUE TU DOIS PERSONALISER DANS LA COMMANDE.
-
-
-
-
-LES BRANCHES :
-
-
-
-Créer une branche, c’est en quelque sorte comme créer une “copie” de notre projet pour développer et tester de nouvelles fonctionnalités sans impacter le projet de base. La branche par défaut dans Git s’appelle master ou main. Cette branche va se déplacer automatiquement à chaque nouveau commit pour pointer sur le dernier commit effectué tant qu’on reste sur cette branche. Ca fonctionne comme une pile en fait. La branche main va toujours pointer l'assiette la plus haute de la pile. Et dès que tu fais un commit et un push, alors la branche pointe le tout dernier commit que tu as fait afin d'être le plus à jour possible. Bien sûr si tu es sur une autre branche, par exemple la branche MARINA, alors celle ci pointra le dernier commit que tu auras envoyé (push) sur la branche MARINA. La mention HEAD permet tout simplement de savoir sur quelle branche tu te trouves actuellement. C'est la raison pour laquelle lorsque tu écris git status la mention HEAD apparaît devant le branche sur laquelle tu travailles actuellement.
-
-git branch NOM_DE_LA_BRANCHE \\Permet de créer une branche nommée NOM_DE_LA_BRANCHE mais en local seulement ATTENTION !
-
-
-git checkout NOM_DE_LA_BRANCHE \\Permet de switcher sur la branche souhaitée (NOM_DE_LA_BRANCHE)
-
-
-
-
-LES TAGS :
-
-
-
-Les tags sont uilisés pour écrire des versions de programmes. Je pense qu'ils peuvent nous êtres utils comme des paliers sur lesquels se baser. Par exemple imagine on a 3 problème à régler sur notre code. Alors on fera plusieurs commits jusqu'à tant que ces trois problèmes soient résolus et ça pourra faire une sorte de palier avant de réattaquer un problème différent du code qui se situe à un autre niveau ou un truc du genre tu vois. On peux s'en servir pour séquencer les recherches qu'on fait pour solutionner nos problèmes sur notre code. On l'utilisera de la manière suivante :
-
-git tag V1.0.1 \\Ici le V1.0.1 est un exemple mais tu mets ce que tu veux. Je pense que c'est une bonne idée d'utiliser ce genre de "code" pour éditer des versions tout simplement.
-
-
-
-
-LES STASHS :
-
-
-
-git stash \\Stash en anglais correspond à une étagère. Cette commande est utile pour stocker de manière temporaire ton taff comme si tu posais un livre de cuisine sur une étagère alors que tu étais en train de suivre la rectte, dans le but de faire quelque chose d'autre de plus important qui ne peut pas attendre. Ca permet donc de mettre en pause ton travail sans risquer de faire de la merde. Jez te dirai dans quels cas c'est utile si besoin.
-
-git stash pop \\Permet de reprendre ton livre de cuisine pour revenir à où tu t'étais arrêté car quand tu l'as posé sur l'étagère, c'est comme si tu revenais en arrière sur le code d'origne avant que tu aies fait tes modifications.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Par rapport à notre façon de fonctionner : Ce que je te propose c'est que tu travailles sur la branche MARINA TOUT LE TEMPS. Moi je travail sur la branche KILUSHA TOUT LE TEMPS. Et lorsqu'on a besoin de réunir nos codes alors je te montrerai la procédure une fois et ensuite tu sauras la faire dès que nous aurons besoin de fusionner nos codes. La branche main restera intacte et nous la changerons dès qu'il faudra à savoir, quand on aura solutionner de gros problèmes. A chaque grosse étapes en quelques sortes, on fera une copie du code sur la branche main. Comme ça elle correspond à une copie propre à laquelle on peut revenir à tout moment en cas de problème.
-La branche PROF ne sert qu'à poser les documents du prof et le prog qu'il nous file de base sur Moodle comme ça si tu as besoin tu as un accès rapide à celui ci.
-Le gros avantage de tout ça c'est que toi tu pourras récupérer mes modifications de code sans que ça intervienne avec les tiennes. Dès que tu feras un git pull ou un git fetch selon la situation (je te le dirai), tu récupèreras mon code sans que ça ne change quoique ce soit au tien.
-1. L'idée principale et l'esprit qu'il faut avoir c'est le suivant : A chauqe fois qu'on travaillera cette matière (chez nous ou en cours peu importe), la TOUTE PREMIERE CHOSE A FAIRE sera d'exécute un git pull. Comme ça tu récupère tout et tu es à jour avec le dépôt distant avant de commencer quoique ce soit. 
-2. Ensuite tu verifies que tu es bien sur ta branche nommée MARINA. Pour ce faire tu exécutes la commande git status. Si tu n'ets pas sur la branche Marina, alors il faudra que tu changes avec la commande git checkout MARINA.
-3. Et là tu travailles ce que tu veux comme tu veux librement sans risquer le moindre problème. Et une fois que tu as terminé ce que tu voulais faire (pense à découper le plus possible ton travail ce sera le plus simple), alors tu devvras faire un commit en tapant la commande git add . , puis git commit -m "TAPE TON MESSAGE", et enfin git push.
-4. C'est tout ! Concernant tout le reste, si tu as besoin de plus d'informations ou autre surtout n'hésite jmmais à me demander ce sera toujours la meilleure chose que tu puisses faire car si tu tentes un truc sans être sûr de toi vu que je t'ai mis admin, tu as le droit de tout faire y compris de tout supprimer par inadvertance haha. Donc n'hésite jamais voili voilou j'espère que ça t'aura aidé cette petite aide.
-
-
-
-OK j ai lu
+***
+_Ce README a été généré avec ❤️_
