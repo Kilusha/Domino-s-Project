@@ -22,7 +22,7 @@ La seconde étape à suivre consiste à exécuter l'exécutable depuis votre ter
 
 Vous allez être amené à saisir : 
 
-    * le nomnbre de dominos Nmax qui compose votre chaîne,
+    * le nombre de dominos Nmax qui compose votre chaîne,
     * la distance delta qui sépare vos dominos,
     * la hauteur de vos dominos,
     * la vitesse de rotation initiale de vos dominos,
