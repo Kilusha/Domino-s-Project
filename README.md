@@ -32,6 +32,9 @@ Attention : Toutes les données à saisir doivent être renseignées dans les un
 
 Une fois toutes ces instructions réalisées, vous pourrez constater l'apparition des 3 graphiques dans 3 fenêtres différentes qui s'ouvriront devant vous.
 
+Dans votre terminal, vous trouverez quelques phrases pour vous faire patienter et méditer pendant l'exécution du programme, ainsi que certaines délarations ou affirmations afin de vous présenter des informations utiles comme la valeur de l'angle choc entre les 2 premiers dominos, le temps correspondant au choc du premier domino avec son voisin de droite, le temps de chute total de la chaîne de dominos, la bonne sauvegarde des différents fichiers texte, et d'autres informations qui diffèrent selon la configuration de votre expérience.
+
+À noter que ce programme est dotée de toutes les sécurités nécéssaire pour ne pas planter en cas de faute de saisie ou de choix absurde ou quoique ce soit d'autre.
 
 
 ## Author
@@ -43,7 +46,7 @@ Une fois toutes ces instructions réalisées, vous pourrez constater l'apparitio
 
 ## Show your support
 
-Laissez une ⭐️ si vous avez aimé ce projet !
+Laissez une ⭐️ dans votre commentaire sur notre page git si vous avez aimé ce projet !
 
 
 ***
