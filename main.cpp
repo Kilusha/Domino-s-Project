@@ -299,7 +299,7 @@ int main() { /* Fonction spéciale dans un programme C++ qui est appelée
          << "Quelle est la viscosité moléculaire (en Newton seconde par mètre) "
             "du "
             "milieu de propagation ? "
-            "(Valeur conséillée 0.00001881 N.s.m^(-1) pour l'air,"
+            "(Valeur conséillée 0.0000175 N.s.m^(-1) pour l'air,"
          << endl;
     cout
         << "sinon 0.00115 N.s.m^(-1) pour l'eau) : "; // Demande à l'utilisateur
