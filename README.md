@@ -1,6 +1,6 @@
 # Domino-s-Project
 # Bienvenue au Projet : Domino 👋 🎲
-[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/Kilusha/Domino-s-Project/blob/main/Projet___Domino_Final_V3.pdf)
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/Kilusha/Domino-s-Project/blob/main/Projet___Domino_Final_V4.pdf)
 
 > Le but de ce projet est de simuler la chute d'une chaine de Nmax dominos afin d'observer la propagation de l'onde de chute qui la traverse et d'en tirer quelques caratéristiques.
 
